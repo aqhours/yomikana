@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root { --ink:#07517f; --ink-soft:#4f7890; --paper:#eaf8ff; --cream:#dff3fb; --sun:#0ba9e3; --sun-light:#9bddf3; --rule:rgba(10,111,163,.2); --frame-gap:2rem; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; min-height:100vh; background:linear-gradient(rgba(8,142,198,.06),rgba(8,142,198,.06)),url("/numazu-seaside.png") center/cover fixed; color:var(--ink); font-family:var(--font-geist-sans),"Hiragino Sans GB","PingFang SC",sans-serif; }
+main { min-height:100vh; }
+a { color:inherit; }
+.hero { min-height:94vh; display:grid; place-items:center; position:relative; overflow:hidden; background:linear-gradient(90deg,rgba(229,248,255,.92) 0%,rgba(229,248,255,.74) 40%,rgba(195,237,251,.08) 72%); border-bottom:1px solid rgba(197,239,255,.5); }
+.hero::before { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(220,247,255,.05),transparent 58%,rgba(0,103,151,.13)); }
+.hero::after { content:"かがやき"; position:absolute; right:3vw; top:6vh; color:rgba(255,255,255,.28); text-shadow:0 1px 10px rgba(25,78,107,.12); font:700 clamp(5rem,11vw,10rem)/.8 "Yu Mincho","Hiragino Mincho ProN",serif; writing-mode:vertical-rl; letter-spacing:.08em; }
+.hero-inner { width:min(1080px,calc(100% - 3rem)); position:relative; z-index:1; padding:7rem 0 6rem; }
+.eyebrow { margin:0 0 2.2rem; font-size:.72rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-soft); }
+.eyebrow span { display:inline-grid; place-items:center; width:2rem; height:2rem; margin-right:.7rem; border-radius:50%; color:white; background:var(--sun); letter-spacing:0; font-size:.82rem; }
+h1 { margin:0; max-width:900px; font-family:"Yu Mincho","Hiragino Mincho ProN","Noto Serif JP",serif; font-size:clamp(3.2rem,8vw,7.4rem); line-height:1.06; letter-spacing:-.045em; font-weight:600; }
+h1 em { color:var(--sun); font-style:normal; }
+.title-cn { margin:2rem 0 0; color:var(--ink-soft); font-family:"Songti SC",serif; font-size:clamp(1rem,1.6vw,1.3rem); letter-spacing:.16em; }
+.meta { display:flex; align-items:center; gap:1rem; margin-top:3.7rem; color:var(--ink-soft); font-size:.74rem; font-weight:650; letter-spacing:.12em; text-transform:uppercase; }
+.meta i { width:3px; height:3px; border-radius:50%; background:var(--sun); }
+.start-link { display:inline-flex; gap:1rem; align-items:center; margin-top:3.2rem; text-decoration:none; font-size:.82rem; letter-spacing:.12em; border-bottom:1px solid var(--ink); padding-bottom:.45rem; }
+.start-link span { color:var(--sun); }
+.reader { width:calc(100% - (var(--frame-gap) * 2)); height:calc(100vh - (var(--frame-gap) * 2)); height:calc(100dvh - (var(--frame-gap) * 2)); margin:var(--frame-gap) auto; padding:2rem clamp(2rem,5vw,4.5rem) 5rem; overflow-y:auto; overscroll-behavior:contain; scroll-behavior:smooth; scroll-margin-top:var(--frame-gap); scrollbar-width:thin; scrollbar-color:rgba(8,137,192,.52) transparent; background:rgba(226,246,253,.66); border-radius:1.4rem; box-shadow:0 20px 70px rgba(0,80,125,.18); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); }
+.reader::-webkit-scrollbar { width:8px; }
+.reader::-webkit-scrollbar-thumb { background:rgba(8,137,192,.48); border:2px solid transparent; border-radius:999px; background-clip:padding-box; }
+.lyrics-list { margin:0; padding:0; list-style:none; }
+.lyric-line { display:grid; grid-template-columns:3.6rem 1fr; gap:1rem; padding:3.7rem 0 3.9rem; border-bottom:1px solid var(--rule); }
+.line-number { padding-top:1.2rem; color:#70a7c0; font:500 .68rem/1 var(--font-geist-mono),monospace; letter-spacing:.1em; }
+.word-strip { display:flex; flex-wrap:wrap; gap:1rem 1.15rem; align-items:flex-start; }
+.word-block { width:max-content; max-width:100%; display:grid; grid-template-rows:auto auto auto; align-content:start; padding:.35rem .1rem .25rem; }
+.word-jp { display:block; white-space:nowrap; padding:.25rem 0 .1rem; font-family:"Yu Mincho","Hiragino Mincho ProN",serif; font-size:clamp(1.35rem,2.7vw,1.82rem); line-height:1.65; letter-spacing:.015em; }
+ruby { ruby-position:over; }
+rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spacing:.06em; }
+.word-romaji { display:block; white-space:nowrap; color:#0785bd; font:600 .69rem/1.55 var(--font-geist-mono),monospace; letter-spacing:.025em; }
+.word-meaning { display:block; width:max-content; max-width:15rem; margin-top:.2rem; color:var(--ink-soft); font-size:.72rem; line-height:1.45; }
+.translation { display:flex; gap:.8rem; align-items:baseline; margin:1.25rem 0 0; padding-top:1rem; border-top:1px dashed var(--rule); color:var(--ink); font-family:"Songti SC","STSong",serif; font-size:1.02rem; line-height:1.7; letter-spacing:.035em; }
+.translation::before { content:"整句"; flex:none; color:#5d94ad; font:600 .62rem/1 var(--font-geist-sans),sans-serif; letter-spacing:.12em; }
+.is-aside .word-jp { color:#548ba5; font-size:clamp(1.15rem,2.35vw,1.5rem); }
+.is-aside .line-content { padding-left:1.1rem; border-left:2px solid var(--sun-light); }
+@media (max-width:640px) {
+  :root { --frame-gap:1rem; }
+  .hero { min-height:88vh; }
+  body { background-position:58% center; }
+  .hero { background:linear-gradient(90deg,rgba(226,247,255,.9),rgba(205,239,251,.54)); }
+  .hero-inner { width:min(100% - 2rem,1080px); padding-top:5rem; }
+  h1 { font-size:clamp(2.75rem,14vw,4.2rem); letter-spacing:-.06em; }
+  .title-cn { letter-spacing:.08em; }
+  .meta { gap:.6rem; flex-wrap:wrap; margin-top:2.6rem; }
+  .reader { padding:1.5rem 1rem 5rem; border-radius:1rem; }
+  .lyric-line { grid-template-columns:1.8rem 1fr; gap:.35rem; padding:2.8rem 0 3rem; }
+  .line-number { padding-top:1.35rem; font-size:.6rem; }
+  .word-strip { gap:.8rem .9rem; }
+  .word-block { width:max-content; min-width:0; padding:.25rem 0; }
+  .word-jp { font-size:1.32rem; }
+  .word-romaji { font-size:.64rem; }
+  .word-meaning { font-size:.68rem; }
+  .translation { font-size:.92rem; }
+}
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+@media print { .hero { min-height:0; padding:2rem 0; } .start-link { display:none; } .reader { padding:2rem 0; } .lyric-line { break-inside:avoid; padding:1.5rem 0; } }
