@@ -20,6 +20,9 @@ const covers = {
   yume: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg",
   happyPartyTrain: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg",
   overNextRainbow: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg",
+  eternalHours: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg",
+  aozoraJumpingHeart: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E9%9D%92%E7%A9%BAJumping%20Heart3000x3000bb.jpg",
+  miraiTicket: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRAI%20TICKET3000x3000bb.jpg",
 };
 
 function renderedJapanese(html) {
@@ -43,16 +46,25 @@ test("server-renders the song library", async () => {
   assert.match(html, /ユメ\+ミライ=無限大/);
   assert.match(html, /HAPPY PARTY TRAIN/);
   assert.match(html, /Over The Next Rainbow/);
+  assert.match(html, /永久hours/);
+  assert.match(html, /青空Jumping Heart/);
+  assert.match(html, /MIRAI TICKET/);
   assert.match(html, /href="\/songs\/kimi-no-kokoro"/);
   assert.match(html, /href="\/songs\/yume-mirai"/);
   assert.match(html, /href="\/songs\/happy-party-train"/);
   assert.match(html, /href="\/songs\/over-next-rainbow"/);
+  assert.match(html, /href="\/songs\/eternal-hours"/);
+  assert.match(html, /href="\/songs\/aozora-jumping-heart"/);
+  assert.match(html, /href="\/songs\/mirai-ticket"/);
   assert.ok(html.includes(covers.kimi));
   assert.ok(html.includes(covers.yume));
   assert.ok(html.includes(covers.happyPartyTrain));
   assert.ok(html.includes(covers.overNextRainbow));
-  assert.equal(html.match(/class="song-card-cover"/g)?.length, 4);
-  assert.equal(html.match(/class="song-card-artist">Aqours/g)?.length, 3);
+  assert.ok(html.includes(covers.eternalHours));
+  assert.ok(html.includes(covers.aozoraJumpingHeart));
+  assert.ok(html.includes(covers.miraiTicket));
+  assert.equal(html.match(/class="song-card-cover"/g)?.length, 7);
+  assert.equal(html.match(/class="song-card-artist">Aqours/g)?.length, 6);
   assert.match(html, /class="song-card-artist">Saint Aqours Snow/);
   assert.doesNotMatch(html, /song-card-number|song-card-arrow|你的心灵是否光芒闪耀|梦想 \+ 未来 = 无限大|快乐派对列车/);
   assert.doesNotMatch(html, /src="\/covers\//);
@@ -123,6 +135,48 @@ test("renders the original synchronized lyric reader", async () => {
   assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
 });
 
+test("renders the annotated 永久hours reader", async () => {
+  const response = await render("/songs/eternal-hours");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /永久/);
+  assert.match(html, /wa-su-re-na-i-de/);
+  assert.match(html, /切勿忘记 不会忘记 不会忘记的哟/);
+  assert.match(html, /data-source="\/audio\/eternal-hours\.mp3"/);
+  assert.equal(html.split(covers.eternalHours).length - 1, 2);
+  assert.match(html, /Kanata Okajima \/ Hayato Yamamoto/);
+  assert.doesNotMatch(html, />歌词应援语</);
+});
+
+test("renders the annotated 青空Jumping Heart reader", async () => {
+  const response = await render("/songs/aozora-jumping-heart");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /青空/);
+  assert.match(html, /Jumping Heart/);
+  assert.match(html, /a-o-i/);
+  assert.match(html, /那片蓝天在等着我们/);
+  assert.match(html, /data-source="\/audio\/aozora-jumping-heart\.mp3"/);
+  assert.equal(html.split(covers.aozoraJumpingHeart).length - 1, 2);
+  assert.match(html, /伊藤賢 \/ 光増ハジメ/);
+  assert.doesNotMatch(html, />歌词应援语</);
+});
+
+test("renders the annotated MIRAI TICKET reader", async () => {
+  const response = await render("/songs/mirai-ticket");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /MIRAI/);
+  assert.match(html, /TICKET/);
+  assert.match(html, /hi-ka-ri-ni/);
+  assert.match(html, /期待看见更多前方的景色/);
+  assert.match(html, /data-source="\/audio\/mirai-ticket\.mp3"/);
+  assert.equal(html.split(covers.miraiTicket).length - 1, 2);
+  assert.match(html, /composer/);
+  assert.match(html, /EFFY/);
+  assert.doesNotMatch(html, />歌词应援语</);
+});
+
 test("renders the new annotated ユメ+ミライ=無限大 reader", async () => {
   const response = await render("/songs/yume-mirai");
   assert.equal(response.status, 200);
@@ -151,5 +205,11 @@ test("ships all local audio assets", async () => {
     access(new URL("../public/audio/happy-party-train.yrc", import.meta.url)),
     access(new URL("../public/audio/over-next-rainbow.mp3", import.meta.url)),
     access(new URL("../public/audio/over-next-rainbow.yrc", import.meta.url)),
+    access(new URL("../public/audio/eternal-hours.mp3", import.meta.url)),
+    access(new URL("../public/audio/eternal-hours.yrc", import.meta.url)),
+    access(new URL("../public/audio/aozora-jumping-heart.mp3", import.meta.url)),
+    access(new URL("../public/audio/aozora-jumping-heart.yrc", import.meta.url)),
+    access(new URL("../public/audio/mirai-ticket.mp3", import.meta.url)),
+    access(new URL("../public/audio/mirai-ticket.yrc", import.meta.url)),
   ]);
 });

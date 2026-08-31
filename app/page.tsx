@@ -9,6 +9,13 @@ const catalog = [
   { slug: "happy-party-train", title: "HAPPY PARTY TRAIN", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg" },
   { slug: "over-next-rainbow", title: "Over The Next Rainbow", artist: "Saint Aqours Snow", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg" },
   { slug: "eternal-hours", title: "永久hours", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg" },
+  { slug: "aozora-jumping-heart", title: "青空Jumping Heart", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E9%9D%92%E7%A9%BAJumping%20Heart3000x3000bb.jpg" },
+  { slug: "mirai-ticket", title: "MIRAI TICKET", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRAI%20TICKET3000x3000bb.jpg" },
+  { slug: "yume-kataru-yori-yume-utaou", title: "ユメ語るよりユメ歌おう", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%E8%AA%9E%E3%82%8B%E3%82%88%E3%82%8A%E3%83%A6%E3%83%A1%E6%AD%8C%E3%81%8A%E3%81%863000x3000bb.jpg" },
+  { slug: "miracle-wave", title: "MIRACLE WAVE", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRACLE%20WAVE3000x3000bb.jpg" },
+  { slug: "my-mai-tonight", title: "MY舞☆TONIGHT", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRACLE%20WAVE3000x3000bb.jpg" },
+  { slug: "sora-mo-kokoro-mo-hareru-kara", title: "空も心も晴れるから", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E7%A9%BA%E3%82%82%E5%BF%83%E3%82%82%E6%99%B4%E3%82%8C%E3%82%8B%E3%81%8B%E3%82%893000x3000bb.jpg" },
+  { slug: "water-blue-new-world", title: "WATER BLUE NEW WORLD", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/WATER%20BLUE%20NEW%20WORLD3000x3000bb.jpg" },
 ];
 
 export default function Home() {
