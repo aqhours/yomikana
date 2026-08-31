@@ -23,6 +23,10 @@ const covers = {
   eternalHours: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg",
   aozoraJumpingHeart: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E9%9D%92%E7%A9%BAJumping%20Heart3000x3000bb.jpg",
   miraiTicket: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRAI%20TICKET3000x3000bb.jpg",
+  yumeKataru: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%E8%AA%9E%E3%82%8B%E3%82%88%E3%82%8A%E3%83%A6%E3%83%A1%E6%AD%8C%E3%81%8A%E3%81%863000x3000bb.jpg",
+  miracleWave: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRACLE%20WAVE3000x3000bb.jpg",
+  soraKokoro: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E7%A9%BA%E3%82%82%E5%BF%83%E3%82%82%E6%99%B4%E3%82%8C%E3%82%8B%E3%81%8B%E3%82%893000x3000bb.jpg",
+  waterBlueNewWorld: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/WATER%20BLUE%20NEW%20WORLD3000x3000bb.jpg",
 };
 
 function renderedJapanese(html) {
@@ -49,6 +53,11 @@ test("server-renders the song library", async () => {
   assert.match(html, /永久hours/);
   assert.match(html, /青空Jumping Heart/);
   assert.match(html, /MIRAI TICKET/);
+  assert.match(html, /ユメ語るよりユメ歌おう/);
+  assert.match(html, /MIRACLE WAVE/);
+  assert.match(html, /MY舞☆TONIGHT/);
+  assert.match(html, /空も心も晴れるから/);
+  assert.match(html, /WATER BLUE NEW WORLD/);
   assert.match(html, /href="\/songs\/kimi-no-kokoro"/);
   assert.match(html, /href="\/songs\/yume-mirai"/);
   assert.match(html, /href="\/songs\/happy-party-train"/);
@@ -56,6 +65,11 @@ test("server-renders the song library", async () => {
   assert.match(html, /href="\/songs\/eternal-hours"/);
   assert.match(html, /href="\/songs\/aozora-jumping-heart"/);
   assert.match(html, /href="\/songs\/mirai-ticket"/);
+  assert.match(html, /href="\/songs\/yume-kataru-yori-yume-utaou"/);
+  assert.match(html, /href="\/songs\/miracle-wave"/);
+  assert.match(html, /href="\/songs\/my-mai-tonight"/);
+  assert.match(html, /href="\/songs\/sora-mo-kokoro-mo-hareru-kara"/);
+  assert.match(html, /href="\/songs\/water-blue-new-world"/);
   assert.ok(html.includes(covers.kimi));
   assert.ok(html.includes(covers.yume));
   assert.ok(html.includes(covers.happyPartyTrain));
@@ -63,8 +77,12 @@ test("server-renders the song library", async () => {
   assert.ok(html.includes(covers.eternalHours));
   assert.ok(html.includes(covers.aozoraJumpingHeart));
   assert.ok(html.includes(covers.miraiTicket));
-  assert.equal(html.match(/class="song-card-cover"/g)?.length, 7);
-  assert.equal(html.match(/class="song-card-artist">Aqours/g)?.length, 6);
+  assert.ok(html.includes(covers.yumeKataru));
+  assert.equal(html.split(covers.miracleWave).length - 1, 2);
+  assert.ok(html.includes(covers.soraKokoro));
+  assert.ok(html.includes(covers.waterBlueNewWorld));
+  assert.equal(html.match(/class="song-card-cover"/g)?.length, 12);
+  assert.equal(html.match(/class="song-card-artist">Aqours/g)?.length, 11);
   assert.match(html, /class="song-card-artist">Saint Aqours Snow/);
   assert.doesNotMatch(html, /song-card-number|song-card-arrow|你的心灵是否光芒闪耀|梦想 \+ 未来 = 无限大|快乐派对列车/);
   assert.doesNotMatch(html, /src="\/covers\//);
@@ -123,6 +141,7 @@ test("renders the original synchronized lyric reader", async () => {
   const html = await response.text();
   assert.match(html, /<ruby><span class="timed-character"[^>]*>君<\/span><rt>きみ<\/rt><\/ruby>/);
   assert.match(html, /data-source="\/audio\/kimi-no-kokoro\.mp3"/);
+  assert.match(html, /歌曲加载中\.\.\./);
   assert.match(html, /自动跟随/);
   assert.match(html, /畑亜貴/);
   assert.match(html, /光增ハジメ/);
@@ -177,6 +196,41 @@ test("renders the annotated MIRAI TICKET reader", async () => {
   assert.doesNotMatch(html, />歌词应援语</);
 });
 
+const recentSongs = [
+  { slug: "yume-kataru-yori-yume-utaou", title: /ユメ語るより/, translation: /与其诉说梦想的话语/, audio: "yume-kataru-yori-yume-utaou", cover: covers.yumeKataru, lines: 71 },
+  { slug: "miracle-wave", title: /MIRACLE/, translation: /极限来临前绝不停歇/, audio: "miracle-wave", cover: covers.miracleWave, lines: 56 },
+  { slug: "my-mai-tonight", title: /MY舞☆/, translation: /莫不就是为了轰轰烈烈活一场/, audio: "my-mai-tonight", cover: covers.miracleWave, lines: 65 },
+  { slug: "sora-mo-kokoro-mo-hareru-kara", title: /空も心も/, translation: /明天会放晴吧/, audio: "sora-mo-kokoro-mo-hareru-kara", cover: covers.soraKokoro, lines: 43 },
+  { slug: "water-blue-new-world", title: /WATER BLUE/, translation: /现在就是现在 不同于昨天/, audio: "water-blue-new-world", cover: covers.waterBlueNewWorld, lines: 82 },
+];
+
+for (const song of recentSongs) {
+  test(`renders the annotated ${song.slug} reader`, async () => {
+    const response = await render(`/songs/${song.slug}`);
+    assert.equal(response.status, 200);
+    const html = await response.text();
+    assert.match(html, song.title);
+    assert.match(html, song.translation);
+    assert.match(html, new RegExp(`data-source="/audio/${song.audio}\\.mp3"`));
+    assert.equal(html.split(song.cover).length - 1, 2);
+    assert.doesNotMatch(html, />歌词应援语</);
+    assert.doesNotMatch(html, />歌词表达</);
+    const yrc = await readFile(new URL(`../public/audio/${song.audio}.yrc`, import.meta.url), "utf8");
+    assert.equal(yrcJapanese(yrc).length, song.lines);
+    assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
+  });
+}
+
+test("keeps individual compact-word meanings and requested song colors", async () => {
+  const html = await (await render("/songs/my-mai-tonight")).text();
+  assert.match(html, /class="word-meaning" lang="zh-CN">炽热地/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">为了变得……/);
+  assert.doesNotMatch(html, /class="word-meaning" lang="zh-CN">人生在世/);
+  const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+  assert.match(css, /\.song-my-mai-tonight \{[^}]*--sun:#db0839/);
+  assert.match(css, /\.song-miracle-wave \{[^}]*--sun:#ff9547/);
+});
+
 test("renders the new annotated ユメ+ミライ=無限大 reader", async () => {
   const response = await render("/songs/yume-mirai");
   assert.equal(response.status, 200);
@@ -211,5 +265,15 @@ test("ships all local audio assets", async () => {
     access(new URL("../public/audio/aozora-jumping-heart.yrc", import.meta.url)),
     access(new URL("../public/audio/mirai-ticket.mp3", import.meta.url)),
     access(new URL("../public/audio/mirai-ticket.yrc", import.meta.url)),
+    access(new URL("../public/audio/yume-kataru-yori-yume-utaou.mp3", import.meta.url)),
+    access(new URL("../public/audio/yume-kataru-yori-yume-utaou.yrc", import.meta.url)),
+    access(new URL("../public/audio/miracle-wave.mp3", import.meta.url)),
+    access(new URL("../public/audio/miracle-wave.yrc", import.meta.url)),
+    access(new URL("../public/audio/my-mai-tonight.mp3", import.meta.url)),
+    access(new URL("../public/audio/my-mai-tonight.yrc", import.meta.url)),
+    access(new URL("../public/audio/sora-mo-kokoro-mo-hareru-kara.mp3", import.meta.url)),
+    access(new URL("../public/audio/sora-mo-kokoro-mo-hareru-kara.yrc", import.meta.url)),
+    access(new URL("../public/audio/water-blue-new-world.mp3", import.meta.url)),
+    access(new URL("../public/audio/water-blue-new-world.yrc", import.meta.url)),
   ]);
 });

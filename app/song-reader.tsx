@@ -2,6 +2,7 @@
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ListRestart, Moon, Pause, Play, Sun } from "lucide-react";
+import { loadAudio } from "./audio-cache";
 
 type Segment = { text: string; reading?: string };
 type Word = { jp: Segment[]; romaji: string; meaning: string };
@@ -1299,14 +1300,10 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
     const controller = new AbortController();
     let objectUrl: string | null = null;
 
-    fetch(song.audio, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) throw new Error(`Audio request failed with ${response.status}`);
-        return response.arrayBuffer();
-      })
-      .then((buffer) => {
+    loadAudio(song.audio, controller.signal)
+      .then(({ blob }) => {
         if (controller.signal.aborted) return;
-        objectUrl = URL.createObjectURL(new Blob([buffer], { type: "audio/mpeg" }));
+        objectUrl = URL.createObjectURL(blob);
         setAudioSrc(objectUrl);
       })
       .catch((error: unknown) => {
@@ -1421,7 +1418,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             {isPlaying ? <Pause aria-hidden="true" /> : <Play className="play-icon" aria-hidden="true" />}
           </button>
           <div className="timeline">
-            <span className="song-meta"><strong>{song.title}{song.titleAccent}</strong><span>{song.artist}</span></span>
+            <span className="song-meta"><strong>{song.title}{song.titleAccent}</strong><span>{song.artist}</span>{!audioSrc && <span className="song-loading-status" role="status">歌曲加载中...</span>}</span>
             <input className="progress-slider" type="range" min="0" max={durationMs ? durationMs / 1000 : 0} step="0.01" value={currentMs / 1000} disabled={!durationMs} onInput={(event) => seekToTime(Number(event.currentTarget.value))} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); seekFromPointer(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) seekFromPointer(event); }} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)} aria-label="播放进度" style={{ "--progress": `${durationMs ? Math.min(100, currentMs / durationMs * 100) : 0}%` } as React.CSSProperties} />
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>
