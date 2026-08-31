@@ -6,8 +6,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "君のこころは輝いてるかい？｜日语歌词读本",
-  description: "Aqours《君のこころは輝いてるかい？》逐词注音、罗马音与中文歌词读本。",
+  title: "Yomikana｜Aqours 日语歌词读本",
+  description: "在旋律里读懂 Aqours：逐字同步、日语分词、假名注音、罗马音与中文释义。",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
