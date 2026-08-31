@@ -32,6 +32,8 @@ test("server-renders the complete lyric reader", async () => {
   assert.match(html, /<audio[^>]* loop=""/);
   assert.match(html, /src="\/kimi-no-kokoro-cover\.jpg"/);
   assert.match(html, /自动跟随/);
+  assert.match(html, /class="theme-toggle"/);
+  assert.match(html, /yomikana-theme/);
   assert.match(html, /class="timed-character"/);
   assert.match(html, /aria-label="跳转到第 1 句：如今，变得想要试着改变未来"/);
   assert.match(html, /class="line-content line-seek"/);

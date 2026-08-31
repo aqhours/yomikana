@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { ListRestart, Pause, Play } from "lucide-react";
+import { ListRestart, Moon, Pause, Play, Sun } from "lucide-react";
 
 type Segment = { text: string; reading?: string };
 type Word = { jp: Segment[]; romaji: string; meaning: string };
@@ -275,6 +275,7 @@ export default function Home() {
   const [durationMs, setDurationMs] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
+  const [theme, setTheme] = useState<"light" | "dark">("light");
   const displayCharacters = useMemo(() => collectDisplayCharacters(), []);
   const { timingByKey, lineRanges } = useMemo(() => alignTimings(displayCharacters, timedCharacters), [displayCharacters, timedCharacters]);
   const activeLine = lineRanges.findIndex((range, index) => {
@@ -284,6 +285,19 @@ export default function Home() {
   });
 
   useEffect(() => { fetch("/audio/kimi-no-kokoro.yrc").then((response) => response.text()).then((text) => setTimedCharacters(parseYrc(text))).catch(() => setTimedCharacters([])); }, []);
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const syncTheme = () => {
+      const saved = localStorage.getItem("yomikana-theme");
+      const nextTheme = saved === "light" || saved === "dark" ? saved : media.matches ? "dark" : "light";
+      document.documentElement.dataset.theme = nextTheme;
+      document.documentElement.style.colorScheme = nextTheme;
+      setTheme(nextTheme);
+    };
+    syncTheme();
+    media.addEventListener("change", syncTheme);
+    return () => media.removeEventListener("change", syncTheme);
+  }, []);
   useEffect(() => {
     const controller = new AbortController();
     let objectUrl: string | null = null;
@@ -369,10 +383,21 @@ export default function Home() {
     lastClockUpdateRef.current = range.start;
     setCurrentMs(range.start);
   };
+  const toggleTheme = () => {
+    const nextTheme = theme === "dark" ? "light" : "dark";
+    localStorage.setItem("yomikana-theme", nextTheme);
+    document.documentElement.dataset.theme = nextTheme;
+    document.documentElement.style.colorScheme = nextTheme;
+    setTheme(nextTheme);
+  };
 
   return (
     <main>
       <header className="hero">
+        <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "切换到浅色模式" : "切换到暗色模式"} title={theme === "dark" ? "浅色模式" : "暗色模式"} aria-pressed={theme === "dark"}>
+          <Moon className="theme-icon theme-icon-moon" aria-hidden="true" />
+          <Sun className="theme-icon theme-icon-sun" aria-hidden="true" />
+        </button>
         <div className="hero-inner">
           <figure className="album-art">
             {/* Keep the original artwork file untouched rather than routing it through an optimizer. */}
