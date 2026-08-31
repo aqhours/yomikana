@@ -4,9 +4,10 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const catalog = [
-  { slug: "kimi-no-kokoro", title: "君のこころは輝いてるかい？", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%90%9B%E3%81%AE%E3%81%93%E3%81%93%E3%82%8D%E3%81%AF%20%E8%BC%9D%E3%81%84%E3%81%A6%E3%82%8B%E3%81%8B%E3%81%84%EF%BC%9F3000x3000bb.jpg" },
-  { slug: "yume-mirai", title: "ユメ+ミライ=無限大", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg" },
-  { slug: "happy-party-train", title: "HAPPY PARTY TRAIN", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg" },
+  { slug: "kimi-no-kokoro", title: "君のこころは輝いてるかい？", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%90%9B%E3%81%AE%E3%81%93%E3%81%93%E3%82%8D%E3%81%AF%20%E8%BC%9D%E3%81%84%E3%81%A6%E3%82%8B%E3%81%8B%E3%81%84%EF%BC%9F3000x3000bb.jpg" },
+  { slug: "yume-mirai", title: "ユメ+ミライ=無限大", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg" },
+  { slug: "happy-party-train", title: "HAPPY PARTY TRAIN", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg" },
+  { slug: "over-next-rainbow", title: "Over The Next Rainbow", artist: "Saint Aqours Snow", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg" },
 ];
 
 export default function Home() {
@@ -49,7 +50,7 @@ export default function Home() {
               <img className="song-card-cover" src={song.cover} width="1400" height="1400" alt="" />
               <div className="song-card-copy">
                 <h2>{song.title}</h2>
-                <span className="song-card-artist">Aqours</span>
+                <span className="song-card-artist">{song.artist}</span>
               </div>
             </a>
           ))}

@@ -19,6 +19,7 @@ const covers = {
   kimi: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%90%9B%E3%81%AE%E3%81%93%E3%81%93%E3%82%8D%E3%81%AF%20%E8%BC%9D%E3%81%84%E3%81%A6%E3%82%8B%E3%81%8B%E3%81%84%EF%BC%9F3000x3000bb.jpg",
   yume: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg",
   happyPartyTrain: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg",
+  overNextRainbow: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg",
 };
 
 function renderedJapanese(html) {
@@ -41,14 +42,18 @@ test("server-renders the song library", async () => {
   assert.match(html, /君のこころは輝いてるかい？/);
   assert.match(html, /ユメ\+ミライ=無限大/);
   assert.match(html, /HAPPY PARTY TRAIN/);
+  assert.match(html, /Over The Next Rainbow/);
   assert.match(html, /href="\/songs\/kimi-no-kokoro"/);
   assert.match(html, /href="\/songs\/yume-mirai"/);
   assert.match(html, /href="\/songs\/happy-party-train"/);
+  assert.match(html, /href="\/songs\/over-next-rainbow"/);
   assert.ok(html.includes(covers.kimi));
   assert.ok(html.includes(covers.yume));
   assert.ok(html.includes(covers.happyPartyTrain));
-  assert.equal(html.match(/class="song-card-cover"/g)?.length, 3);
+  assert.ok(html.includes(covers.overNextRainbow));
+  assert.equal(html.match(/class="song-card-cover"/g)?.length, 4);
   assert.equal(html.match(/class="song-card-artist">Aqours/g)?.length, 3);
+  assert.match(html, /class="song-card-artist">Saint Aqours Snow/);
   assert.doesNotMatch(html, /song-card-number|song-card-arrow|你的心灵是否光芒闪耀|梦想 \+ 未来 = 无限大|快乐派对列车/);
   assert.doesNotMatch(html, /src="\/covers\//);
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
@@ -78,6 +83,25 @@ test("renders the annotated HAPPY PARTY TRAIN reader", async () => {
   assert.match(html, /EFFY/);
   assert.doesNotMatch(html, />歌词应援语</);
   const yrc = await readFile(new URL("../public/audio/happy-party-train.yrc", import.meta.url), "utf8");
+  assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
+});
+
+test("renders the annotated Over The Next Rainbow reader", async () => {
+  const response = await render("/songs/over-next-rainbow");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /Over The Next/);
+  assert.match(html, /<ruby><span class="timed-character"[^>]*>会<\/span><rt>あ<\/rt><\/ruby>/);
+  assert.match(html, /a-i-ta-ka-t-ta/);
+  assert.match(html, /向逐渐消失的彩虹许下约定/);
+  assert.match(html, /Saint Aqours Snow/);
+  assert.match(html, /data-source="\/audio\/over-next-rainbow\.mp3"/);
+  assert.equal(html.split(covers.overNextRainbow).length - 1, 2);
+  assert.match(html, /Kanata Okajima/);
+  assert.match(html, /TAKAROT \/ Shinji Tanaka/);
+  assert.doesNotMatch(html, />歌词应援语</);
+  const yrc = await readFile(new URL("../public/audio/over-next-rainbow.yrc", import.meta.url), "utf8");
+  assert.equal(yrcJapanese(yrc).length, 57);
   assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
 });
 
@@ -125,5 +149,7 @@ test("ships all local audio assets", async () => {
     access(new URL("../public/audio/yume-mirai.yrc", import.meta.url)),
     access(new URL("../public/audio/happy-party-train.mp3", import.meta.url)),
     access(new URL("../public/audio/happy-party-train.yrc", import.meta.url)),
+    access(new URL("../public/audio/over-next-rainbow.mp3", import.meta.url)),
+    access(new URL("../public/audio/over-next-rainbow.yrc", import.meta.url)),
   ]);
 });

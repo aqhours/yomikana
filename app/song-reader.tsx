@@ -280,6 +280,105 @@ const happyPartyTrainLyrics: LyricLine[] = [
   { words: [yw("Happy train", "快乐列车", s("Happy train"))], zh: "Happy train", aside: true },
 ];
 
+const rainbowMeetingLine: LyricLine = {
+  words: [yw("a-i-ta-ka-t-ta", "一直想见你", s("会", "あ"), s("いたかった")), yw("to-o-i", "遥远的", s(" "), s("遠", "とお"), s("い")), yw("ba-sho", "地方", s("場所", "ばしょ")), yw("ni", "在、于", s("に")), yw("i-te-mo", "即使身处", s("いても"))],
+  zh: "我想见你 就算身处遥远的地方",
+};
+const rainbowMeetAgainLine: LyricLine = {
+  words: [yw("i-tsu-ka", "总有一天", s("いつか")), yw("ma-ta-ne", "再次、再会", s("またね")), yw("a-e-ru", "能够相见", s("会", "あ"), s("える")), yw("yo-ne", "会的吧", s("よね"))],
+  zh: "我们也终将相会的吧",
+};
+const rainbowMeetSurelyLine: LyricLine = {
+  words: [yw("i-tsu-ka", "总有一天", s("いつか")), yw("ki-t-to", "一定", s("きっと")), yw("a-e-ru", "能够相见", s("会", "あ"), s("える")), yw("yo-ne", "会的吧", s("よね"))],
+  zh: "终有一天定能再会",
+};
+const overRainbowLine: LyricLine = { words: [yw("Over the rainbow", "越过彩虹", s("Over the rainbow"))], zh: "Over the rainbow", aside: true };
+const rainbowLightLine: LyricLine = {
+  words: [yw("hi-ka-ri", "光芒", s("ヒカリ")), yw("o", "宾语助词", s("を")), yw("a-bi-na-ga-ra", "一边沐浴着", s("浴", "あ"), s("びながら")), yw("u-ta-o-u", "歌唱吧", s("歌", "うた"), s("おう")), yw("yo", "语气词", s("よ"))],
+  zh: "沐浴着阳光一同歌唱吧",
+};
+const rainbowHeartLine: LyricLine = {
+  words: [yw("tsu-na-ga-ru", "相连", s("つながる")), yw("yo", "语气词", s("よ")), yw("ko-ko-ro", "心、心意", s("ココロ")), yw("ga", "主语助词", s("が"))],
+  zh: "我们的心会紧紧相连",
+};
+const rainbowPromiseLine: LyricLine = {
+  words: [yw("ki-e-te-yu-ku", "渐渐消失", s("消", "き"), s("えてゆく")), yw("ni-ji", "彩虹", s("虹", "にじ")), yw("ni", "向、对", s("に")), yw("ya-ku-so-ku", "约定", s("約束", "やくそく")), yw("shi-yo-u", "许下吧", s("しよう"))],
+  zh: "向逐渐消失的彩虹许下约定",
+};
+const rainbowRememberLine: LyricLine = {
+  words: [yw("wa-su-re-na-i", "不会忘记", s("忘", "わす"), s("れない")), yw("yo", "语气词", s("よ")), yw("i-tsu-ma-de-mo", "直到永远", s("いつまでも"))],
+  zh: "直到永远 也不会遗忘",
+};
+const flyRainbowLine: LyricLine = { words: [yw("Fly to the rainbow", "飞向彩虹", s("Fly to the rainbow"))], zh: "Fly to the rainbow", aside: true };
+const rainbowDanceLine: LyricLine = {
+  words: [yw("ne-ga-i", "心愿", s("ネガイ")), yw("de", "怀着、凭借", s("で")), yw("to-bu", "飞翔", s("飛", "と"), s("ぶ")), yw("yo-u-ni", "如同……一般", s("ように")), yw("o-do-ro-u", "起舞吧", s("踊", "おど"), s("ろう")), yw("yo", "语气词", s("よ"))],
+  zh: "怀着美好心愿飞翔般起舞吧",
+};
+const rainbowHeartTogetherLine: LyricLine = {
+  words: [yw("tsu-na-ga-ru", "相连", s("つながる")), yw("ne", "呢、吧", s("ね")), yw("ko-ko-ro", "心、心意", s("ココロ")), yw("ga", "主语助词", s("が"))],
+  zh: "我们的心紧紧相连",
+};
+
+const overNextRainbowLyrics: LyricLine[] = [
+  rainbowMeetingLine,
+  rainbowMeetAgainLine,
+  { words: [yw("yu-me", "梦想", s("夢", "ゆめ")), yw("ni-mo", "也、即使是", s("にも")), yw("i-ro-i-ro", "各种各样", s("色々", "いろいろ")), yw("a-ru", "存在、拥有", s("ある")), yw("ka-ra", "因为", s("から"))], zh: "梦想多姿多彩" },
+  { words: [yw("ka-na-e-ka-ta", "实现方式", s("叶", "かな"), s("えかた")), yw("mo", "也", s("も")), yw("so-re-zo-re", "各自、各不相同", s("それぞれ")), yw("da-to", "是、认为是", s("だと"))], zh: "实现方式也多种多样" },
+  { words: [yw("Ah", "啊", s("Ah ")), yw("i-ma", "如今", s("今", "いま")), yw("wa-ka-t-te", "明白、理解", s("わかって")), yw("ki-ta", "逐渐变得", s("きた")), yw("n-da", "说明、强调", s("んだ"))], zh: "Ah 如今我终于明白" },
+  { words: [yw("de-mo", "但是", s("でも")), yw("ki-t-to", "一定", s("きっと")), yw("mi-to-me-a-e-ta-ra", "如果能彼此认可", s("認", "みと"), s("めあえたら"))], zh: "但是 能相互获得认可" },
+  { words: [yw("su-te-ki-na", "美妙的", s("素敵", "すてき"), s("な")), yw("ki-zu-na", "羁绊", s("キズナ")), yw("ga", "主语助词", s("が")), yw("u-ma-re-ru", "诞生", s("生", "う"), s("まれる")), yw("yo", "语气词", s("よ"))], zh: "一定才会诞生美妙的羁绊" },
+  { words: [yw("ka-ke-ga-e-no-na-i", "无可替代的", s("かけがえのない")), yw("ki-zu-na", "羁绊", s("キズナ"))], zh: "独一无二的羁绊" },
+  { words: [yw("o-i-ka-ke-te", "追逐着", s("追", "お"), s("いかけて")), yw("su-re-chi-ga-u", "擦肩而过", s(" "), s("すれ"), s("違", "ちが"), s("う")), yw("zu-t-to", "一直", s("ずっと"))], zh: "我们总是追逐着 又擦肩而过" },
+  { words: [yw("su-re-chi-ga-i", "错过、擦肩", s("すれ"), s("違", "ちが"), s("い")), yw("o-i-ka-ke-te", "追逐着", s(" "), s("追", "お"), s("いかけて")), yw("zu-t-to", "一直", s("ずっと"))], zh: "错过后 又不断追逐着" },
+  { words: [yw("o-ta-ga-i", "彼此、双方", s("お"), s("互", "たが"), s("い")), yw("no", "的", s("の")), yw("mi-chi", "道路、人生道路", s("道", "みち")), yw("ga", "主语助词", s("が")), yw("ma-ji-wa-t-ta", "交汇了", s("交", "まじ"), s("わった"))], zh: "我们的人生有了交集" },
+  { words: [yw("yo-ro-ko-bi", "喜悦", s("喜", "よろこ"), s("び")), yw("o", "宾语助词", s("を")), yw("da-i-ji", "珍惜、重视", s("ダイジ")), yw("ni", "使之成为", s("に")), yw("shi-te-yu-ku", "继续去做", s("してゆく")), yw("yo", "语气词", s("よ"))], zh: "让我们珍惜这份喜悦吧" },
+  { words: [yw("ko-re-k-ki-ri", "仅此一次、到此为止", s("これっきり")), yw("ja-na-i", "不是", s("じゃない")), yw("yo-ne", "对吧", s("よね?"))], zh: "还没有到此为止吧" },
+  { words: [yw("mo-t-to", "更多", s("もっと")), yw("mo-t-to", "更多", s("もっと")), yw("ka-ta-ri-ta-i", "想要畅谈", s("語", "かた"), s("りたい"))], zh: "还想与你说更多更多的话" },
+  overRainbowLine,
+  rainbowLightLine,
+  rainbowHeartLine,
+  rainbowPromiseLine,
+  rainbowRememberLine,
+  { words: [yw("wa-su-re-na-i-de", "请不要忘记", s("忘", "わす"), s("れないで")), yw("i-tsu-ma-de-mo", "直到永远", s("いつまでも"))], zh: "直到永远 也不要遗忘" },
+  { words: [yw("yu-me-mi-te-ru", "怀抱梦想、做梦", s("夢", "ゆめ"), s("見", "み"), s("てる")), yw("da-ke-de-wa", "仅仅只是", s("だけでは")), yw("ha-ji-ma-ra-na-i", "无法开始", s("始", "はじ"), s("まらない"))], zh: "只顾做梦就无法启程" },
+  { words: [yw("do-ryo-ku", "努力", s("努力", "どりょく")), yw("shi-te", "去做", s("して")), yw("ma-da-ma-da", "还远远不够", s("まだまだ")), yw("ta-ri-na-ku-te", "不足、不够", s("足", "た"), s("りなくて"))], zh: "只有努力还远远不够" },
+  { words: [yw("mi-a-ge-ru", "抬头仰望", s("見上", "みあ"), s("げる")), yw("so-ra", "天空", s("空", "そら")), yw("ni-ji", "彩虹", s(" "), s("虹", "にじ")), yw("no", "的", s("の")), yw("ha-te", "尽头", s("果", "は"), s("て"))], zh: "抬头望着天空 彩虹的尽头" },
+  { words: [yw("mi-ra-i", "未来", s("未来", "みらい")), yw("no", "的", s("の")), yw("ji-bu-n", "自己", s("自分", "じぶん")), yw("ga", "主语助词", s("が")), yw("i-ru", "存在", s("いる")), yw("ga-n-ba-re-ru", "能够努力、坚持", s("頑張", "がんば"), s("れる"))], zh: "那里有未来的自己 我会加油" },
+  { words: [yw("ki-me-ta", "决定了", s("決", "き"), s("めた")), yw("ko-to", "事情", s("こと")), yw("sa", "语气词", s("さ"))], zh: "这是决定好的" },
+  { words: [yw("ki-me-ta", "决定了", s("決", "き"), s("めた")), yw("ko-to", "事情", s("こと")), yw("wa", "主题助词", s("は")), yw("tsu-ra-nu-i-te", "贯彻、坚持", s("貫", "つらぬ"), s("いて")), yw("mi-se-ru", "一定做到给你看", s("みせる")), yw("yo", "语气词", s("よ")), yw("sa-i-go", "最后", s("最後", "さいご")), yw("ma-de", "直到", s("まで"))], zh: "决定好的事就要贯彻到底" },
+  { words: [yw("na-t-to-ku", "认同、满意", s("納得", "なっとく")), yw("de-ki-ru", "能够做到", s("できる")), yw("ma-de", "直到", s("まで")), yw("ya-ra-na-ku-cha", "必须去做", s("やらなくちゃ"))], zh: "如果不能竭尽全力" },
+  { words: [yw("ji-bu-n", "自己", s("自分", "じぶん")), yw("ga", "主语助词", s("が")), yw("ji-bu-n", "自己", s("自分", "じぶん")), yw("o", "宾语助词", s("を")), yw("yu-ru-se-na-i", "无法原谅", s("許", "ゆる"), s("せない")), yw("ka-ra", "因为", s("から"))], zh: "自己也无法原谅自己" },
+  { words: [yw("ha-na-re-ta-ra", "如果远离", s("離", "はな"), s("れたら")), yw("chi-ka-zu-i-te", "靠近", s(" "), s("近", "ちか"), s("づいて")), yw("so-shi-te", "然后", s("そして"))], zh: "如果太过远离 就靠近一些" },
+  { words: [yw("chi-ka-zu-i-te", "靠近", s("近", "ちか"), s("づいて")), yw("ha-na-re-te-ku", "渐渐远离", s(" "), s("離", "はな"), s("れてく")), yw("so-shi-te", "然后", s("そして"))], zh: "靠近一些然后 再远离一点" },
+  { words: [yw("da-n-da-n", "渐渐地", s("だんだん")), yw("ki-mo-chi", "心情、心意", s("気持", "きも"), s("ち")), yw("ga", "主语助词", s("が")), yw("tsu-u-ji-ru", "相通、理解", s("通", "つう"), s("じる")), yw("to", "如果、当……时", s("と"))], zh: "逐渐地就能心意相通了" },
+  { words: [yw("chi-ka-ra", "力量", s("チカラ")), yw("ni", "成为", s("に")), yw("na-ri-ta-i", "想要成为", s("なりたい")), yw("to", "引用助词", s("と")), yw("ka-n-ga-e-te", "想着、考虑", s("考", "かんが"), s("えて"))], zh: "我想成为你的力量" },
+  { words: [yw("ko-no", "这个", s("この")), yw("to-ki", "时刻", s("とき")), yw("ma-t-te-ta", "一直等待着", s("待", "ま"), s("ってた")), yw("n-da", "说明、强调", s("んだ")), yw("yo", "语气词", s("よ"))], zh: "一直在等待这这个时刻呢" },
+  { words: [yw("a-e-te", "能够相见", s("会", "あ"), s("えて")), yw("a-e-te", "能够相见", s("会", "あ"), s("えて")), yw("u-re-shi-i", "开心、高兴", s("嬉", "うれ"), s("しい")), yw("yo", "语气词", s("よ"))], zh: "能够与你相见真开心" },
+  flyRainbowLine,
+  rainbowDanceLine,
+  rainbowHeartTogetherLine,
+  rainbowMeetingLine,
+  rainbowMeetAgainLine,
+  rainbowMeetSurelyLine,
+  { words: [yw("na-n-te", "为什么、竟然", s("なんて")), yw("a-t-to", "一眨眼、转瞬", s("あっと"))], zh: "为什么时光总是" },
+  { words: [yw("i-u", "所说的", s("いう")), yw("a-i-da", "一瞬间", s("間", "あいだ")), yw("ni", "在……之中", s("に")), yw("su-gi-te-yu-ku", "渐渐流逝", s("過", "す"), s("ぎてゆく")), yw("no", "形式名词", s("の")), yw("da-ro-u", "大概、会吧", s("だろう"))], zh: "一眨眼就溜走了呢" },
+  { words: [yw("ta-chi-do-ma-ru", "停下脚步", s("立", "た"), s("ち"), s("止", "ど"), s("まる")), yw("ko-to", "事情", s("こと")), yw("mo", "也", s("も")), yw("de-ki-na-i", "无法做到", s("できない")), yw("ki-se-tsu", "季节", s("季節", "きせつ")), yw("wa", "主题助词", s("は"))], zh: "连一步也未曾停下" },
+  { words: [yw("kyo-u", "今天", s("今日", "きょう")), yw("mo", "也", s("も")), yw("sa-t-te", "离去、流逝", s("去", "さ"), s("って")), yw("kyo-u", "今天", s("今日", "きょう")), yw("ga", "主语助词", s("が")), yw("sa-t-te", "离去、流逝", s("去", "さ"), s("って"))], zh: "一个个今天匆匆流逝" },
+  { words: [yw("ma-e", "前方", s("前", "まえ")), yw("o", "宾语助词", s("を")), yw("mu-ku", "面向", s("向", "む"), s("く")), yw("shi-ka-na-i", "别无选择、只能", s("しかない"))], zh: "我们只能不断前行" },
+  { words: [yw("ke-s-shi-te", "绝对、决不", s("決", "けっ"), s("して")), yw("mo-do-re-na-i", "无法回去", s("戻", "もど"), s("れない")), yw("ne", "呢、吧", s("ね"))], zh: "绝不能回头" },
+  overRainbowLine,
+  rainbowLightLine,
+  rainbowHeartLine,
+  rainbowPromiseLine,
+  rainbowRememberLine,
+  flyRainbowLine,
+  rainbowDanceLine,
+  rainbowHeartTogetherLine,
+  rainbowMeetingLine,
+  rainbowMeetAgainLine,
+  rainbowMeetSurelyLine,
+];
+
 export const songs: Record<string, Song> = {
   "kimi-no-kokoro": {
     slug: "kimi-no-kokoro",
@@ -319,6 +418,19 @@ export const songs: Record<string, Song> = {
     backdrop: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg",
     credits: { lyricist: "畑亜貴", composer: "渡辺拓也", arranger: "EFFY" },
     lyrics: happyPartyTrainLyrics,
+  },
+  "over-next-rainbow": {
+    slug: "over-next-rainbow",
+    title: "Over The Next",
+    titleAccent: "Rainbow",
+    titleCn: "跨越下一道彩虹",
+    artist: "Saint Aqours Snow",
+    cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg",
+    audio: "/audio/over-next-rainbow.mp3",
+    timing: "/audio/over-next-rainbow.yrc",
+    backdrop: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg",
+    credits: { lyricist: "畑亜貴", composer: "Kanata Okajima / TAKAROT", arranger: "TAKAROT / Shinji Tanaka" },
+    lyrics: overNextRainbowLyrics,
   },
 };
 
