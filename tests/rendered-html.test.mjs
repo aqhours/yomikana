@@ -27,7 +27,11 @@ test("server-renders the complete lyric reader", async () => {
   assert.match(html, /现在、如今/);
   assert.match(html, /闪耀着/);
   assert.match(html, /你的心是否正在闪耀？/);
-  assert.match(html, /47(?:<!-- -->)? 句/);
+  assert.match(html, /歌词本 01/);
+  assert.match(html, /畑亜貴/);
+  assert.match(html, /光增ハジメ/);
+  assert.match(html, /EFFY/);
+  assert.doesNotMatch(html, /1st Single|47(?:<!-- -->)? 句/);
   assert.doesNotMatch(html, />歌词应援语</);
   assert.doesNotMatch(html, /SkeletonPreview|codex-preview|react-loading-skeleton/);
   await access(new URL("../public/numazu-seaside.png", import.meta.url));

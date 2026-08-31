@@ -103,10 +103,15 @@ export default function Home() {
     <main>
       <header className="hero">
         <div className="hero-inner">
-          <p className="eyebrow"><span aria-hidden="true">光</span> 歌词读本 · 01</p>
+          <p className="eyebrow">歌词本 01</p>
           <h1>君のこころは<br /><em>輝いてるかい？</em></h1>
           <p className="title-cn">你的心灵是否光芒闪耀？</p>
-          <div className="meta" aria-label="歌曲信息"><span>Aqours</span><i aria-hidden="true" /><span>1st Single</span><i aria-hidden="true" /><span>{lyrics.length} 句</span></div>
+          <dl className="credits" aria-label="歌曲制作信息">
+            <div><dt>作詞</dt><dd>畑亜貴</dd></div>
+            <div><dt>作曲</dt><dd>光增ハジメ</dd></div>
+            <div><dt>編曲</dt><dd>EFFY</dd></div>
+            <div><dt>演唱</dt><dd>Aqours</dd></div>
+          </dl>
           <a className="start-link" href="#lyrics">开始阅读 <span aria-hidden="true">↓</span></a>
         </div>
       </header>
