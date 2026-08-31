@@ -21,18 +21,25 @@ test("server-renders the complete lyric reader", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>君のこころは輝いてるかい？｜日语歌词读本<\/title>/);
-  assert.match(html, /<ruby>君<rt>きみ<\/rt><\/ruby>/);
+  assert.match(html, /<ruby><span class="timed-character"[^>]*>君<\/span><rt>きみ<\/rt><\/ruby>/);
   assert.match(html, /ka-ga-ya-i-te/);
   assert.match(html, /class="word-block"/);
   assert.match(html, /现在、如今/);
   assert.match(html, /闪耀着/);
   assert.match(html, /你的心是否正在闪耀？/);
   assert.match(html, /歌词本 01/);
+  assert.match(html, /src="\/audio\/kimi-no-kokoro\.mp3"/);
+  assert.match(html, /自动跟随/);
+  assert.match(html, /class="timed-character"/);
+  assert.match(html, /aria-label="跳转到第 1 句：如今……"/);
+  assert.match(html, /class="line-content line-seek"/);
   assert.match(html, /畑亜貴/);
   assert.match(html, /光增ハジメ/);
   assert.match(html, /EFFY/);
-  assert.doesNotMatch(html, /1st Single|47(?:<!-- -->)? 句/);
+  assert.doesNotMatch(html, /1st Single/);
   assert.doesNotMatch(html, />歌词应援语</);
   assert.doesNotMatch(html, /SkeletonPreview|codex-preview|react-loading-skeleton/);
   await access(new URL("../public/numazu-seaside.png", import.meta.url));
+  await access(new URL("../public/audio/kimi-no-kokoro.mp3", import.meta.url));
+  await access(new URL("../public/audio/kimi-no-kokoro.yrc", import.meta.url));
 });

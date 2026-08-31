@@ -1,6 +1,13 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+
 type Segment = { text: string; reading?: string };
 type Word = { jp: Segment[]; romaji: string; meaning: string };
 type LyricLine = { words: Word[]; zh: string; aside?: boolean };
+type Timing = { start: number; end: number };
+type TimedCharacter = Timing & { text: string };
+type DisplayCharacter = { key: string; text: string; lineIndex: number };
 
 const s = (text: string, reading?: string): Segment => ({ text, reading });
 
@@ -84,14 +91,100 @@ const lyrics: LyricLine[] = [
   { words: [w("so-u-da", s("そうだ")), w("bo-ku-ta-chi", s("僕", "ぼく"), s("たち")), w("wa", s("は")), w("ma-da", s("まだ")), w("yu-me", s("夢", "ゆめ")), w("ni", s("に")), w("ki-zu-i-ta", s("気", "き"), s("づいた")), w("ba-ka-ri", s("ばかり"))], zh: "没错，我们才刚察觉到梦想的存在" },
 ];
 
-function JapaneseWord({ word }: { word: Word }) {
-  return <span className="word-jp">{word.jp.map((part, index) => part.reading ? <ruby key={index}>{part.text}<rt>{part.reading}</rt></ruby> : <span key={index}>{part.text}</span>)}</span>;
+const alignable = (character: string) => /[\p{L}\p{N}]/u.test(character);
+const normalized = (character: string) => character.normalize("NFKC").toLocaleLowerCase();
+
+function parseYrc(source: string): TimedCharacter[] {
+  const characters: TimedCharacter[] = [];
+  const tokenPattern = /\((\d+),(\d+),\d+\)([^([]*)/g;
+
+  for (const line of source.split(/\r?\n/)) {
+    tokenPattern.lastIndex = 0;
+    for (const match of line.matchAll(tokenPattern)) {
+      const start = Number(match[1]);
+      const duration = Number(match[2]);
+      const visible = Array.from(match[3]).filter(alignable);
+      visible.forEach((text, index) => {
+        const slice = duration / Math.max(visible.length, 1);
+        characters.push({ text, start: start + slice * index, end: start + slice * (index + 1) });
+      });
+    }
+  }
+
+  return characters;
 }
 
-function WordBlock({ word }: { word: Word }) {
+function collectDisplayCharacters(): DisplayCharacter[] {
+  const characters: DisplayCharacter[] = [];
+  lyrics.forEach((line, lineIndex) => line.words.forEach((word, wordIndex) => word.jp.forEach((part, partIndex) => {
+    Array.from(part.text).forEach((text, characterIndex) => {
+      if (alignable(text)) characters.push({ key: `${lineIndex}-${wordIndex}-${partIndex}-${characterIndex}`, text, lineIndex });
+    });
+  })));
+  return characters;
+}
+
+function alignTimings(display: DisplayCharacter[], timed: TimedCharacter[]) {
+  const width = timed.length + 1;
+  const costs = new Uint16Array((display.length + 1) * width);
+  const directions = new Uint8Array((display.length + 1) * width);
+  for (let row = 1; row <= display.length; row++) { costs[row * width] = row; directions[row * width] = 1; }
+  for (let column = 1; column <= timed.length; column++) { costs[column] = column; directions[column] = 2; }
+
+  for (let row = 1; row <= display.length; row++) {
+    for (let column = 1; column <= timed.length; column++) {
+      const same = normalized(display[row - 1].text) === normalized(timed[column - 1].text);
+      const diagonal = costs[(row - 1) * width + column - 1] + (same ? 0 : 2);
+      const up = costs[(row - 1) * width + column] + 1;
+      const left = costs[row * width + column - 1] + 1;
+      const index = row * width + column;
+      if (diagonal <= up && diagonal <= left) { costs[index] = diagonal; directions[index] = 0; }
+      else if (up <= left) { costs[index] = up; directions[index] = 1; }
+      else { costs[index] = left; directions[index] = 2; }
+    }
+  }
+
+  const timingByKey = new Map<string, Timing>();
+  let row = display.length;
+  let column = timed.length;
+  while (row > 0 || column > 0) {
+    const direction = directions[row * width + column];
+    if (row > 0 && column > 0 && direction === 0) {
+      if (normalized(display[row - 1].text) === normalized(timed[column - 1].text)) {
+        timingByKey.set(display[row - 1].key, timed[column - 1]);
+      }
+      row--; column--;
+    } else if (row > 0 && (column === 0 || direction === 1)) row--;
+    else column--;
+  }
+
+  const lineRanges = lyrics.map((_, lineIndex) => {
+    const values = display.filter((character) => character.lineIndex === lineIndex).map((character) => timingByKey.get(character.key)).filter((value): value is Timing => Boolean(value));
+    return values.length ? { start: Math.min(...values.map((value) => value.start)), end: Math.max(...values.map((value) => value.end)) } : null;
+  });
+  return { timingByKey, lineRanges };
+}
+
+function TimedText({ text, timingPrefix, currentMs, timingByKey }: { text: string; timingPrefix: string; currentMs: number; timingByKey: Map<string, Timing> }) {
+  return Array.from(text).map((character, characterIndex) => {
+    const timing = timingByKey.get(`${timingPrefix}-${characterIndex}`);
+    const progress = timing ? Math.max(0, Math.min(100, ((currentMs - timing.start) / (timing.end - timing.start)) * 100)) : 0;
+    const state = timing && currentMs >= timing.end ? " is-sung" : timing && currentMs >= timing.start ? " is-current" : "";
+    return <span className={`timed-character${state}`} style={{ "--character-progress": `${progress}%` } as React.CSSProperties} key={characterIndex}>{character}</span>;
+  });
+}
+
+function JapaneseWord({ word, lineIndex, wordIndex, currentMs, timingByKey }: { word: Word; lineIndex: number; wordIndex: number; currentMs: number; timingByKey: Map<string, Timing> }) {
+  return <span className="word-jp">{word.jp.map((part, partIndex) => {
+    const text = <TimedText text={part.text} timingPrefix={`${lineIndex}-${wordIndex}-${partIndex}`} currentMs={currentMs} timingByKey={timingByKey} />;
+    return part.reading ? <ruby key={partIndex}>{text}<rt>{part.reading}</rt></ruby> : <span key={partIndex}>{text}</span>;
+  })}</span>;
+}
+
+function WordBlock({ word, lineIndex, wordIndex, currentMs, timingByKey }: { word: Word; lineIndex: number; wordIndex: number; currentMs: number; timingByKey: Map<string, Timing> }) {
   return (
     <span className="word-block">
-      <JapaneseWord word={word} />
+      <JapaneseWord word={word} lineIndex={lineIndex} wordIndex={wordIndex} currentMs={currentMs} timingByKey={timingByKey} />
       <span className="word-romaji" lang="ja-Latn">{word.romaji}</span>
       <span className="word-meaning" lang="zh-CN">{word.meaning}</span>
     </span>
@@ -99,6 +192,48 @@ function WordBlock({ word }: { word: Word }) {
 }
 
 export default function Home() {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const readerRef = useRef<HTMLElement>(null);
+  const lineRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const animationRef = useRef<number | null>(null);
+  const [timedCharacters, setTimedCharacters] = useState<TimedCharacter[]>([]);
+  const [currentMs, setCurrentMs] = useState(0);
+  const [autoScroll, setAutoScroll] = useState(true);
+  const displayCharacters = useMemo(() => collectDisplayCharacters(), []);
+  const { timingByKey, lineRanges } = useMemo(() => alignTimings(displayCharacters, timedCharacters), [displayCharacters, timedCharacters]);
+  const activeLine = lineRanges.findIndex((range, index) => {
+    if (!range || currentMs < range.start) return false;
+    const next = lineRanges.slice(index + 1).find(Boolean);
+    return !next || currentMs < next.start;
+  });
+
+  useEffect(() => { fetch("/audio/kimi-no-kokoro.yrc").then((response) => response.text()).then((text) => setTimedCharacters(parseYrc(text))).catch(() => setTimedCharacters([])); }, []);
+  useEffect(() => {
+    if (!autoScroll || activeLine < 0) return;
+    const reader = readerRef.current;
+    const line = lineRefs.current[activeLine];
+    if (!reader || !line) return;
+    reader.scrollTo({ top: line.offsetTop - reader.clientHeight / 2 + line.clientHeight / 2, behavior: "smooth" });
+  }, [activeLine, autoScroll]);
+  useEffect(() => () => {
+    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+  }, []);
+
+  const updateClock = () => {
+    if (!audioRef.current) return;
+    setCurrentMs(audioRef.current.currentTime * 1000);
+    if (!audioRef.current.paused) animationRef.current = requestAnimationFrame(updateClock);
+  };
+  const beginClock = () => { if (animationRef.current) cancelAnimationFrame(animationRef.current); animationRef.current = requestAnimationFrame(updateClock); };
+  const stopClock = () => { if (animationRef.current) cancelAnimationFrame(animationRef.current); updateClock(); };
+  const seekToLine = (lineIndex: number) => {
+    const audio = audioRef.current;
+    const range = lineRanges[lineIndex];
+    if (!audio || !range) return;
+    audio.currentTime = range.start / 1000;
+    setCurrentMs(range.start);
+  };
+
   return (
     <main>
       <header className="hero">
@@ -115,15 +250,22 @@ export default function Home() {
           <a className="start-link" href="#lyrics">开始阅读 <span aria-hidden="true">↓</span></a>
         </div>
       </header>
-      <section className="reader" id="lyrics" aria-label="歌词正文">
+      <section className="reader" id="lyrics" aria-label="歌词正文" ref={readerRef}>
+        <div className="player-bar">
+          <div className="player-heading"><span className="playing-dot" aria-hidden="true" /><span><strong>跟随歌曲阅读</strong><small>{timedCharacters.length ? "逐字同步已就绪" : "正在载入逐字时间轴…"}</small></span></div>
+          {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
+          {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+          <audio ref={audioRef} className="audio-player" controls preload="metadata" src="/audio/kimi-no-kokoro.mp3" onPlay={beginClock} onPause={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
+          <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)}><span aria-hidden="true">↕</span> 自动跟随</button>
+        </div>
         <ol className="lyrics-list">
           {lyrics.map((line, lineIndex) => (
-            <li className={`lyric-line${line.aside ? " is-aside" : ""}`} key={lineIndex}>
+            <li className={`lyric-line${line.aside ? " is-aside" : ""}${lineIndex === activeLine ? " is-active" : ""}`} key={lineIndex} ref={(element) => { lineRefs.current[lineIndex] = element; }}>
               <span className="line-number" aria-hidden="true">{String(lineIndex + 1).padStart(2, "0")}</span>
-              <div className="line-content">
-                <div className="word-strip" lang="ja">{line.words.map((word, wordIndex) => <WordBlock word={word} key={wordIndex} />)}</div>
-                <p className="translation" lang="zh-CN">{line.zh}</p>
-              </div>
+              <button className="line-content line-seek" type="button" disabled={!lineRanges[lineIndex]} onClick={() => seekToLine(lineIndex)} aria-label={`跳转到第 ${lineIndex + 1} 句：${line.zh}`}>
+                <span className="word-strip" lang="ja">{line.words.map((word, wordIndex) => <WordBlock word={word} lineIndex={lineIndex} wordIndex={wordIndex} currentMs={currentMs} timingByKey={timingByKey} key={wordIndex} />)}</span>
+                <span className="translation" lang="zh-CN">{line.zh}</span>
+              </button>
             </li>
           ))}
         </ol>
