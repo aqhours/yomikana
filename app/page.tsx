@@ -270,6 +270,7 @@ export default function Home() {
   const animationRef = useRef<number | null>(null);
   const lastClockUpdateRef = useRef(0);
   const [timedCharacters, setTimedCharacters] = useState<TimedCharacter[]>([]);
+  const [audioSrc, setAudioSrc] = useState<string | null>(null);
   const [currentMs, setCurrentMs] = useState(0);
   const [durationMs, setDurationMs] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -283,6 +284,30 @@ export default function Home() {
   });
 
   useEffect(() => { fetch("/audio/kimi-no-kokoro.yrc").then((response) => response.text()).then((text) => setTimedCharacters(parseYrc(text))).catch(() => setTimedCharacters([])); }, []);
+  useEffect(() => {
+    const controller = new AbortController();
+    let objectUrl: string | null = null;
+
+    fetch("/audio/kimi-no-kokoro.mp3", { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`Audio request failed with ${response.status}`);
+        return response.arrayBuffer();
+      })
+      .then((buffer) => {
+        if (controller.signal.aborted) return;
+        objectUrl = URL.createObjectURL(new Blob([buffer], { type: "audio/mpeg" }));
+        setAudioSrc(objectUrl);
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        setAudioSrc("/audio/kimi-no-kokoro.mp3");
+      });
+
+    return () => {
+      controller.abort();
+      if (objectUrl) URL.revokeObjectURL(objectUrl);
+    };
+  }, []);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -369,15 +394,15 @@ export default function Home() {
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <audio ref={audioRef} className="audio-player" preload="metadata" src="/audio/kimi-no-kokoro.mp3" onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
+          <audio ref={audioRef} className="audio-player" preload="metadata" src={audioSrc ?? undefined} data-source="/audio/kimi-no-kokoro.mp3" onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="mini-cover" src="/kimi-no-kokoro-cover.jpg" width="1400" height="1400" alt="" aria-hidden="true" />
-          <button className="play-toggle" type="button" onClick={togglePlayback} aria-label={isPlaying ? "暂停" : "播放"}>
+          <button className="play-toggle" type="button" disabled={!audioSrc} onClick={togglePlayback} aria-label={isPlaying ? "暂停" : "播放"}>
             {isPlaying ? <Pause aria-hidden="true" /> : <Play className="play-icon" aria-hidden="true" />}
           </button>
           <div className="timeline">
             <span className="song-meta"><strong>君のこころは輝いてるかい？</strong><span>Aqours</span></span>
-            <input className="progress-slider" type="range" min="0" max={durationMs ? durationMs / 1000 : 0} step="0.01" value={currentMs / 1000} onInput={(event) => seekToTime(Number(event.currentTarget.value))} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); seekFromPointer(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) seekFromPointer(event); }} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)} aria-label="播放进度" style={{ "--progress": `${durationMs ? Math.min(100, currentMs / durationMs * 100) : 0}%` } as React.CSSProperties} />
+            <input className="progress-slider" type="range" min="0" max={durationMs ? durationMs / 1000 : 0} step="0.01" value={currentMs / 1000} disabled={!durationMs} onInput={(event) => seekToTime(Number(event.currentTarget.value))} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); seekFromPointer(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) seekFromPointer(event); }} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)} aria-label="播放进度" style={{ "--progress": `${durationMs ? Math.min(100, currentMs / durationMs * 100) : 0}%` } as React.CSSProperties} />
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>
           <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)}><ListRestart aria-hidden="true" /><span className="sr-only">自动跟随</span></button>
