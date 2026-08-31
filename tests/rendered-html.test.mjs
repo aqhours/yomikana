@@ -29,6 +29,7 @@ test("server-renders the complete lyric reader", async () => {
   assert.match(html, /你的心是否正在闪耀？/);
   assert.doesNotMatch(html, /歌词本 01/);
   assert.match(html, /data-source="\/audio\/kimi-no-kokoro\.mp3"/);
+  assert.match(html, /<audio[^>]* loop=""/);
   assert.match(html, /src="\/kimi-no-kokoro-cover\.jpg"/);
   assert.match(html, /自动跟随/);
   assert.match(html, /class="timed-character"/);

@@ -334,7 +334,7 @@ export default function Home() {
   const updateClock = () => {
     if (!audioRef.current) return;
     const audioMs = audioRef.current.currentTime * 1000;
-    if (audioRef.current.paused || audioMs - lastClockUpdateRef.current >= 30) {
+    if (audioRef.current.paused || Math.abs(audioMs - lastClockUpdateRef.current) >= 30) {
       lastClockUpdateRef.current = audioMs;
       setCurrentMs(audioMs);
     }
@@ -394,7 +394,7 @@ export default function Home() {
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <audio ref={audioRef} className="audio-player" preload="metadata" src={audioSrc ?? undefined} data-source="/audio/kimi-no-kokoro.mp3" onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
+          <audio ref={audioRef} className="audio-player" preload="metadata" loop src={audioSrc ?? undefined} data-source="/audio/kimi-no-kokoro.mp3" onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="mini-cover" src="/kimi-no-kokoro-cover.jpg" width="1400" height="1400" alt="" aria-hidden="true" />
           <button className="play-toggle" type="button" disabled={!audioSrc} onClick={togglePlayback} aria-label={isPlaying ? "暂停" : "播放"}>
