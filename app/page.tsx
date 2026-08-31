@@ -8,6 +8,7 @@ const catalog = [
   { slug: "yume-mirai", title: "ユメ+ミライ=無限大", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg" },
   { slug: "happy-party-train", title: "HAPPY PARTY TRAIN", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg" },
   { slug: "over-next-rainbow", title: "Over The Next Rainbow", artist: "Saint Aqours Snow", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg" },
+  { slug: "eternal-hours", title: "永久hours", artist: "Aqours", cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg" },
 ];
 
 export default function Home() {

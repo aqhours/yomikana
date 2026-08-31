@@ -379,6 +379,89 @@ const overNextRainbowLyrics: LyricLine[] = [
   rainbowMeetSurelyLine,
 ];
 
+const eternalDreamLine: LyricLine = {
+  words: [
+    yw("yu-me-wa", "梦想", s("ユメは")), yw("o-wa-n-na-i-yo", "不会结束", s("終", "お"), s("わんないよ")),
+    yw("ki-mi-mo-bo-ku-mo", "你我皆是", s("（"), s("君", "きみ"), s("も"), s("僕", "ぼく"), s("も） ")),
+    yw("yu-me-mi-ta-ma-ma-de", "保持心存梦想", s("ユメ"), s("見", "み"), s("たままで")),
+    yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）")),
+  ],
+  zh: "梦想是不会结束的（你我皆是）保持心存梦想（闪耀吧）",
+};
+const eternalHappyLine: LyricLine = {
+  words: [yw("ta-no-shi-i", "开心快乐的", s("楽", "たの"), s("しい")), yw("ki-mo-chi-o", "心情", s("キモチを ")), yw("zu-t-to-zu-t-to", "永远永远", s("ずっとずっと")), yw("da-i-ji-ni", "珍惜", s("大事", "だいじ"), s("に"))],
+  zh: "开心快乐的心情要永远永远珍惜",
+};
+const eternalTogetherLine: LyricLine = {
+  words: [yw("ko-re-ka-ra-mo", "从今以后也", s("これからも")), yw("i-s-sho-ni", "一起", s("一緒", "いっしょ"), s("に")), yw("i-ta-i", "想要相伴", s("いたい"))],
+  zh: "从今以后也想和你在一起",
+};
+const eternalDreamTogetherLine: LyricLine = {
+  words: [
+    yw("yu-me-wa", "梦想", s("ユメは")), yw("o-wa-n-na-i-yo", "不会结束", s("終", "お"), s("わんないよ")),
+    yw("ki-mi-to-bo-ku-wa", "你我皆是", s("（"), s("君", "きみ"), s("と"), s("僕", "ぼく"), s("は） ")),
+    yw("yu-me-mi-ta-ma-ma-sa", "保持心存梦想", s("ユメ"), s("見", "み"), s("たままさ")),
+    yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）")),
+  ],
+  zh: "梦想是不会结束的（你我皆是）保持心存梦想（闪耀吧）",
+};
+const eternalConnectedLine: LyricLine = {
+  words: [yw("ta-no-shi-i", "开心快乐的", s("楽", "たの"), s("しい")), yw("ki-mo-chi-de", "心情", s("キモチで ")), yw("zu-t-to-zu-t-to", "永远永远", s("ずっとずっと")), yw("tsu-na-ga-ru-no-sa", "连结在一起", s("つながるのさ"))],
+  zh: "用开心快乐的心情永远永远连结在一起",
+};
+const eternalRememberLine: LyricLine = {
+  words: [yw("wa-su-re-na-i-de", "可别忘记", s("忘", "わす"), s("れないで ")), yw("wa-su-re-na-i", "不会忘记", s("忘", "わす"), s("れない"))],
+  zh: "可别忘记 不会忘记的！",
+};
+
+const eternalHoursLyrics: LyricLine[] = [
+  { words: [yw("wa-su-re-na-i-de", "不要忘记", s("忘", "わす"), s("れないで ")), yw("wa-su-re-na-i-yo", "不会忘记哟", s("忘", "わす"), s("れないよ"))], zh: "不要忘记 不会忘记哟！" },
+  { words: [yw("ka-zo-e-ta-ra", "数起来的话", s("数", "かぞ"), s("えたら")), yw("ki-ri-ga-na-i", "没完没了", s("キリがない ")), yw("na-i-na-i-yo-ne", "数不清，对吧", s("ない ない よね?"))], zh: "数起来就会没完没了吧！数不清！数不清！对吧？" },
+  { words: [yw("i-ron-na", "各种各样的", s("いろんな")), yw("ko-to-ga", "事情", s("ことが")), yw("a-ri-su-gi-te", "发生得太多", s("ありすぎて"))], zh: "发生了太多太多事情" },
+  { words: [yw("ha-ji-ma-ri-da-t-te-sa", "要说开始的话", s("はじまりだってさ ")), yw("i-tsu-ka-ra", "从什么时候", s("いつから")), yw("nan-da-ro-u-t-te", "究竟是何时呢", s("なんだろうって"))], zh: "要说开始的话 是从什么时候开始的呢" },
+  { words: [yw("nan-ka-i-mo", "一遍又一遍", s("何回", "なんかい"), s("も")), yw("o-mo-i-de-o", "回忆", s("思", "おも"), s("い"), s("出", "で"), s("を")), yw("na-zo-t-ta", "反复追忆", s("なぞった"))], zh: "一遍又一遍回忆了无数次" },
+  { words: [yw("de-ki-na-i", "做不到", s("できない")), yw("ri-yu-u", "理由", s("理由", "りゆう")), yw("ba-i-ba-i-da", "说再见吧", s("?バイバイだ ")), yw("gan-ba-c-cha-u-t-te-sa", "我会加油的", s("がんばっちゃうってさ"))], zh: "和做不到的理由说再见吧 我会加油的" },
+  { words: [yw("ka-na-e-ta-i", "想要实现", s("叶", "かな"), s("えたい")), yw("o-mo-i", "心意", s("想", "おも"), s("い")), yw("ha-na-shi-ta-yo-ne", "说出来了呢", s("話", "はな"), s("したよね"))], zh: "说出了想要实现的心意呢" },
+  { words: [yw("ha-ji-ma-t-te-ta-n-da-yo", "已经开始了", s("はじまってたんだよ ")), yw("ki-ga-tsu-i-ta", "注意到", s("気", "き"), s("がついた")), yw("to-ki-ni-wa", "当……的时候", s("ときには"))], zh: "当我注意到的时候 一切就已经开始了" },
+  { words: [yw("a-shi-ta-e-to", "向着明日", s("明日", "あした"), s("へと")), yw("ka-ke-da-shi-te-ta", "飞驰而出", s("駆", "か"), s("けだしてた"))], zh: "向着明日飞驰而出吧" },
+  { words: [yw("so-ra-wa", "天空", s("空", "そら"), s("は")), yw("hi-ro-i-t-te", "宽广无比", s("広", "ひろ"), s("いって")), yw("shi-t-te-ta-ke-do", "虽说早已知道", s("知", "し"), s("ってたけど"))], zh: "虽说早就知道天空宽广无比" },
+  { words: [yw("kon-na-ni-mo", "原来如此", s("こんなにも")), yw("a-o-ka-t-ta-n-da-ne", "湛蓝啊", s("青", "あお"), s("かったんだね"))], zh: "但原来它还如此湛蓝啊" },
+  { words: [yw("i-tsu-mo-no", "一如既往的", s("いつもの")), yw("u-mi", "大海", s("海", "うみ"), s(" ")), yw("i-tsu-mo-no", "熟悉的", s("いつもの")), yw("ba-sho-ga", "地方", s("場所", "ばしょ"), s("が"))], zh: "一如既往的大海 那熟悉的地方" },
+  { words: [yw("bo-ku-ra-o", "你我、我们", s("僕", "ぼく"), s("らを")), yw("ma-t-te-ru-yo", "等待着", s("待", "ま"), s("ってるよ ")), yw("i-tsu-ma-de-mo", "永远", s("いつまでも"))], zh: "它们永远都在等待着你我" },
+  eternalDreamLine,
+  eternalHappyLine,
+  eternalTogetherLine,
+  eternalDreamTogetherLine,
+  eternalConnectedLine,
+  eternalRememberLine,
+  { words: [yw("ko-e-wa-o-o-ki-ku", "声音洪亮", s("声", "こえ"), s("は"), s("大", "おお"), s("きく ")), yw("ge-n-ki-ni", "元气地", s("元気", "げんき"), s("に")), yw("ha-i-ha-i-ha-i-da-yo", "喊出是是是", s("ハイハイハイだよ"))], zh: "声音洪亮！元气地喊出是是是！是啊！" },
+  { words: [yw("to-do-ke-ta-i", "想传达的", s("届", "とど"), s("けたい")), yw("u-ta", "歌", s("歌", "うた"), s(" ")), yw("to-do-i-ta-ka-na", "传达到了吗", s("届", "とど"), s("いたかな"))], zh: "想传达的歌 传达到了吗" },
+  { words: [yw("ha-ji-ma-t-te-ta-n-da-ne", "原来已经开始了", s("はじまってたんだね ")), yw("de-a-e-ta", "相遇", s("出会", "であ"), s("えた")), yw("to-ki-ka-ra", "从那一刻起", s("ときから"))], zh: "原来从相遇的那一刻起 就已经开始了呢" },
+  { words: [yw("ya-t-to-i-ma", "现在终于", s("やっといま")), yw("ji-k-kan-shi-cha-t-ta-yo", "有所实感了", s("実感", "じっかん"), s("しちゃったよ"))], zh: "我现在终于有所实感了" },
+  { words: [yw("ko-ko-ro-no", "心中的", s("こころの")), yw("yu-u-ki", "勇气", s("勇気", "ゆうき"), s(" ")), yw("ki-e-na-i-yo-u-ni", "不会消失", s("消", "き"), s("えないように"))], zh: "心中的勇气是不会消失的" },
+  { words: [yw("ju-n-su-i-de", "纯洁地", s("純粋", "じゅんすい"), s("で")), yw("i-yo-u-yo", "保持吧", s("いようよ")), yw("bo-ku-ra", "我们", s("僕", "ぼく"), s("ら"))], zh: "我们要保持纯洁哟" },
+  { words: [yw("i-tsu-mo-no", "一如既往的", s("いつもの")), yw("u-mi", "大海", s("海", "うみ"), s(" ")), yw("i-tsu-mo-no", "熟悉的", s("いつもの")), yw("ba-sho-e", "去往地方", s("場所", "ばしょ"), s("へ"))], zh: "去往一如既往的大海 那熟悉的地方" },
+  { words: [yw("ha-zu-ka-shi-ku-na-i", "不会羞耻的", s("恥", "は"), s("ずかしくない")), yw("ji-bu-n-de", "自己", s("自分", "じぶん"), s("で")), yw("i-ta-i-ka-ra", "因为想成为", s("いたいから"))], zh: "因为我想做一个不会羞耻的自己" },
+  { words: [yw("yu-me-o-o-i-ka-ke-te", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけて")), yw("ki-mi-mo-bo-ku-mo", "你我皆是", s("（"), s("君", "きみ"), s("も"), s("僕", "ぼく"), s("も） ")), yw("yu-me-no-chi-ka-ra-de", "用梦想的力量", s("ユメのチカラで")), yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）"))], zh: "追逐梦想吧（你我皆是）用梦想的力量（闪耀吧）" },
+  { words: [yw("da-i-su-ki", "自己的热爱", s("ダイスキ")), yw("shi-n-ji-ru", "相信", s("信", "しん"), s("じる ")), yw("zu-t-to-zu-t-to", "一直一直", s("ずっとずっと")), yw("shi-n-ji-te", "相信下去", s("信", "しん"), s("じて"))], zh: "将自己的热爱一直一直相信下去" },
+  { words: [yw("ko-re-ka-ra-mo", "从今往后也", s("これからも")), yw("i-s-sho-ni", "一起", s("一緒", "いっしょ"), s("に")), yw("i-yo-u", "相伴吧", s("いよう"))], zh: "从今往后也要在一起哟" },
+  { words: [yw("yu-me-o-o-i-ka-ke-te", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけて")), yw("ki-mi-to-bo-ku-no", "你我皆是", s("（"), s("君", "きみ"), s("と"), s("僕", "ぼく"), s("の） ")), yw("yu-me-wa-chi-ka-ra-sa", "梦想就是力量", s("ユメはチカラさ")), yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）"))], zh: "追逐梦想吧（你我皆是）梦想就是力量（闪耀吧）" },
+  { words: [yw("da-i-su-ki", "自己的热爱", s("ダイスキ")), yw("shi-n-ji-ru", "相信", s("信", "しん"), s("じる ")), yw("zu-t-to-zu-t-to", "一直一直", s("ずっとずっと")), yw("shi-n-ji-na-ga-ra", "持续相信", s("信", "しん"), s("じながら"))], zh: "将自己的热爱一直一直相信下去" },
+  { words: [yw("ne-ga-u-no-wa", "我希望", s("願", "ねが"), s("うのは ")), yw("ne-ga-u-no-wa", "我所希望的是", s("願", "ねが"), s("うのは")), yw("ki-mi-to-no", "和你一起的", s("君", "きみ"), s("との")), yw("shi-a-wa-se-na", "幸福", s("しあわせな"))], zh: "我希望 我所希望的是和你在一起的幸福" },
+  { words: [yw("ji-ka-n", "时光", s("（"), s("時間", "じかん")), yw("tsu-zu-i-te", "延续", s("続", "つづ"), s("いて")), yw("mo-t-to-mo-t-to", "更加长久、更多", s("もっと もっと")), yw("wa-ra-t-te-ta-i-ne", "还想要欢笑", s("笑", "わら"), s("ってたいね）"))], zh: "（时光能更加长久 还想要更多欢笑）" },
+  { words: [yw("wa-ra-t-te-i-ta-i-ka-ra", "因为想要露出笑容", s("笑", "わら"), s("っていたいから"))], zh: "因为想要露出笑容…" },
+  { words: [yw("yu-me-o-o-i-ka-ke-ta", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけた"))], zh: "追逐梦想吧" },
+  { words: [yw("yu-me-o-o-i-ka-ke-ta", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけた"))], zh: "追逐梦想吧" },
+  { words: [yw("ki-mi-to-no", "与你度过的", s("君", "きみ"), s("との")), yw("ji-ka-n-ga", "时光", s("時間", "じかん"), s("が")), yw("i-to-shi-i", "令人眷恋", s("愛", "いと"), s("しい ")), yw("i-to-shi-i", "难以忘怀", s("愛", "いと"), s("しいっ ")), yw("da-ki-shi-me-te", "紧紧拥抱", s("抱", "だ"), s("きしめて")), yw("ha-na-sa-na-i-yo", "不要放开哟", s("はなさないよ"))], zh: "与你度过的时光令人眷恋 难以忘怀 紧紧拥抱不要放开哟" },
+  eternalDreamLine,
+  eternalHappyLine,
+  eternalTogetherLine,
+  eternalDreamTogetherLine,
+  eternalConnectedLine,
+  eternalRememberLine,
+  { words: [yw("wa-su-re-na-i-de", "切勿忘记", s("忘", "わす"), s("れないで ")), yw("wa-su-re-na-i-yo", "不会忘记", s("忘", "わす"), s("れないよ ")), yw("wa-su-re-na-i-yo", "不会忘记的哟", s("忘", "わす"), s("れないよ"))], zh: "切勿忘记 不会忘记 不会忘记的哟！！" },
+];
+
 export const songs: Record<string, Song> = {
   "kimi-no-kokoro": {
     slug: "kimi-no-kokoro",
@@ -431,6 +514,19 @@ export const songs: Record<string, Song> = {
     backdrop: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg",
     credits: { lyricist: "畑亜貴", composer: "Kanata Okajima / TAKAROT", arranger: "TAKAROT / Shinji Tanaka" },
     lyrics: overNextRainbowLyrics,
+  },
+  "eternal-hours": {
+    slug: "eternal-hours",
+    title: "永久",
+    titleAccent: "hours",
+    titleCn: "永久时光",
+    artist: "Aqours",
+    cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg",
+    audio: "/audio/eternal-hours.mp3",
+    timing: "/audio/eternal-hours.yrc",
+    backdrop: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg",
+    credits: { lyricist: "畑亜貴", composer: "Kanata Okajima / Hayato Yamamoto", arranger: "Hayato Yamamoto" },
+    lyrics: eternalHoursLyrics,
   },
 };
 

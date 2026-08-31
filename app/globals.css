@@ -69,6 +69,18 @@ a { color:inherit; }
 .song-over-next-rainbow .mini-cover { box-shadow:0 6px 16px rgba(86,60,120,.23); }
 .song-over-next-rainbow .progress-slider::-webkit-slider-thumb { border-color:#fff5fc; box-shadow:0 2px 8px rgba(86,60,120,.28); }
 .song-over-next-rainbow .progress-slider::-moz-range-thumb { border-color:#fff5fc; box-shadow:0 2px 8px rgba(86,60,120,.28); }
+.song-eternal-hours { --ink:#4b415f; --ink-soft:#756b86; --paper:#f8f5ff; --cream:#eee8f8; --sun:#d59654; --sun-deep:#b97838; --sun-light:#f2c98f; --rule:rgba(91,75,116,.18); --line-number:#a18da4; --line-number-active:#c07f42; --timed-muted:rgba(75,65,95,.38); --romaji:#b2743d; --glow-color:#dea15e; --glow-shadow:0 0 5px rgba(248,207,148,.9),0 0 14px rgba(213,150,84,.52),0 0 26px rgba(185,120,56,.2); --scroll-thumb:rgba(202,137,72,.5); --aside:#927d94; --control-border:rgba(213,150,84,.48); --control-fill:rgba(213,150,84,.13); }
+.song-eternal-hours .hero { background:linear-gradient(90deg,rgba(250,247,255,.96) 0%,rgba(241,235,250,.82) 43%,rgba(213,150,84,.07) 74%); }
+.song-eternal-hours .hero::before { background:linear-gradient(180deg,rgba(239,211,180,.04),transparent 56%,rgba(56,42,77,.16)); }
+.song-eternal-hours .hero::after { content:"永久の時"; color:rgba(255,255,255,.3); }
+.song-eternal-hours .library-link,.song-eternal-hours .theme-toggle { border-color:rgba(91,75,116,.18); background:rgba(249,246,255,.64); box-shadow:0 8px 24px rgba(56,42,77,.13); }
+.song-eternal-hours .library-link:hover,.song-eternal-hours .theme-toggle:hover { border-color:var(--control-border); }
+.song-eternal-hours .reader { background:rgba(243,238,251,.76); box-shadow:0 20px 70px rgba(56,42,77,.19); }
+.song-eternal-hours .player-bar { border-bottom-color:rgba(91,75,116,.14); background:rgba(250,247,255,.93); box-shadow:0 10px 28px rgba(56,42,77,.09); }
+.song-eternal-hours .play-toggle { background:#4b415f; box-shadow:0 5px 16px rgba(75,65,95,.23); }
+.song-eternal-hours .mini-cover { box-shadow:0 6px 16px rgba(75,65,95,.24); }
+.song-eternal-hours .progress-slider::-webkit-slider-thumb { border-color:#fff8ee; box-shadow:0 2px 8px rgba(75,65,95,.28); }
+.song-eternal-hours .progress-slider::-moz-range-thumb { border-color:#fff8ee; box-shadow:0 2px 8px rgba(75,65,95,.28); }
 .hero { min-height:100vh; min-height:100svh; min-height:100dvh; display:grid; place-items:center; position:relative; overflow:hidden; background:linear-gradient(90deg,rgba(229,248,255,.92) 0%,rgba(229,248,255,.74) 40%,rgba(195,237,251,.08) 72%); border-bottom:1px solid rgba(197,239,255,.5); }
 .hero::before { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(220,247,255,.05),transparent 58%,rgba(0,103,151,.13)); }
 .hero::after { content:"かがやき"; position:absolute; right:3vw; top:6vh; color:rgba(255,255,255,.28); text-shadow:0 1px 10px rgba(25,78,107,.12); font:700 clamp(5rem,11vw,10rem)/.8 "Yu Mincho","Hiragino Mincho ProN",serif; writing-mode:vertical-rl; letter-spacing:.08em; }
@@ -229,6 +241,12 @@ html[data-theme="dark"] .song-over-next-rainbow .library-link,html[data-theme="d
 html[data-theme="dark"] .song-over-next-rainbow .reader { border-color:rgba(221,174,235,.1); background:rgba(34,17,46,.82); box-shadow:0 24px 80px rgba(9,2,14,.58); }
 html[data-theme="dark"] .song-over-next-rainbow .player-bar { border-bottom-color:rgba(221,174,235,.12); background:rgba(39,20,52,.92); }
 html[data-theme="dark"] .song-over-next-rainbow .play-toggle { border-color:rgba(255,231,247,.82); background:#ffe7f7; color:#4e285d; }
+html[data-theme="dark"] .song-eternal-hours { --ink:#f4ecff; --ink-soft:#c2b3cf; --sun:#e5ab69; --sun-deep:#c88949; --sun-light:#6d543f; --rule:rgba(207,188,224,.16); --line-number:#93839d; --line-number-active:#e4aa68; --timed-muted:rgba(238,228,247,.36); --romaji:#e7b477; --glow-color:#ffd399; --glow-shadow:0 0 6px rgba(255,211,153,.9),0 0 16px rgba(213,150,84,.5),0 0 28px rgba(185,120,56,.2); --scroll-thumb:rgba(213,150,84,.5); --aside:#ad99b7; --control-border:rgba(229,171,105,.46); --control-fill:rgba(229,171,105,.14); }
+html[data-theme="dark"] .song-eternal-hours .hero { background:linear-gradient(90deg,rgba(20,16,29,.96) 0%,rgba(37,28,50,.82) 45%,rgba(27,18,38,.3) 78%); }
+html[data-theme="dark"] .song-eternal-hours .library-link,html[data-theme="dark"] .song-eternal-hours .theme-toggle { border-color:rgba(207,188,224,.17); background:rgba(31,23,43,.64); box-shadow:0 8px 28px rgba(7,3,12,.4); }
+html[data-theme="dark"] .song-eternal-hours .reader { border-color:rgba(207,188,224,.1); background:rgba(28,21,39,.82); box-shadow:0 24px 80px rgba(7,3,12,.58); }
+html[data-theme="dark"] .song-eternal-hours .player-bar { border-bottom-color:rgba(207,188,224,.12); background:rgba(31,23,43,.92); }
+html[data-theme="dark"] .song-eternal-hours .play-toggle { border-color:rgba(255,240,221,.82); background:#fff0dd; color:#493420; }
 @media (hover:hover) { html[data-theme="dark"] .line-seek:hover:not(:disabled) { background:rgba(137,211,238,.055); } }
 
 @media (prefers-reduced-motion:reduce) { html,.reader { scroll-behavior:auto; } body,.theme-toggle,.theme-icon,.song-card,.song-card-cover,.lyric-line,.line-seek,.timed-character,.play-toggle,.scroll-toggle,.progress-slider::-webkit-slider-thumb,.progress-slider::-moz-range-thumb { transition:none; } }

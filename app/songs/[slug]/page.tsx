@@ -1,6 +1,6 @@
 import SongReader from "../../song-reader";
 
-const songSlugs = ["kimi-no-kokoro", "yume-mirai", "happy-party-train", "over-next-rainbow"];
+const songSlugs = ["kimi-no-kokoro", "yume-mirai", "happy-party-train", "over-next-rainbow", "eternal-hours"];
 
 export function generateStaticParams() {
   return songSlugs.map((slug) => ({ slug }));
