@@ -36,8 +36,18 @@ function renderedJapanese(html) {
       .join(""));
 }
 
+function renderedJapaneseWords(html) {
+  return [...html.matchAll(/<span class="word-strip" lang="ja">([\s\S]*?)<\/span><span class="translation"/g)]
+    .map((lineMatch) => [...lineMatch[1].matchAll(/<span class="word-jp">([\s\S]*?)<\/span><span class="word-romaji"/g)]
+      .map((wordMatch) => decodeEntities(wordMatch[1].replace(/<rt>[\s\S]*?<\/rt>/g, "").replace(/<[^>]+>/g, "").trim())));
+}
+
 function yrcJapanese(source) {
   return source.trim().split(/\r?\n/).map((line) => line.replace(/^\[[^\]]+\]/, "").replace(/\([^)]*\)/g, ""));
+}
+
+function alignableJapanese(lines) {
+  return lines.join("").match(/[\p{L}\p{N}]/gu)?.join("") ?? "";
 }
 
 test("server-renders the song library", async () => {
@@ -178,7 +188,19 @@ test("renders the annotated 青空Jumping Heart reader", async () => {
   assert.match(html, /data-source="\/audio\/aozora-jumping-heart\.mp3"/);
   assert.equal(html.split(covers.aozoraJumpingHeart).length - 1, 2);
   assert.match(html, /伊藤賢 \/ 光増ハジメ/);
-  assert.doesNotMatch(html, />歌词应援语</);
+  const yrc = await readFile(new URL("../public/audio/aozora-jumping-heart.yrc", import.meta.url), "utf8");
+  const rendered = renderedJapanese(html);
+  const words = renderedJapaneseWords(html);
+  assert.equal(yrcJapanese(yrc).length, 69);
+  assert.equal(rendered.length, 41);
+  assert.equal(alignableJapanese(rendered), alignableJapanese(yrcJapanese(yrc)));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["見た", "こと", "ない", "夢", "の", "軌道", "追いかけて"])));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["僕たち", "の", "なか", "の", "勇気", "が", "さわいでる"])));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["（Let's go!）", "ぜんぶ", "開けたい", "よ", "ほら", "いっしょ", "に", "ね！"])));
+  assert.match(html, /追逐着那条从未见过的梦想轨迹/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">主题助词/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">宾语助词/);
+  assert.doesNotMatch(html, />歌词应援语|>歌词表达/);
 });
 
 test("renders the annotated MIRAI TICKET reader", async () => {
@@ -199,9 +221,9 @@ test("renders the annotated MIRAI TICKET reader", async () => {
 const recentSongs = [
   { slug: "yume-kataru-yori-yume-utaou", title: /ユメ語るより/, translation: /与其诉说梦想的话语/, audio: "yume-kataru-yori-yume-utaou", cover: covers.yumeKataru, lines: 71 },
   { slug: "miracle-wave", title: /MIRACLE/, translation: /极限来临前绝不停歇/, audio: "miracle-wave", cover: covers.miracleWave, lines: 56 },
-  { slug: "my-mai-tonight", title: /MY舞☆/, translation: /莫不就是为了轰轰烈烈活一场/, audio: "my-mai-tonight", cover: covers.miracleWave, lines: 65 },
+  { slug: "my-mai-tonight", title: /MY舞☆/, translation: /为了让心炽热起来/, audio: "my-mai-tonight", cover: covers.miracleWave, lines: 66, displayLines: 32 },
   { slug: "sora-mo-kokoro-mo-hareru-kara", title: /空も心も/, translation: /明天会放晴吧/, audio: "sora-mo-kokoro-mo-hareru-kara", cover: covers.soraKokoro, lines: 43 },
-  { slug: "water-blue-new-world", title: /WATER BLUE/, translation: /现在就是现在 不同于昨天/, audio: "water-blue-new-world", cover: covers.waterBlueNewWorld, lines: 82 },
+  { slug: "water-blue-new-world", title: /WATER BLUE/, translation: /现在就是现在 不同于昨天/, audio: "water-blue-new-world", cover: covers.waterBlueNewWorld, lines: 82, displayLines: 46 },
 ];
 
 for (const song of recentSongs) {
@@ -217,14 +239,41 @@ for (const song of recentSongs) {
     assert.doesNotMatch(html, />歌词表达</);
     const yrc = await readFile(new URL(`../public/audio/${song.audio}.yrc`, import.meta.url), "utf8");
     assert.equal(yrcJapanese(yrc).length, song.lines);
-    assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
+    const rendered = renderedJapanese(html);
+    const timed = yrcJapanese(yrc);
+    if (song.displayLines) {
+      assert.equal(rendered.length, song.displayLines);
+      assert.equal(alignableJapanese(rendered), alignableJapanese(timed));
+    } else {
+      assert.deepEqual(rendered, timed);
+    }
   });
 }
 
+test("keeps WATER BLUE NEW WORLD in semantic lyric phrases", async () => {
+  const html = await (await render("/songs/water-blue-new-world")).text();
+  const rendered = renderedJapanese(html);
+  const words = renderedJapaneseWords(html);
+  assert.ok(rendered.includes("広がった世界を泳いできたのさ"));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["今", "は", "今", "で", "昨日", "と", "違う", "よ"])));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["広がった", "世界", "を", "泳いできた", "の", "さ"])));
+  assert.match(html, /我们一路游过了展现在眼前的世界/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">宾语助词/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">说明、强调/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">语气词/);
+  assert.doesNotMatch(html, /class="word-meaning" lang="zh-CN">世界中/);
+});
+
 test("keeps individual compact-word meanings and requested song colors", async () => {
   const html = await (await render("/songs/my-mai-tonight")).text();
-  assert.match(html, /class="word-meaning" lang="zh-CN">炽热地/);
-  assert.match(html, /class="word-meaning" lang="zh-CN">为了变得……/);
+  const words = renderedJapaneseWords(html);
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["踊れ", "踊れ", "熱く", "なる", "ため"])));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["この", "世界", "は", "いつも", "諦めない", "心", "に"])));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["答え", "じゃなく", "道", "を", "探す", "手掛かり", "を", "くれる", "から"])));
+  assert.match(html, /舞动吧　舞动吧　为了让心炽热起来/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">主题助词/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">宾语助词/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">原因助词：因为/);
   assert.doesNotMatch(html, /class="word-meaning" lang="zh-CN">人生在世/);
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /\.song-my-mai-tonight \{[^}]*--sun:#db0839/);
@@ -238,8 +287,8 @@ test("renders the new annotated ユメ+ミライ=無限大 reader", async () => 
   assert.match(html, /ユメ\+ミライ=/);
   assert.match(html, /<ruby><span class="timed-character"[^>]*>海<\/span><rt>うみ<\/rt><\/ruby>/);
   assert.match(html, /mu-ge-n-da-i/);
-  assert.match(html, /心跳、律动/);
-  assert.match(html, /梦想，是无限大的/);
+  assert.match(html, /律动、心跳/);
+  assert.match(html, /梦想是无限大的/);
   assert.match(html, /data-source="\/audio\/yume-mirai\.mp3"/);
   assert.equal(html.split(covers.yume).length - 1, 2);
   assert.doesNotMatch(html, /\/covers\/yume-mirai\.jpg/);
@@ -247,7 +296,16 @@ test("renders the new annotated ユメ+ミライ=無限大 reader", async () => 
   assert.match(html, /サイトウリョースケ/);
   assert.match(html, /春川仁志/);
   const yrc = await readFile(new URL("../public/audio/yume-mirai.yrc", import.meta.url), "utf8");
-  assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
+  const rendered = renderedJapanese(html);
+  const words = renderedJapaneseWords(html);
+  assert.equal(yrcJapanese(yrc).length, 48);
+  assert.equal(rendered.length, 44);
+  assert.equal(alignableJapanese(rendered), alignableJapanese(yrcJapanese(yrc)));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["いろんな", "思い出", "舞って", "は", "飛んでいった"])));
+  assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["一緒", "に", "ね", "抱きしめよう", "ずっと！"])));
+  assert.match(html, /class="word-meaning" lang="zh-CN">主题助词/);
+  assert.match(html, /class="word-meaning" lang="zh-CN">句末语气：哦、呀/);
+  assert.doesNotMatch(html, />歌词应援语|>歌词表达/);
 });
 
 test("ships all local audio assets", async () => {
