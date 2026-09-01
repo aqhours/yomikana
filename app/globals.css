@@ -8,24 +8,40 @@ html { scroll-behavior:smooth; }
 body { margin:0; min-height:100vh; background:var(--paper); color:var(--ink); font-family:var(--font-geist-sans),"Hiragino Sans GB","PingFang SC",sans-serif; transition:background-color .35s ease,color .28s ease; }
 main { min-height:100vh; }
 a { color:inherit; }
-.library-page { position:relative; display:grid; min-height:100vh; overflow:hidden; background:linear-gradient(90deg,rgba(231,248,254,.92),rgba(226,246,253,.7) 48%,rgba(204,236,247,.28)),url("https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/numazu_bg.png") center/cover fixed; }
-.library-shell { z-index:1; width:min(1180px,calc(100% - 4rem)); margin:auto; padding:clamp(5.5rem,10vh,8rem) 0 3rem; }
-.library-heading { margin-bottom:clamp(3rem,6vw,5rem); }
-.library-heading h1 { max-width:none; font-size:clamp(3.6rem,7.3vw,7.5rem); line-height:.98; }
+.library-page { position:relative; min-height:100vh; isolation:isolate; background:transparent; }
+.library-page::before { content:""; position:fixed; z-index:0; inset:0; background:url("https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/numazu_bg.png") center/cover no-repeat; pointer-events:none; }
+.library-page::after { content:""; position:fixed; z-index:0; inset:0; background:linear-gradient(90deg,rgba(225,247,255,.72) 0%,rgba(225,247,255,.3) 42%,rgba(225,247,255,.04) 72%),linear-gradient(180deg,rgba(5,81,127,.03) 48%,rgba(4,54,83,.35) 100%); pointer-events:none; }
+.library-hero { position:relative; z-index:1; display:grid; align-items:end; min-height:100vh; min-height:100svh; min-height:100dvh; overflow:hidden; isolation:isolate; }
+.library-hero-inner { width:min(1180px,calc(100% - 4rem)); margin:0 auto; padding:clamp(7rem,17vh,11rem) 0 clamp(6.5rem,13vh,9rem); }
+.library-heading { margin:0; }
+.library-heading h1 { max-width:none; color:var(--ink); font-size:clamp(3.8rem,7.3vw,7.5rem); line-height:.98; text-shadow:0 2px 32px rgba(226,248,255,.48); }
 .library-heading p { display:flex; align-items:center; gap:.9rem; max-width:25rem; margin:1.55rem 0 0 .15rem; color:var(--ink-soft); font-family:"Noto Serif SC","Songti SC",serif; font-size:clamp(.95rem,1.3vw,1.08rem); line-height:1.9; letter-spacing:.06em; }
 .library-heading p::before { content:""; flex:0 0 auto; width:2.5rem; height:1px; background:color-mix(in srgb,var(--sun) 62%,transparent); }
-.song-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:clamp(1rem,1.6vw,1.4rem); }
-.song-card { position:relative; aspect-ratio:1; overflow:hidden; border:1px solid rgba(255,255,255,.42); border-radius:1.35rem; background:#183544; box-shadow:0 20px 55px rgba(4,46,70,.16); text-decoration:none; isolation:isolate; transform:translateY(0); transition:transform .22s var(--ease-out),border-color .22s ease,box-shadow .22s ease; }
-.song-card::after { content:""; position:absolute; z-index:1; inset:0; background:linear-gradient(180deg,transparent 42%,rgba(3,16,24,.12) 60%,rgba(3,16,24,.9) 100%); pointer-events:none; }
-.song-card-cover { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; transition:transform .55s var(--ease-out); }
-.song-card-copy { position:absolute; z-index:2; right:0; bottom:0; left:0; min-width:0; padding:clamp(1.25rem,2.2vw,1.75rem); color:#fff; text-shadow:0 1px 16px rgba(0,0,0,.38); }
-.song-card-copy h2 { max-width:19rem; margin:0 0 .5rem; font:600 clamp(1.05rem,1.55vw,1.4rem)/1.25 "Yu Mincho","Hiragino Mincho ProN",serif; letter-spacing:-.025em; text-wrap:balance; }
-.song-card-artist { color:rgba(255,255,255,.78); font:550 .76rem/1 var(--font-geist-sans),sans-serif; letter-spacing:.045em; }
-.song-card:active { transform:scale(.98); }
-.song-card:focus-visible { outline:2px solid var(--sun); outline-offset:4px; }
+.catalog-link { display:inline-flex; gap:.85rem; align-items:center; margin:2.5rem 0 0 clamp(2.75rem,7vw,6rem); padding:.72rem 1rem; border:1px solid rgba(255,255,255,.52); border-radius:999px; background:rgba(235,249,255,.56); box-shadow:0 10px 32px rgba(4,54,83,.12); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); color:var(--ink); font-size:.73rem; font-weight:600; letter-spacing:.08em; text-decoration:none; transition:transform .18s var(--ease-out),background-color .2s ease,border-color .2s ease; }
+.catalog-link svg { width:.9rem; height:.9rem; }
+.catalog-link:active { transform:scale(.97); }
+.catalog-link:focus-visible { outline:2px solid var(--sun); outline-offset:4px; }
+.release-timeline { position:relative; z-index:1; min-height:100vh; min-height:100svh; scroll-margin-top:0; isolation:isolate; }
+.release-timeline-inner { width:min(1180px,calc(100% - 4rem)); margin:0 auto; padding:clamp(6rem,11vh,8rem) 0 clamp(7rem,12vh,10rem); }
+.release-timeline-list { position:relative; display:grid; gap:clamp(3.5rem,6vw,5.5rem); margin:0; padding:0; list-style:none; }
+.release-timeline-list::before { content:""; position:absolute; top:1rem; bottom:1rem; left:6.2rem; width:1px; background:linear-gradient(180deg,transparent,var(--sun) 4rem,var(--sun) calc(100% - 4rem),transparent); opacity:.58; }
+.release-year { display:grid; grid-template-columns:8rem minmax(0,1fr); gap:clamp(2rem,4vw,4rem); align-items:start; }
+.release-year-marker { position:relative; display:flex; justify-content:space-between; align-items:center; min-height:2rem; padding-top:.25rem; }
+.release-year-marker time { font:600 clamp(1.35rem,2.5vw,2rem)/1 var(--font-geist-mono),monospace; letter-spacing:-.05em; }
+.release-year-marker span { position:absolute; z-index:1; top:.75rem; right:1.28rem; width:.68rem; height:.68rem; border:2px solid rgba(239,251,255,.9); border-radius:50%; background:var(--sun); box-shadow:0 0 0 5px rgba(11,169,227,.13),0 4px 12px rgba(4,66,97,.18); }
+.release-year-songs { display:flex; flex-wrap:wrap; gap:clamp(1rem,1.6vw,1.4rem); }
+.release-card { position:relative; width:clamp(10.8rem,15vw,12.8rem); aspect-ratio:1; overflow:hidden; border:1px solid rgba(255,255,255,.46); border-radius:1.1rem; background:#183544; box-shadow:0 18px 44px rgba(4,46,70,.18); text-decoration:none; isolation:isolate; transform:translateY(0); transition:transform .2s var(--ease-out),border-color .2s ease,box-shadow .2s ease; }
+.release-card::after { content:""; position:absolute; z-index:1; inset:0; background:linear-gradient(180deg,transparent 36%,rgba(3,16,24,.12) 54%,rgba(3,16,24,.92) 100%); pointer-events:none; }
+.release-card > img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:cover; transition:transform .48s var(--ease-out); }
+.release-card-copy { position:absolute; z-index:2; right:0; bottom:0; left:0; min-width:0; padding:1rem; color:#fff; text-shadow:0 1px 14px rgba(0,0,0,.42); }
+.release-card-copy h3 { margin:0 0 .4rem; font:600 clamp(.8rem,1.08vw,1rem)/1.22 "Yu Mincho","Hiragino Mincho ProN",serif; letter-spacing:-.025em; overflow-wrap:anywhere; text-wrap:balance; }
+.release-card-copy p { margin:0; color:rgba(255,255,255,.74); font-size:.64rem; font-weight:550; letter-spacing:.04em; }
+.release-card:active { transform:scale(.98); }
+.release-card:focus-visible { outline:2px solid var(--sun); outline-offset:4px; }
 @media (hover:hover) and (pointer:fine) {
-  .song-card:hover { transform:translateY(-4px); border-color:rgba(255,255,255,.72); box-shadow:0 26px 70px rgba(4,46,70,.23); }
-  .song-card:hover .song-card-cover { transform:scale(1.025); }
+  .catalog-link:hover { transform:translateY(-2px); border-color:rgba(255,255,255,.82); background:rgba(240,251,255,.72); }
+  .release-card:hover { transform:translateY(-3px); border-color:rgba(255,255,255,.76); box-shadow:0 24px 56px rgba(4,46,70,.21); }
+  .release-card:hover > img { transform:scale(1.025); }
 }
 .song-page { min-height:100vh; background:linear-gradient(rgba(8,142,198,.06),rgba(8,142,198,.06)),var(--song-backdrop) center/cover fixed; }
 .library-link { position:absolute; z-index:3; top:clamp(1.25rem,3vw,2.25rem); left:clamp(1.25rem,3vw,2.25rem); display:inline-flex; gap:.55rem; align-items:center; padding:.65rem .85rem; border:1px solid rgba(7,81,127,.14); border-radius:999px; background:rgba(239,251,255,.58); box-shadow:0 8px 24px rgba(7,81,127,.1); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); color:var(--ink); font-size:.74rem; letter-spacing:.05em; text-decoration:none; transition:transform .16s var(--ease-out),border-color .2s ease; }
@@ -237,17 +253,24 @@ rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spac
   .theme-toggle { top:1rem; right:1rem; width:2.25rem; height:2.25rem; }
   .library-link { top:1rem; left:1rem; }
   .library-link span { display:none; }
-  .library-shell { width:calc(100% - 2rem); padding:5.5rem 0 2rem; }
-  .library-heading { margin-bottom:2.5rem; }
-  .library-heading h1 { font-size:clamp(3rem,15vw,4.6rem); }
+  .library-page::before { background-position:58% center; }
+  .library-page::after { background:linear-gradient(90deg,rgba(225,247,255,.72),rgba(225,247,255,.18) 72%),linear-gradient(180deg,transparent 40%,rgba(4,54,83,.42) 100%); }
+  .library-hero-inner { width:calc(100% - 2rem); padding:7rem 0 5.5rem; }
+  .library-heading h1 { font-size:clamp(2.25rem,10.8vw,4.6rem); }
   .library-heading p { gap:.7rem; margin:1.25rem 0 0 .05rem; letter-spacing:.035em; }
   .library-heading p::before { width:1.8rem; }
-  .song-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; }
-  .song-card { border-radius:.95rem; }
-  .song-card::after { background:linear-gradient(180deg,transparent 32%,rgba(3,16,24,.16) 53%,rgba(3,16,24,.92) 100%); }
-  .song-card-copy { padding:.85rem; }
-  .song-card-copy h2 { margin-bottom:.4rem; font-size:clamp(.82rem,3.8vw,1rem); line-height:1.22; }
-  .song-card-artist { font-size:.62rem; }
+  .catalog-link { margin-top:2rem; }
+  .release-timeline-inner { width:calc(100% - 2rem); padding:4.5rem 0 6rem; }
+  .release-timeline-list { gap:3.5rem; }
+  .release-timeline-list::before { left:.35rem; }
+  .release-year { display:block; padding-left:1.6rem; }
+  .release-year-marker { justify-content:flex-start; margin-bottom:1.15rem; }
+  .release-year-marker time { font-size:1.35rem; }
+  .release-year-marker span { top:.58rem; right:auto; left:-1.58rem; width:.62rem; height:.62rem; }
+  .release-year-songs { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; }
+  .release-card { width:auto; padding:0; border-radius:.85rem; }
+  .release-card-copy { padding:.75rem; }
+  .release-card-copy h3 { font-size:.82rem; }
   .reader { --reader-inline:1rem; border-radius:0; }
   .player-bar { grid-template-columns:3rem 1.9rem minmax(0,1fr) 1.9rem; gap:.45rem; width:calc(100% - 1rem); margin:.5rem auto 0; padding:1.62rem .8rem 1.22rem; border-radius:.9rem; }
   .mini-cover { width:3rem; height:3rem; border-radius:.4rem; }
@@ -266,13 +289,12 @@ rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spac
   .translation { font-size:1.02rem; }
 }
 
-@media (min-width:641px) and (max-width:1000px) { .song-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-
 html[data-theme="dark"] { color-scheme:dark; --ink:#d9f3ff; --ink-soft:#8fb6c8; --paper:#061722; --cream:#0b2330; --sun:#50d0ff; --sun-deep:#27b8ed; --sun-light:#2a718c; --rule:rgba(124,205,235,.16); --line-number:#648fa2; --line-number-active:#70c7e6; --timed-muted:rgba(211,239,250,.36); --romaji:#68c9ec; --glow-color:#81e2ff; --glow-shadow:0 0 6px rgba(129,226,255,.88),0 0 16px rgba(61,196,239,.48),0 0 28px rgba(61,196,239,.18); --scroll-thumb:rgba(80,196,236,.44); --aside:#83aec0; --control-border:rgba(80,208,255,.38); --control-fill:rgba(80,208,255,.12); }
 html[data-theme="dark"] body { background:var(--paper); }
-html[data-theme="dark"] .library-page { background:linear-gradient(90deg,rgba(3,18,28,.92),rgba(4,25,37,.74) 50%,rgba(3,18,29,.34)),url("https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/numazu_bg.png") center/cover fixed; }
-html[data-theme="dark"] .song-card { border-color:rgba(151,216,240,.12); background:rgba(9,32,43,.68); box-shadow:0 20px 58px rgba(0,4,8,.3); }
-@media (hover:hover) and (pointer:fine) { html[data-theme="dark"] .song-card:hover { border-color:rgba(255,255,255,.42); box-shadow:0 26px 70px rgba(0,4,8,.42); } }
+html[data-theme="dark"] .library-page::after { background:linear-gradient(90deg,rgba(3,18,28,.72) 0%,rgba(4,25,37,.34) 44%,rgba(3,18,29,.08) 76%),linear-gradient(180deg,rgba(0,8,14,.04) 44%,rgba(0,8,14,.54) 100%); }
+html[data-theme="dark"] .library-heading h1 { text-shadow:0 2px 34px rgba(0,7,12,.32); }
+html[data-theme="dark"] .catalog-link { border-color:rgba(155,221,244,.22); background:rgba(6,27,39,.48); box-shadow:0 10px 34px rgba(0,5,9,.22); }
+html[data-theme="dark"] .release-card { border-color:rgba(155,221,244,.16); background:rgba(6,27,39,.58); box-shadow:0 18px 46px rgba(0,5,9,.24); }
 html[data-theme="dark"] .library-link { border-color:rgba(155,221,244,.16); background:rgba(6,27,39,.58); box-shadow:0 8px 28px rgba(0,5,9,.28); }
 html[data-theme="dark"] .hero { background:linear-gradient(90deg,rgba(3,18,28,.94) 0%,rgba(4,25,37,.78) 44%,rgba(3,18,29,.24) 76%); border-bottom-color:rgba(102,195,230,.18); }
 html[data-theme="dark"] .hero::before { background:linear-gradient(180deg,rgba(24,119,155,.04),transparent 52%,rgba(0,5,10,.36)); }
@@ -353,6 +375,6 @@ html[data-theme="dark"] .song-water-blue-new-world .play-toggle { background:#e3
 html[data-theme="dark"] .song-page .player-bar { background:transparent; }
 @media (hover:hover) { html[data-theme="dark"] .line-seek:hover:not(:disabled) { background:rgba(137,211,238,.055); } }
 
-@media (prefers-reduced-motion:reduce) { html,.reader { scroll-behavior:auto; } body,.theme-toggle,.theme-icon,.song-card,.song-card-cover,.lyric-line,.line-seek,.timed-character,.play-toggle,.scroll-toggle,.progress-slider::-webkit-slider-thumb,.progress-slider::-moz-range-thumb { transition:none; } }
-@media (prefers-reduced-transparency:reduce) { .reader { -webkit-backdrop-filter:none; backdrop-filter:none; } }
+@media (prefers-reduced-motion:reduce) { html,.reader { scroll-behavior:auto; } body,.theme-toggle,.theme-icon,.release-card,.lyric-line,.line-seek,.timed-character,.play-toggle,.scroll-toggle,.progress-slider::-webkit-slider-thumb,.progress-slider::-moz-range-thumb { transition:none; } }
+@media (prefers-reduced-transparency:reduce) { .reader,.release-card { -webkit-backdrop-filter:none; backdrop-filter:none; } }
 @media print { .hero { min-height:0; padding:2rem 0; } .start-link,.player-bar { display:none; } .reader { padding:2rem 0; } .lyric-line { break-inside:avoid; padding:1.5rem 0; opacity:1; } }

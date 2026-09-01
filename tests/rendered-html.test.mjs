@@ -88,12 +88,12 @@ test("server-renders the song library", async () => {
   assert.ok(html.includes(covers.aozoraJumpingHeart));
   assert.ok(html.includes(covers.miraiTicket));
   assert.ok(html.includes(covers.yumeKataru));
-  assert.equal(html.split(covers.miracleWave).length - 1, 2);
+  assert.ok(html.includes(covers.miracleWave));
   assert.ok(html.includes(covers.soraKokoro));
   assert.ok(html.includes(covers.waterBlueNewWorld));
-  assert.equal(html.match(/class="song-card-cover"/g)?.length, 12);
-  assert.equal(html.match(/class="song-card-artist">Aqours/g)?.length, 11);
-  assert.match(html, /class="song-card-artist">Saint Aqours Snow/);
+  assert.equal(html.match(/class="release-card"/g)?.length, 12);
+  assert.equal(html.match(/class="release-year"/g)?.length, 7);
+  assert.doesNotMatch(html, /2015\.10\.07|2017\.11\.29|2024\.12\.18/);
   const chronologicalSlugs = [
     "kimi-no-kokoro",
     "aozora-jumping-heart",
@@ -108,18 +108,22 @@ test("server-renders the song library", async () => {
     "yume-mirai",
     "eternal-hours",
   ];
-  assert.deepEqual([...html.matchAll(/href="\/songs\/([^"]+)"/g)].map((match) => match[1]), chronologicalSlugs);
+  assert.deepEqual([...html.matchAll(/class="release-card" href="\/songs\/([^"]+)"/g)].map((match) => match[1]), chronologicalSlugs);
   assert.doesNotMatch(html, /song-card-number|song-card-arrow|你的心灵是否光芒闪耀|梦想 \+ 未来 = 无限大|快乐派对列车/);
   assert.doesNotMatch(html, /src="\/covers\//);
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /https:\/\/jgox-image-1316409677\.cos\.ap-guangzhou\.myqcloud\.com\/eternal-hours-project\/numazu_bg\.png/);
   assert.doesNotMatch(css, /\/numazu-seaside\.png/);
-  assert.match(css, /\.song-grid \{ display:grid; grid-template-columns:repeat\(4,minmax\(0,1fr\)\)/);
-  assert.match(css, /\.song-grid \{ grid-template-columns:repeat\(2,minmax\(0,1fr\)\); gap:\.8rem; \}/);
+  assert.match(css, /\.library-page::before \{[^}]*position:fixed;[^}]*numazu_bg\.png/);
+  assert.match(css, /\.library-page::after \{[^}]*position:fixed;[^}]*linear-gradient/);
+  assert.doesNotMatch(css, /\.release-timeline::before/);
+  assert.match(css, /\.release-timeline-list::before \{[^}]*linear-gradient/);
+  assert.doesNotMatch(css, /album-wall|album-shelf/);
   assert.match(css, /\.library-heading p \{ display:flex; align-items:center;/);
   assert.match(css, /\.library-heading p::before \{ content:"";/);
   assert.match(html, /在旋律里学习日语。/);
-  assert.doesNotMatch(html, /YOMIKANA · AQOURS|2 songs|逐字同步 · 分词注音 · 中文释义/);
+  assert.match(html, />开始</);
+  assert.doesNotMatch(html, /YOMIKANA|NUMAZU|选一首歌|SONG LIBRARY|12 tracks|发行时间线|2015—2024|逐字同步 · 分词注音 · 中文释义/);
 });
 
 test("renders the annotated HAPPY PARTY TRAIN reader", async () => {

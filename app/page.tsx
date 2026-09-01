@@ -1,6 +1,6 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
+import { ArrowDown, Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const catalog = [
@@ -17,6 +17,11 @@ const catalog = [
   { slug: "yume-mirai", title: "ユメ+ミライ=無限大", artist: "Aqours", releaseDate: "2022-06-30", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg" },
   { slug: "eternal-hours", title: "永久hours", artist: "Aqours", releaseDate: "2024-12-18", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg" },
 ].sort((left, right) => left.releaseDate.localeCompare(right.releaseDate) || left.trackNumber - right.trackNumber);
+
+const releaseTimeline = [...new Set(catalog.map((song) => song.releaseDate.slice(0, 4)))].map((year) => ({
+  year,
+  songs: catalog.filter((song) => song.releaseDate.startsWith(year)),
+}));
 
 export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -45,25 +50,47 @@ export default function Home() {
         <Sun className="theme-icon theme-icon-sun" aria-hidden="true" />
       </button>
 
-      <section className="library-shell" aria-labelledby="library-title">
-        <header className="library-heading">
-          <h1 id="library-title">聴いて、読んで、<br /><em>歌をひらく。</em></h1>
-          <p>在旋律里学习日语。</p>
-        </header>
+      <section className="library-hero" aria-labelledby="library-title">
+        <div className="library-hero-inner">
+          <header className="library-heading">
+            <h1 id="library-title">聴いて、読んで、<br /><em>歌をひらく。</em></h1>
+            <p>在旋律里学习日语。</p>
+          </header>
 
-        <div className="song-grid" aria-label="歌曲列表">
-          {catalog.map((song) => (
-            <a className="song-card" href={`/songs/${song.slug}`} key={song.slug}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="song-card-cover" src={song.cover} width="1400" height="1400" alt="" />
-              <div className="song-card-copy">
-                <h2>{song.title}</h2>
-                <span className="song-card-artist">{song.artist}</span>
-              </div>
-            </a>
-          ))}
+          <a className="catalog-link" href="#songs">
+            <span>开始</span>
+            <ArrowDown aria-hidden="true" />
+          </a>
         </div>
+      </section>
 
+      <section className="release-timeline" id="songs" aria-labelledby="catalog-title">
+        <div className="release-timeline-inner">
+          <h2 className="sr-only" id="catalog-title">歌曲列表</h2>
+
+          <ol className="release-timeline-list">
+            {releaseTimeline.map(({ year, songs }) => (
+              <li className="release-year" key={year}>
+                <div className="release-year-marker">
+                  <time dateTime={year}>{year}</time>
+                  <span aria-hidden="true" />
+                </div>
+                <div className="release-year-songs">
+                  {songs.map((song) => (
+                    <a className="release-card" href={`/songs/${song.slug}`} key={song.slug}>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={song.cover} width="1400" height="1400" alt="" />
+                      <div className="release-card-copy">
+                        <h3>{song.title}</h3>
+                        <p>{song.artist}</p>
+                      </div>
+                    </a>
+                  ))}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
     </main>
   );
