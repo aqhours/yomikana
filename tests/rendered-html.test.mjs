@@ -94,6 +94,21 @@ test("server-renders the song library", async () => {
   assert.equal(html.match(/class="song-card-cover"/g)?.length, 12);
   assert.equal(html.match(/class="song-card-artist">Aqours/g)?.length, 11);
   assert.match(html, /class="song-card-artist">Saint Aqours Snow/);
+  const chronologicalSlugs = [
+    "kimi-no-kokoro",
+    "aozora-jumping-heart",
+    "yume-kataru-yori-yume-utaou",
+    "sora-mo-kokoro-mo-hareru-kara",
+    "mirai-ticket",
+    "happy-party-train",
+    "my-mai-tonight",
+    "miracle-wave",
+    "water-blue-new-world",
+    "over-next-rainbow",
+    "yume-mirai",
+    "eternal-hours",
+  ];
+  assert.deepEqual([...html.matchAll(/href="\/songs\/([^"]+)"/g)].map((match) => match[1]), chronologicalSlugs);
   assert.doesNotMatch(html, /song-card-number|song-card-arrow|你的心灵是否光芒闪耀|梦想 \+ 未来 = 无限大|快乐派对列车/);
   assert.doesNotMatch(html, /src="\/covers\//);
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
