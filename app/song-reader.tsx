@@ -3,7 +3,6 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ListRestart, Moon, Pause, Play, Sun } from "lucide-react";
 import { loadAudio } from "./audio-cache";
-import { createReactiveBandTracker, mapReactiveLevels, updateReactiveBand } from "./audio-reactive";
 
 type Segment = { text: string; reading?: string };
 type Word = { jp: Segment[]; romaji: string; meaning: string };
@@ -1172,19 +1171,9 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
   const song = songs[songSlug] ?? songs["kimi-no-kokoro"];
   const lyrics = song.lyrics;
   const audioRef = useRef<HTMLAudioElement>(null);
-  const ambientHostRef = useRef<HTMLElement>(null);
   const readerRef = useRef<HTMLElement>(null);
   const lineRefs = useRef<(HTMLLIElement | null)[]>([]);
   const animationRef = useRef<number | null>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
-  const audioSourceRef = useRef<MediaElementAudioSourceNode | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
-  const frequencyDataRef = useRef<Uint8Array<ArrayBuffer> | null>(null);
-  const bandTrackersRef = useRef({
-    bass: createReactiveBandTracker(),
-    mid: createReactiveBandTracker(),
-    high: createReactiveBandTracker(),
-  });
   const lastClockUpdateRef = useRef(0);
   const [timedCharacters, setTimedCharacters] = useState<TimedCharacter[]>([]);
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
@@ -1256,72 +1245,11 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
   }, [activeLine, autoScroll]);
   useEffect(() => () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    audioSourceRef.current?.disconnect();
-    analyserRef.current?.disconnect();
-    void audioContextRef.current?.close();
   }, []);
-
-  const setAmbientLevels = (bass: number, mid: number, high: number) => {
-    const host = ambientHostRef.current;
-    if (!host) return;
-    const visual = mapReactiveLevels(bass, mid, high);
-    host.style.setProperty("--ambient-cover-scale", visual.coverScale.toFixed(4));
-    host.style.setProperty("--ambient-cover-opacity", visual.coverOpacity.toFixed(3));
-    host.style.setProperty("--ambient-glow-scale", visual.glowScale.toFixed(4));
-    host.style.setProperty("--ambient-glow-opacity", visual.glowOpacity.toFixed(3));
-  };
-
-  const sampleAudioEnergy = () => {
-    const analyser = analyserRef.current;
-    const data = frequencyDataRef.current;
-    const context = audioContextRef.current;
-    if (!analyser || !data || !context) return;
-
-    analyser.getByteFrequencyData(data);
-    const hzPerBin = context.sampleRate / analyser.fftSize;
-    const bandEnergy = (fromHz: number, toHz: number) => {
-      const start = Math.max(1, Math.floor(fromHz / hzPerBin));
-      const end = Math.min(data.length, Math.ceil(toHz / hzPerBin));
-      let sum = 0;
-      for (let index = start; index < end; index += 1) sum += (data[index] / 255) ** 2;
-      return end > start ? Math.sqrt(sum / (end - start)) : 0;
-    };
-    const trackers = bandTrackersRef.current;
-    setAmbientLevels(
-      updateReactiveBand(trackers.bass, bandEnergy(35, 190)),
-      updateReactiveBand(trackers.mid, bandEnergy(190, 2200)),
-      updateReactiveBand(trackers.high, bandEnergy(2200, 9000)),
-    );
-  };
-
-  const prepareAudioAnalysis = async () => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const audio = audioRef.current;
-    if (!audio) return;
-    try {
-      if (!audioContextRef.current) {
-        const context = new AudioContext();
-        const source = context.createMediaElementSource(audio);
-        const analyser = context.createAnalyser();
-        analyser.fftSize = 512;
-        analyser.smoothingTimeConstant = .72;
-        source.connect(context.destination);
-        source.connect(analyser);
-        audioContextRef.current = context;
-        audioSourceRef.current = source;
-        analyserRef.current = analyser;
-        frequencyDataRef.current = new Uint8Array(analyser.frequencyBinCount);
-      }
-      if (audioContextRef.current.state === "suspended") await audioContextRef.current.resume();
-    } catch {
-      // Audio playback remains available even if Web Audio analysis is unavailable.
-    }
-  };
 
   const updateClock = () => {
     if (!audioRef.current) return;
     const audioMs = audioRef.current.currentTime * 1000;
-    if (!audioRef.current.paused) sampleAudioEnergy();
     if (audioRef.current.paused || Math.abs(audioMs - lastClockUpdateRef.current) >= 30) {
       lastClockUpdateRef.current = audioMs;
       setCurrentMs(audioMs);
@@ -1329,24 +1257,11 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
     if (!audioRef.current.paused) animationRef.current = requestAnimationFrame(updateClock);
   };
   const beginClock = () => { setIsPlaying(true); if (animationRef.current) cancelAnimationFrame(animationRef.current); animationRef.current = requestAnimationFrame(updateClock); };
-  const stopClock = () => {
-    setIsPlaying(false);
-    if (animationRef.current) cancelAnimationFrame(animationRef.current);
-    bandTrackersRef.current = {
-      bass: createReactiveBandTracker(),
-      mid: createReactiveBandTracker(),
-      high: createReactiveBandTracker(),
-    };
-    setAmbientLevels(0, 0, 0);
-    updateClock();
-  };
+  const stopClock = () => { setIsPlaying(false); if (animationRef.current) cancelAnimationFrame(animationRef.current); updateClock(); };
   const togglePlayback = async () => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (audio.paused) {
-      await prepareAudioAnalysis();
-      await audio.play();
-    }
+    if (audio.paused) await audio.play();
     else audio.pause();
   };
   const seekToTime = (seconds: number) => {
@@ -1400,11 +1315,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
           <a className="start-link" href="#lyrics">开始阅读 <span aria-hidden="true">↓</span></a>
         </div>
       </header>
-      <section className="reader" id="lyrics" aria-label="歌词正文" ref={ambientHostRef}>
-        <div className="audio-ambient" aria-hidden="true">
-          <span className="audio-ambient-cover" />
-          <span className="audio-ambient-glow" />
-        </div>
+      <section className="reader" id="lyrics" aria-label="歌词正文">
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
