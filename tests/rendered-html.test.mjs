@@ -191,11 +191,21 @@ test("renders the annotated 永久hours reader", async () => {
   const html = await response.text();
   assert.match(html, /永久/);
   assert.match(html, /wa-su-re-na-i-de/);
-  assert.match(html, /切勿忘记 不会忘记 不会忘记的哟/);
+  assert.match(html, /如果真要数起来的话，根本数也数不完！不完！不完！对吧？/);
   assert.match(html, /data-source="\/audio\/eternal-hours\.mp3"/);
   assert.equal(html.split(covers.eternalHours).length - 1, 2);
   assert.match(html, /Kanata Okajima \/ Hayato Yamamoto/);
-  assert.doesNotMatch(html, />歌词应援语</);
+  const words = renderedJapaneseWords(html);
+  assert.deepEqual(words[0], ["忘れないで", "忘れない", "よ！"]);
+  assert.deepEqual(words[1], ["数えたら", "キリ", "が", "ない！", "ない！", "ない！", "よね？"]);
+  assert.deepEqual(words[12], ["僕ら", "を", "待ってる", "よ", "いつ", "まで", "も"]);
+  assert.deepEqual(words[32], ["願う", "の", "は", "願う", "の", "は", "君", "と", "の", "しあわせ", "な"]);
+  assert.match(html, />wa<\/span><span class="word-meaning" lang="zh-CN">主题助词）<\/span>/);
+  const yrc = await readFile(new URL("../public/audio/eternal-hours.yrc", import.meta.url), "utf8");
+  const rendered = renderedJapanese(html);
+  assert.equal(rendered.length, 45);
+  assert.equal(alignableJapanese(rendered), alignableJapanese(yrcJapanese(yrc)));
+  assert.doesNotMatch(html, />歌词应援语|>歌词表达/);
 });
 
 test("renders the annotated 青空Jumping Heart reader", async () => {

@@ -3,6 +3,7 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ListRestart, Moon, Pause, Play, Sun } from "lucide-react";
 import { loadAudio } from "./audio-cache";
+import { createReactiveBandTracker, mapReactiveLevels, updateReactiveBand } from "./audio-reactive";
 
 type Segment = { text: string; reading?: string };
 type Word = { jp: Segment[]; romaji: string; meaning: string };
@@ -833,87 +834,75 @@ const waterBlueNewWorldLyrics: LyricLine[] = [
   wbnw("今{いま}|を|重{かさ}ね |そして|未来{みらい}|へ|向{む}かおう", "将一个个此刻累积起来，然后迈向未来吧！"),
 ];
 
-const eternalDreamLine: LyricLine = {
-  words: [
-    yw("yu-me-wa", "梦想", s("ユメは")), yw("o-wa-n-na-i-yo", "不会结束", s("終", "お"), s("わんないよ")),
-    yw("ki-mi-mo-bo-ku-mo", "你我皆是", s("（"), s("君", "きみ"), s("も"), s("僕", "ぼく"), s("も） ")),
-    yw("yu-me-mi-ta-ma-ma-de", "保持心存梦想", s("ユメ"), s("見", "み"), s("たままで")),
-    yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）")),
-  ],
-  zh: "梦想是不会结束的（你我皆是）保持心存梦想（闪耀吧）",
+const eternalHoursWordMeanings: Record<string, string> = {
+  "忘れないで":"请不要忘记","忘れない":"不会忘记","忘れない！":"不会忘记！","よ":"句末语气：哦、呀","よ！":"句末语气：哦、呀！","よ！！":"句末语气：哦、呀！！","数えたら":"如果数起来","キリ":"尽头、限度","が":"主语助词","ない":"没有、不……","ない！":"没有、数不完！","よね？":"确认语气：对吧？",
+  "いろんな":"各种各样的","こと":"事情","ありすぎて":"实在太多了","はじまり":"开始、起点","だ":"判断助动词：是","って":"引用助词：说、想着","さ":"句末语气：啊、呀","いつ":"什么时候","から":"起点、原因助词","なん":"什么、怎么","だろう":"推测语气：大概、究竟",
+  "何回":"多少次、一次次","も":"也；反复、都","思い出":"回忆","を":"宾语助词","なぞった":"重温、追寻了","できない":"做不到","理由？":"理由？","バイバイ":"再见","だ！":"判断助动词：就是！","がんばっちゃう":"努力去做","叶えたい":"想要实现","想い":"心愿、心意","話した":"谈起过、说过","ね":"句末语气：呢、吧",
+  "はじまってた":"早已开始了","んだ":"说明、强调","気":"意识、注意","ついた":"察觉到、回过神","とき":"时候","に":"对象、地点助词","は":"主题、强调助词","明日":"明天","へ":"方向助词：向、往","と":"方向、引用助词","駆けだしてた":"早已飞奔出去","空":"天空","広い":"辽阔的","知ってた":"早已知道","けど":"转折助词：虽然、但是","こんな":"这样的、如此","青かった":"曾是湛蓝的",
+  "いつも":"一如往常","の":"所属、修饰助词：的","海":"大海","場所":"地方","僕ら":"我们","待ってる":"等待着","まで":"直到……为止","ユメ":"梦想","終わんない":"不会结束","（君":"（你","僕":"我","も）":"也）","見た":"做着、怀抱过","まま":"保持……的状态","で":"状态、方式助词","（輝こう）":"（一起闪耀吧）",
+  "楽しい":"快乐的","キモチ":"心情","ずっと":"一直、永远","大事":"珍贵、重要","これ":"这、今后","一緒":"一起","いたい":"想要相伴","君":"你","は）":"主题助词）","つながる":"连接在一起","声":"声音","大きく！":"大声地！","元気":"精神、活力","ハイ":"Hi、应援声","ハイ！":"Hi！","届けたい":"想要传达","歌":"歌曲","届いた":"传达到了","かな":"疑问语气：是否呢",
+  "出会えた":"得以相遇","やっと":"终于","いま":"现在","実感":"切实感受","しちゃった":"终于感受到了","こころ":"心、内心","勇気":"勇气","消えない":"不会消失","よう":"愿望、目的：为了","純粋":"纯粹","いよう":"保持下去吧","恥ずかしく":"羞愧地","自分":"自己","追いかけて":"追逐着","ダイスキ":"最喜欢、热爱","信じる":"相信","信じて":"相信下去","の）":"的）","チカラ":"力量","信じ":"相信","ながら":"接续助词：一边……、同时",
+  "願う":"祈愿","しあわせ":"幸福","な":"连体助动词：……的","（時間":"（时光","続いて":"延续下去","もっと":"更加、更多","笑ってたい":"想继续欢笑","ね）":"呢）","笑って":"笑着","から…":"原因助词：因为……","追いかけた":"一路追逐了","時間":"时光","愛しい…":"珍贵、令人眷恋……","愛しいっ":"珍贵、令人眷恋","抱きしめて":"紧紧拥抱","はなさない":"不放手",
 };
-const eternalHappyLine: LyricLine = {
-  words: [yw("ta-no-shi-i", "开心快乐的", s("楽", "たの"), s("しい")), yw("ki-mo-chi-o", "心情", s("キモチを ")), yw("zu-t-to-zu-t-to", "永远永远", s("ずっとずっと")), yw("da-i-ji-ni", "珍惜", s("大事", "だいじ"), s("に"))],
-  zh: "开心快乐的心情要永远永远珍惜",
-};
-const eternalTogetherLine: LyricLine = {
-  words: [yw("ko-re-ka-ra-mo", "从今以后也", s("これからも")), yw("i-s-sho-ni", "一起", s("一緒", "いっしょ"), s("に")), yw("i-ta-i", "想要相伴", s("いたい"))],
-  zh: "从今以后也想和你在一起",
-};
-const eternalDreamTogetherLine: LyricLine = {
-  words: [
-    yw("yu-me-wa", "梦想", s("ユメは")), yw("o-wa-n-na-i-yo", "不会结束", s("終", "お"), s("わんないよ")),
-    yw("ki-mi-to-bo-ku-wa", "你我皆是", s("（"), s("君", "きみ"), s("と"), s("僕", "ぼく"), s("は） ")),
-    yw("yu-me-mi-ta-ma-ma-sa", "保持心存梦想", s("ユメ"), s("見", "み"), s("たままさ")),
-    yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）")),
-  ],
-  zh: "梦想是不会结束的（你我皆是）保持心存梦想（闪耀吧）",
-};
-const eternalConnectedLine: LyricLine = {
-  words: [yw("ta-no-shi-i", "开心快乐的", s("楽", "たの"), s("しい")), yw("ki-mo-chi-de", "心情", s("キモチで ")), yw("zu-t-to-zu-t-to", "永远永远", s("ずっとずっと")), yw("tsu-na-ga-ru-no-sa", "连结在一起", s("つながるのさ"))],
-  zh: "用开心快乐的心情永远永远连结在一起",
-};
-const eternalRememberLine: LyricLine = {
-  words: [yw("wa-su-re-na-i-de", "可别忘记", s("忘", "わす"), s("れないで ")), yw("wa-su-re-na-i", "不会忘记", s("忘", "わす"), s("れない"))],
-  zh: "可别忘记 不会忘记的！",
+
+const eh = (markup: string, zh: string): LyricLine => {
+  const line = cl(markup, zh, false, eternalHoursWordMeanings);
+  return {
+    ...line,
+    words: line.words.map((word) => {
+      const surface = word.jp.map((segment) => segment.text).join("").trim();
+      const grammaticalSurface = surface.replace(/[（）！？!?…]/g, "");
+      return grammaticalSurface === "は" ? { ...word, romaji: "wa" } : grammaticalSurface === "へ" ? { ...word, romaji: "e" } : word;
+    }),
+  };
 };
 
 const eternalHoursLyrics: LyricLine[] = [
-  { words: [yw("wa-su-re-na-i-de", "不要忘记", s("忘", "わす"), s("れないで ")), yw("wa-su-re-na-i-yo", "不会忘记哟", s("忘", "わす"), s("れないよ"))], zh: "不要忘记 不会忘记哟！" },
-  { words: [yw("ka-zo-e-ta-ra", "数起来的话", s("数", "かぞ"), s("えたら")), yw("ki-ri-ga-na-i", "没完没了", s("キリがない ")), yw("na-i-na-i-yo-ne", "数不清，对吧", s("ない ない よね?"))], zh: "数起来就会没完没了吧！数不清！数不清！对吧？" },
-  { words: [yw("i-ron-na", "各种各样的", s("いろんな")), yw("ko-to-ga", "事情", s("ことが")), yw("a-ri-su-gi-te", "发生得太多", s("ありすぎて"))], zh: "发生了太多太多事情" },
-  { words: [yw("ha-ji-ma-ri-da-t-te-sa", "要说开始的话", s("はじまりだってさ ")), yw("i-tsu-ka-ra", "从什么时候", s("いつから")), yw("nan-da-ro-u-t-te", "究竟是何时呢", s("なんだろうって"))], zh: "要说开始的话 是从什么时候开始的呢" },
-  { words: [yw("nan-ka-i-mo", "一遍又一遍", s("何回", "なんかい"), s("も")), yw("o-mo-i-de-o", "回忆", s("思", "おも"), s("い"), s("出", "で"), s("を")), yw("na-zo-t-ta", "反复追忆", s("なぞった"))], zh: "一遍又一遍回忆了无数次" },
-  { words: [yw("de-ki-na-i", "做不到", s("できない")), yw("ri-yu-u", "理由", s("理由", "りゆう")), yw("ba-i-ba-i-da", "说再见吧", s("?バイバイだ ")), yw("gan-ba-c-cha-u-t-te-sa", "我会加油的", s("がんばっちゃうってさ"))], zh: "和做不到的理由说再见吧 我会加油的" },
-  { words: [yw("ka-na-e-ta-i", "想要实现", s("叶", "かな"), s("えたい")), yw("o-mo-i", "心意", s("想", "おも"), s("い")), yw("ha-na-shi-ta-yo-ne", "说出来了呢", s("話", "はな"), s("したよね"))], zh: "说出了想要实现的心意呢" },
-  { words: [yw("ha-ji-ma-t-te-ta-n-da-yo", "已经开始了", s("はじまってたんだよ ")), yw("ki-ga-tsu-i-ta", "注意到", s("気", "き"), s("がついた")), yw("to-ki-ni-wa", "当……的时候", s("ときには"))], zh: "当我注意到的时候 一切就已经开始了" },
-  { words: [yw("a-shi-ta-e-to", "向着明日", s("明日", "あした"), s("へと")), yw("ka-ke-da-shi-te-ta", "飞驰而出", s("駆", "か"), s("けだしてた"))], zh: "向着明日飞驰而出吧" },
-  { words: [yw("so-ra-wa", "天空", s("空", "そら"), s("は")), yw("hi-ro-i-t-te", "宽广无比", s("広", "ひろ"), s("いって")), yw("shi-t-te-ta-ke-do", "虽说早已知道", s("知", "し"), s("ってたけど"))], zh: "虽说早就知道天空宽广无比" },
-  { words: [yw("kon-na-ni-mo", "原来如此", s("こんなにも")), yw("a-o-ka-t-ta-n-da-ne", "湛蓝啊", s("青", "あお"), s("かったんだね"))], zh: "但原来它还如此湛蓝啊" },
-  { words: [yw("i-tsu-mo-no", "一如既往的", s("いつもの")), yw("u-mi", "大海", s("海", "うみ"), s(" ")), yw("i-tsu-mo-no", "熟悉的", s("いつもの")), yw("ba-sho-ga", "地方", s("場所", "ばしょ"), s("が"))], zh: "一如既往的大海 那熟悉的地方" },
-  { words: [yw("bo-ku-ra-o", "你我、我们", s("僕", "ぼく"), s("らを")), yw("ma-t-te-ru-yo", "等待着", s("待", "ま"), s("ってるよ ")), yw("i-tsu-ma-de-mo", "永远", s("いつまでも"))], zh: "它们永远都在等待着你我" },
-  eternalDreamLine,
-  eternalHappyLine,
-  eternalTogetherLine,
-  eternalDreamTogetherLine,
-  eternalConnectedLine,
-  eternalRememberLine,
-  { words: [yw("ko-e-wa-o-o-ki-ku", "声音洪亮", s("声", "こえ"), s("は"), s("大", "おお"), s("きく ")), yw("ge-n-ki-ni", "元气地", s("元気", "げんき"), s("に")), yw("ha-i-ha-i-ha-i-da-yo", "喊出是是是", s("ハイハイハイだよ"))], zh: "声音洪亮！元气地喊出是是是！是啊！" },
-  { words: [yw("to-do-ke-ta-i", "想传达的", s("届", "とど"), s("けたい")), yw("u-ta", "歌", s("歌", "うた"), s(" ")), yw("to-do-i-ta-ka-na", "传达到了吗", s("届", "とど"), s("いたかな"))], zh: "想传达的歌 传达到了吗" },
-  { words: [yw("ha-ji-ma-t-te-ta-n-da-ne", "原来已经开始了", s("はじまってたんだね ")), yw("de-a-e-ta", "相遇", s("出会", "であ"), s("えた")), yw("to-ki-ka-ra", "从那一刻起", s("ときから"))], zh: "原来从相遇的那一刻起 就已经开始了呢" },
-  { words: [yw("ya-t-to-i-ma", "现在终于", s("やっといま")), yw("ji-k-kan-shi-cha-t-ta-yo", "有所实感了", s("実感", "じっかん"), s("しちゃったよ"))], zh: "我现在终于有所实感了" },
-  { words: [yw("ko-ko-ro-no", "心中的", s("こころの")), yw("yu-u-ki", "勇气", s("勇気", "ゆうき"), s(" ")), yw("ki-e-na-i-yo-u-ni", "不会消失", s("消", "き"), s("えないように"))], zh: "心中的勇气是不会消失的" },
-  { words: [yw("ju-n-su-i-de", "纯洁地", s("純粋", "じゅんすい"), s("で")), yw("i-yo-u-yo", "保持吧", s("いようよ")), yw("bo-ku-ra", "我们", s("僕", "ぼく"), s("ら"))], zh: "我们要保持纯洁哟" },
-  { words: [yw("i-tsu-mo-no", "一如既往的", s("いつもの")), yw("u-mi", "大海", s("海", "うみ"), s(" ")), yw("i-tsu-mo-no", "熟悉的", s("いつもの")), yw("ba-sho-e", "去往地方", s("場所", "ばしょ"), s("へ"))], zh: "去往一如既往的大海 那熟悉的地方" },
-  { words: [yw("ha-zu-ka-shi-ku-na-i", "不会羞耻的", s("恥", "は"), s("ずかしくない")), yw("ji-bu-n-de", "自己", s("自分", "じぶん"), s("で")), yw("i-ta-i-ka-ra", "因为想成为", s("いたいから"))], zh: "因为我想做一个不会羞耻的自己" },
-  { words: [yw("yu-me-o-o-i-ka-ke-te", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけて")), yw("ki-mi-mo-bo-ku-mo", "你我皆是", s("（"), s("君", "きみ"), s("も"), s("僕", "ぼく"), s("も） ")), yw("yu-me-no-chi-ka-ra-de", "用梦想的力量", s("ユメのチカラで")), yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）"))], zh: "追逐梦想吧（你我皆是）用梦想的力量（闪耀吧）" },
-  { words: [yw("da-i-su-ki", "自己的热爱", s("ダイスキ")), yw("shi-n-ji-ru", "相信", s("信", "しん"), s("じる ")), yw("zu-t-to-zu-t-to", "一直一直", s("ずっとずっと")), yw("shi-n-ji-te", "相信下去", s("信", "しん"), s("じて"))], zh: "将自己的热爱一直一直相信下去" },
-  { words: [yw("ko-re-ka-ra-mo", "从今往后也", s("これからも")), yw("i-s-sho-ni", "一起", s("一緒", "いっしょ"), s("に")), yw("i-yo-u", "相伴吧", s("いよう"))], zh: "从今往后也要在一起哟" },
-  { words: [yw("yu-me-o-o-i-ka-ke-te", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけて")), yw("ki-mi-to-bo-ku-no", "你我皆是", s("（"), s("君", "きみ"), s("と"), s("僕", "ぼく"), s("の） ")), yw("yu-me-wa-chi-ka-ra-sa", "梦想就是力量", s("ユメはチカラさ")), yw("ka-ga-ya-ko-u", "闪耀吧", s("（"), s("輝", "かがや"), s("こう）"))], zh: "追逐梦想吧（你我皆是）梦想就是力量（闪耀吧）" },
-  { words: [yw("da-i-su-ki", "自己的热爱", s("ダイスキ")), yw("shi-n-ji-ru", "相信", s("信", "しん"), s("じる ")), yw("zu-t-to-zu-t-to", "一直一直", s("ずっとずっと")), yw("shi-n-ji-na-ga-ra", "持续相信", s("信", "しん"), s("じながら"))], zh: "将自己的热爱一直一直相信下去" },
-  { words: [yw("ne-ga-u-no-wa", "我希望", s("願", "ねが"), s("うのは ")), yw("ne-ga-u-no-wa", "我所希望的是", s("願", "ねが"), s("うのは")), yw("ki-mi-to-no", "和你一起的", s("君", "きみ"), s("との")), yw("shi-a-wa-se-na", "幸福", s("しあわせな"))], zh: "我希望 我所希望的是和你在一起的幸福" },
-  { words: [yw("ji-ka-n", "时光", s("（"), s("時間", "じかん")), yw("tsu-zu-i-te", "延续", s("続", "つづ"), s("いて")), yw("mo-t-to-mo-t-to", "更加长久、更多", s("もっと もっと")), yw("wa-ra-t-te-ta-i-ne", "还想要欢笑", s("笑", "わら"), s("ってたいね）"))], zh: "（时光能更加长久 还想要更多欢笑）" },
-  { words: [yw("wa-ra-t-te-i-ta-i-ka-ra", "因为想要露出笑容", s("笑", "わら"), s("っていたいから"))], zh: "因为想要露出笑容…" },
-  { words: [yw("yu-me-o-o-i-ka-ke-ta", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけた"))], zh: "追逐梦想吧" },
-  { words: [yw("yu-me-o-o-i-ka-ke-ta", "追逐梦想吧", s("ユメを"), s("追", "お"), s("いかけた"))], zh: "追逐梦想吧" },
-  { words: [yw("ki-mi-to-no", "与你度过的", s("君", "きみ"), s("との")), yw("ji-ka-n-ga", "时光", s("時間", "じかん"), s("が")), yw("i-to-shi-i", "令人眷恋", s("愛", "いと"), s("しい ")), yw("i-to-shi-i", "难以忘怀", s("愛", "いと"), s("しいっ ")), yw("da-ki-shi-me-te", "紧紧拥抱", s("抱", "だ"), s("きしめて")), yw("ha-na-sa-na-i-yo", "不要放开哟", s("はなさないよ"))], zh: "与你度过的时光令人眷恋 难以忘怀 紧紧拥抱不要放开哟" },
-  eternalDreamLine,
-  eternalHappyLine,
-  eternalTogetherLine,
-  eternalDreamTogetherLine,
-  eternalConnectedLine,
-  eternalRememberLine,
-  { words: [yw("wa-su-re-na-i-de", "切勿忘记", s("忘", "わす"), s("れないで ")), yw("wa-su-re-na-i-yo", "不会忘记", s("忘", "わす"), s("れないよ ")), yw("wa-su-re-na-i-yo", "不会忘记的哟", s("忘", "わす"), s("れないよ"))], zh: "切勿忘记 不会忘记 不会忘记的哟！！" },
+  eh("忘{わす}れないで|忘{わす}れない|よ！", "不要忘记，我不会忘记！"),
+  eh("数{かぞ}えたら|キリ|が|ない！|ない！|ない！|よね？", "如果真要数起来的话，根本数也数不完！不完！不完！对吧？"),
+  eh("いろんな|こと|が|ありすぎて", "因为发生过的事情实在太多太多了"),
+  eh("はじまり|だ|って|さ　|いつ|から|なん|だろう|って", "就连一切究竟是从什么时候开始的，我也不断想着"),
+  eh("何回{なんかい}|も|思{おも}い出{で}|を|なぞった", "一次又一次地重温那些回忆"),
+  eh("できない|理由{りゆう}？|バイバイ|だ！　|がんばっちゃう|って|さ", "“做不到的理由？”和它说再见吧！那就努力去做吧"),
+  eh("叶{かな}えたい|想{おも}い|話{はな}した|よ|ね", "也曾谈起过那些想要实现的心愿吧"),
+  eh("はじまってた|んだ|よ　|気{き}|が|ついた|とき|に|は", "其实早就已经开始了，等到回过神来的时候"),
+  eh("明日{あした}|へ|と|駆{か}けだしてた", "我们早已向着明天奔跑而去"),
+  eh("空{そら}|は|広{ひろ}い|って|知{し}ってた|けど", "我一直都知道天空很辽阔"),
+  eh("こんな|に|も|青{あお}かった|んだ|ね", "却没想到，原来它是如此湛蓝"),
+  eh("いつも|の|海{うみ}　|いつも|の|場所{ばしょ}|が", "熟悉的大海，熟悉的地方"),
+  eh("僕{ぼく}ら|を|待{ま}ってる|よ　|いつ|まで|も", "无论何时，都会一直等待着我们"),
+  eh("ユメ|は|終{お}わんない|よ|（君{きみ}|も|僕{ぼく}|も）　|ユメ|見{み}た|まま|で|（輝{かがや}こう）", "梦想不会结束（你也好，我也好），就这样怀抱着梦想（一起闪耀吧）"),
+  eh("楽{たの}しい|キモチ|を　|ずっと|ずっと|大事{だいじ}|に", "这份快乐的心情，要一直、一直珍惜下去"),
+  eh("これ|から|も|一緒{いっしょ}|に|いたい", "今后，也想继续和你在一起"),
+  eh("ユメ|は|終{お}わんない|よ|（君{きみ}|と|僕{ぼく}|は）　|ユメ|見{み}た|まま|さ|（輝{かがや}こう）", "梦想不会结束（你和我），依然怀抱着梦想（一起闪耀吧）"),
+  eh("楽{たの}しい|キモチ|で　|ずっと|ずっと|つながる|の|さ", "就让这份快乐的心情，把我们一直、一直连接在一起"),
+  eh("忘{わす}れないで　|忘{わす}れない！", "不要忘记，不要忘记！"),
+  eh("声{こえ}|は|大{おお}きく！　|元気{げんき}|に|ハイ|ハイ|ハイ！|だ|よ！", "声音再大一点！精神满满地 Hi！Hi！Hi！"),
+  eh("届{とど}けたい|歌{うた}　|届{とど}いた|かな", "那首想要传达出去的歌，有没有传达到呢？"),
+  eh("はじまってた|んだ|ね　|出会{であ}えた|とき|から", "原来从我们相遇的那一刻起，一切就已经开始了"),
+  eh("やっと|いま|実感{じっかん}|しちゃった|よ", "直到现在，我才终于真正感受到这一点"),
+  eh("こころ|の|勇気{ゆうき}　|消{き}えない|よう|に", "愿心中的勇气永远不要消失"),
+  eh("純粋{じゅんすい}|で|いよう|よ|僕{ぼく}ら", "让我们一直保持最纯粹的心吧"),
+  eh("いつも|の|海{うみ}　|いつも|の|場所{ばしょ}|へ", "回到那片熟悉的大海、那个熟悉的地方"),
+  eh("恥{は}ずかしく|ない|自分{じぶん}|で|いたい|から", "因为我想成为一个不会对自己感到羞愧的人"),
+  eh("ユメ|を|追{お}いかけて|（君{きみ}|も|僕{ぼく}|も）　|ユメ|の|チカラ|で|（輝{かがや}こう）", "继续追逐梦想吧（你也好，我也好），凭借梦想的力量（一起闪耀吧）"),
+  eh("ダイスキ|信{しん}じる　|ずっと|ずっと|信{しん}じて", "相信自己的“最喜欢”，一直、一直相信下去"),
+  eh("これ|から|も|一緒{いっしょ}|に|いよう", "今后，也继续在一起吧"),
+  eh("ユメ|を|追{お}いかけて|（君{きみ}|と|僕{ぼく}|の）　|ユメ|は|チカラ|さ|（輝{かがや}こう）", "继续追逐梦想吧（你和我的），梦想就是力量（一起闪耀吧）"),
+  eh("ダイスキ|信{しん}じる　|ずっと|ずっと|信{しん}じ|ながら", "相信自己的“最喜欢”，就这样一直、一直相信下去"),
+  eh("願{ねが}う|の|は　|願{ねが}う|の|は|君{きみ}|と|の|しあわせ|な", "我所祈愿的，是与你一起拥有的幸福"),
+  eh("（時間{じかん}|続{つづ}いて|もっと　|もっと|笑{わら}ってたい|ね）", "（希望这样的时光还能继续下去，还想和你一起笑得更多、更多）"),
+  eh("笑{わら}って|いたい|から…", "因为我还想继续这样笑着……"),
+  eh("ユメ|を|追{お}いかけた", "一路追寻梦想"),
+  eh("ユメ|を|追{お}いかけた", "一路追寻梦想"),
+  eh("君{きみ}|と|の|時間{じかん}|が|愛{いと}しい…|愛{いと}しいっ　|抱{だ}きしめて|はなさない|よ", "与你相伴的时光如此珍贵、如此难忘，想要紧紧拥抱着不愿放手！"),
+  eh("ユメ|は|終{お}わんない|よ|（君{きみ}|も|僕{ぼく}|も）　|ユメ|見{み}た|まま|で|（輝{かがや}こう）", "梦想不会结束（你也好，我也好），就这样怀抱着梦想（一起闪耀吧）"),
+  eh("楽{たの}しい|キモチ|を　|ずっと|ずっと|大事{だいじ}|に", "这份快乐的心情，要一直、一直珍惜下去"),
+  eh("これ|から|も|一緒{いっしょ}|に|いたい", "今后，也想继续和你在一起"),
+  eh("ユメ|は|終{お}わんない|よ|（君{きみ}|と|僕{ぼく}|は）　|ユメ|見{み}た|まま|さ|（輝{かがや}こう）", "梦想不会结束（你和我），依然怀抱着梦想（一起闪耀吧）"),
+  eh("楽{たの}しい|キモチ|で　|ずっと|ずっと|つながる|の|さ", "就让这份快乐的心情，把我们一直、一直连接在一起"),
+  eh("忘{わす}れないで　|忘{わす}れない！", "不要忘记，不要忘记！"),
+  eh("忘{わす}れないで　|忘{わす}れない|よ　|忘{わす}れない|よ！！", "不要忘记，我不会忘记，我不会忘记！！"),
 ];
 
 export const songs: Record<string, Song> = {
@@ -1183,9 +1172,19 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
   const song = songs[songSlug] ?? songs["kimi-no-kokoro"];
   const lyrics = song.lyrics;
   const audioRef = useRef<HTMLAudioElement>(null);
+  const ambientHostRef = useRef<HTMLElement>(null);
   const readerRef = useRef<HTMLElement>(null);
   const lineRefs = useRef<(HTMLLIElement | null)[]>([]);
   const animationRef = useRef<number | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioSourceRef = useRef<MediaElementAudioSourceNode | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
+  const frequencyDataRef = useRef<Uint8Array<ArrayBuffer> | null>(null);
+  const bandTrackersRef = useRef({
+    bass: createReactiveBandTracker(),
+    mid: createReactiveBandTracker(),
+    high: createReactiveBandTracker(),
+  });
   const lastClockUpdateRef = useRef(0);
   const [timedCharacters, setTimedCharacters] = useState<TimedCharacter[]>([]);
   const [audioSrc, setAudioSrc] = useState<string | null>(null);
@@ -1257,11 +1256,72 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
   }, [activeLine, autoScroll]);
   useEffect(() => () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    audioSourceRef.current?.disconnect();
+    analyserRef.current?.disconnect();
+    void audioContextRef.current?.close();
   }, []);
+
+  const setAmbientLevels = (bass: number, mid: number, high: number) => {
+    const host = ambientHostRef.current;
+    if (!host) return;
+    const visual = mapReactiveLevels(bass, mid, high);
+    host.style.setProperty("--ambient-cover-scale", visual.coverScale.toFixed(4));
+    host.style.setProperty("--ambient-cover-opacity", visual.coverOpacity.toFixed(3));
+    host.style.setProperty("--ambient-glow-scale", visual.glowScale.toFixed(4));
+    host.style.setProperty("--ambient-glow-opacity", visual.glowOpacity.toFixed(3));
+  };
+
+  const sampleAudioEnergy = () => {
+    const analyser = analyserRef.current;
+    const data = frequencyDataRef.current;
+    const context = audioContextRef.current;
+    if (!analyser || !data || !context) return;
+
+    analyser.getByteFrequencyData(data);
+    const hzPerBin = context.sampleRate / analyser.fftSize;
+    const bandEnergy = (fromHz: number, toHz: number) => {
+      const start = Math.max(1, Math.floor(fromHz / hzPerBin));
+      const end = Math.min(data.length, Math.ceil(toHz / hzPerBin));
+      let sum = 0;
+      for (let index = start; index < end; index += 1) sum += (data[index] / 255) ** 2;
+      return end > start ? Math.sqrt(sum / (end - start)) : 0;
+    };
+    const trackers = bandTrackersRef.current;
+    setAmbientLevels(
+      updateReactiveBand(trackers.bass, bandEnergy(35, 190)),
+      updateReactiveBand(trackers.mid, bandEnergy(190, 2200)),
+      updateReactiveBand(trackers.high, bandEnergy(2200, 9000)),
+    );
+  };
+
+  const prepareAudioAnalysis = async () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+    try {
+      if (!audioContextRef.current) {
+        const context = new AudioContext();
+        const source = context.createMediaElementSource(audio);
+        const analyser = context.createAnalyser();
+        analyser.fftSize = 512;
+        analyser.smoothingTimeConstant = .72;
+        source.connect(context.destination);
+        source.connect(analyser);
+        audioContextRef.current = context;
+        audioSourceRef.current = source;
+        analyserRef.current = analyser;
+        frequencyDataRef.current = new Uint8Array(analyser.frequencyBinCount);
+      }
+      if (audioContextRef.current.state === "suspended") await audioContextRef.current.resume();
+    } catch {
+      // Audio playback remains available even if Web Audio analysis is unavailable.
+    }
+  };
 
   const updateClock = () => {
     if (!audioRef.current) return;
     const audioMs = audioRef.current.currentTime * 1000;
+    if (!audioRef.current.paused) sampleAudioEnergy();
     if (audioRef.current.paused || Math.abs(audioMs - lastClockUpdateRef.current) >= 30) {
       lastClockUpdateRef.current = audioMs;
       setCurrentMs(audioMs);
@@ -1269,11 +1329,24 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
     if (!audioRef.current.paused) animationRef.current = requestAnimationFrame(updateClock);
   };
   const beginClock = () => { setIsPlaying(true); if (animationRef.current) cancelAnimationFrame(animationRef.current); animationRef.current = requestAnimationFrame(updateClock); };
-  const stopClock = () => { setIsPlaying(false); if (animationRef.current) cancelAnimationFrame(animationRef.current); updateClock(); };
+  const stopClock = () => {
+    setIsPlaying(false);
+    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    bandTrackersRef.current = {
+      bass: createReactiveBandTracker(),
+      mid: createReactiveBandTracker(),
+      high: createReactiveBandTracker(),
+    };
+    setAmbientLevels(0, 0, 0);
+    updateClock();
+  };
   const togglePlayback = async () => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (audio.paused) await audio.play();
+    if (audio.paused) {
+      await prepareAudioAnalysis();
+      await audio.play();
+    }
     else audio.pause();
   };
   const seekToTime = (seconds: number) => {
@@ -1327,7 +1400,11 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
           <a className="start-link" href="#lyrics">开始阅读 <span aria-hidden="true">↓</span></a>
         </div>
       </header>
-      <section className="reader" id="lyrics" aria-label="歌词正文">
+      <section className="reader" id="lyrics" aria-label="歌词正文" ref={ambientHostRef}>
+        <div className="audio-ambient" aria-hidden="true">
+          <span className="audio-ambient-cover" />
+          <span className="audio-ambient-glow" />
+        </div>
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
