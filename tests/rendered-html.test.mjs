@@ -133,16 +133,22 @@ test("renders the annotated Over The Next Rainbow reader", async () => {
   assert.match(html, /Over The Next/);
   assert.match(html, /<ruby><span class="timed-character"[^>]*>会<\/span><rt>あ<\/rt><\/ruby>/);
   assert.match(html, /a-i-ta-ka-t-ta/);
-  assert.match(html, /向逐渐消失的彩虹许下约定/);
+  assert.match(html, /向那渐渐消失的彩虹许下约定吧/);
   assert.match(html, /Saint Aqours Snow/);
   assert.match(html, /data-source="\/audio\/over-next-rainbow\.mp3"/);
   assert.equal(html.split(covers.overNextRainbow).length - 1, 2);
   assert.match(html, /Kanata Okajima/);
   assert.match(html, /TAKAROT \/ Shinji Tanaka/);
   assert.doesNotMatch(html, />歌词应援语</);
+  assert.doesNotMatch(html, />歌词表达</);
+  const words = renderedJapaneseWords(html);
+  assert.deepEqual(words[0], ["会いたかった", "遠い", "場所", "に", "いて", "も"]);
+  assert.deepEqual(words[2], ["夢", "に", "も", "色々", "ある", "から", "叶えかた", "も", "それぞれ", "だ", "と"]);
   const yrc = await readFile(new URL("../public/audio/over-next-rainbow.yrc", import.meta.url), "utf8");
   assert.equal(yrcJapanese(yrc).length, 57);
-  assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
+  const rendered = renderedJapanese(html);
+  assert.equal(rendered.length, 40);
+  assert.equal(alignableJapanese(rendered), alignableJapanese(yrcJapanese(yrc)));
 });
 
 test("renders the original synchronized lyric reader", async () => {
