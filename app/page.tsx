@@ -46,7 +46,7 @@ export default function Home() {
 
   return (
     <main className="library-page">
-      <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "切换到浅色模式" : "切换到暗色模式"} aria-pressed={theme === "dark"}>
+      <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "切换到浅色模式" : "切换到暗色模式"} aria-pressed={theme === "dark"} data-umami-event="theme-change" data-umami-event-theme={theme === "dark" ? "light" : "dark"}>
         <Moon className="theme-icon theme-icon-moon" aria-hidden="true" />
         <Sun className="theme-icon theme-icon-sun" aria-hidden="true" />
       </button>
@@ -78,7 +78,7 @@ export default function Home() {
                 </div>
                 <div className="release-year-songs">
                   {songs.map((song) => (
-                    <a className="release-card" href={`/songs/${song.slug}`} key={song.slug}>
+                    <a className="release-card" href={`/songs/${song.slug}`} key={song.slug} data-umami-event="song-open" data-umami-event-song={song.slug}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={song.cover} width="1400" height="1400" alt="" />
                       <div className="release-card-copy">

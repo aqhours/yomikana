@@ -56,6 +56,10 @@ test("server-renders the song library", async () => {
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<title>Yomikana｜Aqours 日语歌词读本<\/title>/);
+  assert.match(html, /src="https:\/\/analytics\.aqhours\.cn\/script\.js"/);
+  assert.match(html, /data-website-id="869d44f0-dcf2-4693-93bb-76dcd5a53226"/);
+  assert.match(html, /data-umami-event="song-open" data-umami-event-song="kimi-no-kokoro"/);
+  assert.match(html, /data-umami-event="theme-change" data-umami-event-theme="dark"/);
   assert.match(html, /聴いて、読んで、/);
   assert.match(html, /君のこころは輝いてるかい？/);
   assert.match(html, /ユメ\+ミライ=無限大/);
@@ -204,6 +208,9 @@ test("renders the original synchronized lyric reader", async () => {
   const html = await response.text();
   assert.match(html, /<ruby><span class="timed-character"[^>]*>君<\/span><rt>きみ<\/rt><\/ruby>/);
   assert.match(html, /data-source="\/audio\/kimi-no-kokoro\.mp3"/);
+  assert.match(html, /data-umami-event="reader-start" data-umami-event-song="kimi-no-kokoro"/);
+  assert.match(html, /data-umami-event="audio-play" data-umami-event-song="kimi-no-kokoro"/);
+  assert.match(html, /data-umami-event="auto-follow-disable" data-umami-event-song="kimi-no-kokoro"/);
   assert.match(html, /歌曲加载中\.\.\./);
   assert.match(html, /自动跟随/);
   assert.match(html, /畑亜貴/);

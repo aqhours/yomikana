@@ -22,10 +22,19 @@ const themeBootScript = `(() => {
   } catch {}
 })();`;
 
+const umamiWebsiteId = "869d44f0-dcf2-4693-93bb-76dcd5a53226";
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="zh-CN" suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: themeBootScript }} /></head>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBootScript }} />
+        <script
+          defer
+          src="https://analytics.aqhours.cn/script.js"
+          data-website-id={umamiWebsiteId}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
     </html>
   );

@@ -1380,7 +1380,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
         {/* vinext currently duplicates React when hydrating next/link in this client reader. */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a className="library-link" href="/" aria-label="返回歌词本"><ArrowLeft aria-hidden="true" /> <span>歌词本</span></a>
-        <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "切换到浅色模式" : "切换到暗色模式"} title={theme === "dark" ? "浅色模式" : "暗色模式"} aria-pressed={theme === "dark"}>
+        <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "切换到浅色模式" : "切换到暗色模式"} title={theme === "dark" ? "浅色模式" : "暗色模式"} aria-pressed={theme === "dark"} data-umami-event="theme-change" data-umami-event-theme={theme === "dark" ? "light" : "dark"}>
           <Moon className="theme-icon theme-icon-moon" aria-hidden="true" />
           <Sun className="theme-icon theme-icon-sun" aria-hidden="true" />
         </button>
@@ -1393,7 +1393,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             <div><dt>編曲</dt><dd>{song.credits.arranger}</dd></div>
             <div><dt>演唱</dt><dd>{song.artist}</dd></div>
           </dl>
-          <a className="start-link" href="#lyrics">开始阅读 <span aria-hidden="true">↓</span></a>
+          <a className="start-link" href="#lyrics" data-umami-event="reader-start" data-umami-event-song={song.slug}>开始阅读 <span aria-hidden="true">↓</span></a>
         </div>
       </header>
       <section className="reader" id="lyrics" aria-label="歌词正文">
@@ -1403,7 +1403,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
           <audio ref={audioRef} className="audio-player" preload="metadata" loop src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="mini-cover" src={song.cover} width="1400" height="1400" alt="" aria-hidden="true" />
-          <button className="play-toggle" type="button" disabled={!audioSrc} onClick={togglePlayback} aria-label={isPlaying ? "暂停" : "播放"}>
+          <button className="play-toggle" type="button" disabled={!audioSrc} onClick={togglePlayback} aria-label={isPlaying ? "暂停" : "播放"} data-umami-event={isPlaying ? "audio-pause" : "audio-play"} data-umami-event-song={song.slug}>
             {isPlaying ? <Pause aria-hidden="true" /> : <Play className="play-icon" aria-hidden="true" />}
           </button>
           <div className="timeline">
@@ -1411,7 +1411,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             <input className="progress-slider" type="range" min="0" max={durationMs ? durationMs / 1000 : 0} step="0.01" value={currentMs / 1000} disabled={!durationMs} onInput={(event) => seekToTime(Number(event.currentTarget.value))} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); seekFromPointer(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) seekFromPointer(event); }} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)} aria-label="播放进度" style={{ "--progress": `${durationMs ? Math.min(100, currentMs / durationMs * 100) : 0}%` } as React.CSSProperties} />
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>
-          <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)}><ListRestart aria-hidden="true" /><span className="sr-only">自动跟随</span></button>
+          <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)} data-umami-event={autoScroll ? "auto-follow-disable" : "auto-follow-enable"} data-umami-event-song={song.slug}><ListRestart aria-hidden="true" /><span className="sr-only">自动跟随</span></button>
         </div>
         <ol className="lyrics-list" ref={readerRef}>
           {lyrics.map((line, lineIndex) => (
