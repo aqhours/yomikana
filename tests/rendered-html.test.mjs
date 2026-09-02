@@ -19,13 +19,14 @@ const covers = {
   kimi: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%90%9B%E3%81%AE%E3%81%93%E3%81%93%E3%82%8D%E3%81%AF%20%E8%BC%9D%E3%81%84%E3%81%A6%E3%82%8B%E3%81%8B%E3%81%84%EF%BC%9F3000x3000bb.jpg",
   yume: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg",
   happyPartyTrain: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/HAPPY%20PARTY%20TRAIN3000x3000bb.jpg",
+  yuukiWaDokoNi: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%8B%87%E6%B0%97%E3%81%AF%E3%81%A8%E3%82%99%E3%81%93%E3%81%AB%EF%BC%9F%E5%90%9B%E3%81%AE%E8%83%B8%E3%81%AB%EF%BC%813000x3000bb.jpg",
   overNextRainbow: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Over%20The%20Next%20Rainbow3000x3000bb.jpg",
   eternalHours: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E6%B0%B8%E4%B9%85hours3000x3000bb.jpg",
   aozoraJumpingHeart: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E9%9D%92%E7%A9%BAJumping%20Heart3000x3000bb.jpg",
   miraiTicket: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRAI%20TICKET3000x3000bb.jpg",
   yumeKataru: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%E8%AA%9E%E3%82%8B%E3%82%88%E3%82%8A%E3%83%A6%E3%83%A1%E6%AD%8C%E3%81%8A%E3%81%863000x3000bb.jpg",
   miracleWave: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/MIRACLE%20WAVE3000x3000bb.jpg",
-  soraKokoro: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E7%A9%BA%E3%82%82%E5%BF%83%E3%82%82%E6%99%B4%E3%82%8C%E3%82%8B%E3%81%8B%E3%82%893000x3000bb.jpg",
+  soraKokoro: "https://cos.aqhours.cn/eternal-hours-project/%E7%A9%BA%E3%82%82%E5%BF%83%E3%82%82%E6%99%B4%E3%82%8C%E3%82%8B%E3%81%8B%E3%82%89bb.webp",
   waterBlueNewWorld: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/WATER%20BLUE%20NEW%20WORLD3000x3000bb.jpg",
 };
 
@@ -59,6 +60,7 @@ test("server-renders the song library", async () => {
   assert.match(html, /君のこころは輝いてるかい？/);
   assert.match(html, /ユメ\+ミライ=無限大/);
   assert.match(html, /HAPPY PARTY TRAIN/);
+  assert.match(html, /勇気はどこに？君の胸に！/);
   assert.match(html, /Over The Next Rainbow/);
   assert.match(html, /永久hours/);
   assert.match(html, /青空Jumping Heart/);
@@ -71,6 +73,7 @@ test("server-renders the song library", async () => {
   assert.match(html, /href="\/songs\/kimi-no-kokoro"/);
   assert.match(html, /href="\/songs\/yume-mirai"/);
   assert.match(html, /href="\/songs\/happy-party-train"/);
+  assert.match(html, /href="\/songs\/yuuki-wa-doko-ni"/);
   assert.match(html, /href="\/songs\/over-next-rainbow"/);
   assert.match(html, /href="\/songs\/eternal-hours"/);
   assert.match(html, /href="\/songs\/aozora-jumping-heart"/);
@@ -83,6 +86,7 @@ test("server-renders the song library", async () => {
   assert.ok(html.includes(covers.kimi));
   assert.ok(html.includes(covers.yume));
   assert.ok(html.includes(covers.happyPartyTrain));
+  assert.ok(html.includes(covers.yuukiWaDokoNi));
   assert.ok(html.includes(covers.overNextRainbow));
   assert.ok(html.includes(covers.eternalHours));
   assert.ok(html.includes(covers.aozoraJumpingHeart));
@@ -91,7 +95,7 @@ test("server-renders the song library", async () => {
   assert.ok(html.includes(covers.miracleWave));
   assert.ok(html.includes(covers.soraKokoro));
   assert.ok(html.includes(covers.waterBlueNewWorld));
-  assert.equal(html.match(/class="release-card"/g)?.length, 12);
+  assert.equal(html.match(/class="release-card"/g)?.length, 13);
   assert.equal(html.match(/class="release-year"/g)?.length, 7);
   assert.doesNotMatch(html, /2015\.10\.07|2017\.11\.29|2024\.12\.18/);
   const chronologicalSlugs = [
@@ -101,6 +105,7 @@ test("server-renders the song library", async () => {
     "sora-mo-kokoro-mo-hareru-kara",
     "mirai-ticket",
     "happy-party-train",
+    "yuuki-wa-doko-ni",
     "my-mai-tonight",
     "miracle-wave",
     "water-blue-new-world",
@@ -143,6 +148,29 @@ test("renders the annotated HAPPY PARTY TRAIN reader", async () => {
   assert.doesNotMatch(html, />歌词应援语</);
   const yrc = await readFile(new URL("../public/audio/happy-party-train.yrc", import.meta.url), "utf8");
   assert.deepEqual(renderedJapanese(html), yrcJapanese(yrc));
+});
+
+test("renders the annotated 勇気はどこに？君の胸に！ reader", async () => {
+  const response = await render("/songs/yuuki-wa-doko-ni");
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /勇気はどこに？/);
+  assert.match(html, /君の胸に！/);
+  assert.match(html, /<ruby><span class="timed-character"[^>]*>勇<\/span><span class="timed-character"[^>]*>気<\/span><rt>ゆうき<\/rt><\/ruby>/);
+  assert.match(html, /yu-u-ki/);
+  assert.match(html, /不论几次都要奋起追赶，别就此认输/);
+  assert.match(html, /data-source="\/audio\/yuuki-wa-doko-ni\.mp3"/);
+  assert.equal(html.split(covers.yuukiWaDokoNi).length - 1, 2);
+  assert.match(html, /小高光太郎 \/ UiNA/);
+  const words = renderedJapaneseWords(html);
+  assert.deepEqual(words[2], ["僕", "だって", "最初", "から", "できた", "ワケ", "じゃ", "ない", "よ"]);
+  assert.deepEqual(words[13], ["だって", "今日", "は", "今日", "で", "だって", "目覚めたら", "違う", "朝", "だ", "よ"]);
+  assert.deepEqual(words[28], ["もっと", "勇気", "だして", "もっと", "その", "勇気", "は", "君", "に", "ある", "よ"]);
+  const yrc = await readFile(new URL("../public/audio/yuuki-wa-doko-ni.yrc", import.meta.url), "utf8");
+  const rendered = renderedJapanese(html);
+  assert.equal(rendered.length, 42);
+  assert.equal(alignableJapanese(rendered), alignableJapanese(yrcJapanese(yrc)));
+  assert.doesNotMatch(html, />歌词应援语|>歌词表达/);
 });
 
 test("renders the annotated Over The Next Rainbow reader", async () => {
@@ -350,6 +378,8 @@ test("ships all local audio assets", async () => {
     access(new URL("../public/audio/yume-mirai.yrc", import.meta.url)),
     access(new URL("../public/audio/happy-party-train.mp3", import.meta.url)),
     access(new URL("../public/audio/happy-party-train.yrc", import.meta.url)),
+    access(new URL("../public/audio/yuuki-wa-doko-ni.mp3", import.meta.url)),
+    access(new URL("../public/audio/yuuki-wa-doko-ni.yrc", import.meta.url)),
     access(new URL("../public/audio/over-next-rainbow.mp3", import.meta.url)),
     access(new URL("../public/audio/over-next-rainbow.yrc", import.meta.url)),
     access(new URL("../public/audio/eternal-hours.mp3", import.meta.url)),

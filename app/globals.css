@@ -73,6 +73,18 @@ a { color:inherit; }
 .song-happy-party-train .mini-cover { box-shadow:0 6px 16px rgba(23,61,120,.24); }
 .song-happy-party-train .progress-slider::-webkit-slider-thumb { border-color:#eafffd; box-shadow:0 2px 8px rgba(23,61,120,.28); }
 .song-happy-party-train .progress-slider::-moz-range-thumb { border-color:#eafffd; box-shadow:0 2px 8px rgba(23,61,120,.28); }
+.song-yuuki-wa-doko-ni { --ink:#244e52; --ink-soft:#648185; --paper:#f1faf6; --cream:#e4f4ec; --sun:#4ca77a; --sun-deep:#32875f; --sun-light:#9bd6b8; --rule:rgba(42,91,82,.18); --line-number:#86a99b; --line-number-active:#3c966b; --timed-muted:rgba(36,78,82,.38); --romaji:#398f67; --glow-color:#56b486; --glow-shadow:0 0 5px rgba(164,224,193,.9),0 0 14px rgba(76,167,122,.52),0 0 26px rgba(50,135,95,.2); --scroll-thumb:rgba(76,167,122,.5); --aside:#76998b; --control-border:rgba(76,167,122,.46); --control-fill:rgba(76,167,122,.13); }
+.song-yuuki-wa-doko-ni .hero { background:linear-gradient(90deg,rgba(245,252,249,.96) 0%,rgba(229,245,237,.82) 43%,rgba(76,167,122,.07) 74%); }
+.song-yuuki-wa-doko-ni .hero::before { background:linear-gradient(180deg,rgba(169,222,196,.04),transparent 56%,rgba(24,65,57,.16)); }
+.song-yuuki-wa-doko-ni .hero::after { content:"君の胸に"; color:rgba(255,255,255,.3); }
+.song-yuuki-wa-doko-ni .library-link,.song-yuuki-wa-doko-ni .theme-toggle { border-color:rgba(42,91,82,.18); background:rgba(246,252,249,.64); box-shadow:0 8px 24px rgba(24,65,57,.13); }
+.song-yuuki-wa-doko-ni .library-link:hover,.song-yuuki-wa-doko-ni .theme-toggle:hover { border-color:var(--control-border); }
+.song-yuuki-wa-doko-ni .reader { background:rgba(232,246,239,.76); box-shadow:0 20px 70px rgba(24,65,57,.19); }
+.song-yuuki-wa-doko-ni .player-bar { border-bottom-color:rgba(42,91,82,.14); background:rgba(247,252,250,.93); box-shadow:0 10px 28px rgba(24,65,57,.09); }
+.song-yuuki-wa-doko-ni .play-toggle { background:#244e52; box-shadow:0 5px 16px rgba(36,78,82,.23); }
+.song-yuuki-wa-doko-ni .mini-cover { box-shadow:0 6px 16px rgba(36,78,82,.24); }
+.song-yuuki-wa-doko-ni .progress-slider::-webkit-slider-thumb { border-color:#effff6; box-shadow:0 2px 8px rgba(36,78,82,.28); }
+.song-yuuki-wa-doko-ni .progress-slider::-moz-range-thumb { border-color:#effff6; box-shadow:0 2px 8px rgba(36,78,82,.28); }
 .song-over-next-rainbow { --ink:#563c78; --ink-soft:#806b97; --paper:#f8f1ff; --cream:#f0e4fb; --sun:#df6fa4; --sun-deep:#a45cd2; --sun-light:#e9b6dc; --rule:rgba(104,72,139,.18); --line-number:#a287b4; --line-number-active:#b458a2; --timed-muted:rgba(86,60,120,.38); --romaji:#a24b94; --glow-color:#db71ba; --glow-shadow:0 0 5px rgba(244,180,226,.9),0 0 14px rgba(218,103,174,.52),0 0 26px rgba(164,92,210,.2); --scroll-thumb:rgba(181,91,169,.48); --aside:#9672a5; --control-border:rgba(201,96,168,.44); --control-fill:rgba(201,96,168,.12); }
 .song-over-next-rainbow .hero { background:linear-gradient(90deg,rgba(250,244,255,.96) 0%,rgba(246,233,252,.8) 43%,rgba(223,111,164,.07) 74%); }
 .song-over-next-rainbow .hero::before { background:linear-gradient(180deg,rgba(231,177,222,.04),transparent 56%,rgba(72,38,105,.16)); }
@@ -324,6 +336,12 @@ html[data-theme="dark"] .song-happy-party-train .library-link,html[data-theme="d
 html[data-theme="dark"] .song-happy-party-train .reader { border-color:rgba(168,193,232,.1); background:rgba(7,25,55,.82); box-shadow:0 24px 80px rgba(0,6,18,.58); }
 html[data-theme="dark"] .song-happy-party-train .player-bar { border-bottom-color:rgba(168,193,232,.12); background:rgba(7,27,60,.92); }
 html[data-theme="dark"] .song-happy-party-train .play-toggle { border-color:rgba(218,255,252,.82); background:#d9fffc; color:#17345e; }
+html[data-theme="dark"] .song-yuuki-wa-doko-ni { --ink:#e7f8ef; --ink-soft:#a6c7b7; --sun:#68c596; --sun-deep:#48a978; --sun-light:#396c55; --rule:rgba(177,218,197,.16); --line-number:#789b8a; --line-number-active:#72d3a2; --timed-muted:rgba(226,244,234,.36); --romaji:#7ad2a6; --glow-color:#a6e9c5; --glow-shadow:0 0 6px rgba(166,233,197,.9),0 0 16px rgba(76,167,122,.5),0 0 28px rgba(50,135,95,.2); --scroll-thumb:rgba(76,167,122,.5); --aside:#91b7a4; --control-border:rgba(104,197,150,.46); --control-fill:rgba(104,197,150,.14); }
+html[data-theme="dark"] .song-yuuki-wa-doko-ni .hero { background:linear-gradient(90deg,rgba(7,25,24,.96) 0%,rgba(12,43,37,.82) 45%,rgba(5,31,27,.3) 78%); }
+html[data-theme="dark"] .song-yuuki-wa-doko-ni .library-link,html[data-theme="dark"] .song-yuuki-wa-doko-ni .theme-toggle { border-color:rgba(177,218,197,.17); background:rgba(10,37,33,.64); box-shadow:0 8px 28px rgba(0,9,7,.4); }
+html[data-theme="dark"] .song-yuuki-wa-doko-ni .reader { border-color:rgba(177,218,197,.1); background:rgba(9,33,29,.82); box-shadow:0 24px 80px rgba(0,9,7,.58); }
+html[data-theme="dark"] .song-yuuki-wa-doko-ni .player-bar { border-bottom-color:rgba(177,218,197,.12); background:rgba(10,37,33,.92); }
+html[data-theme="dark"] .song-yuuki-wa-doko-ni .play-toggle { border-color:rgba(230,255,241,.82); background:#e7f8ef; color:#24483d; }
 html[data-theme="dark"] .song-over-next-rainbow { --ink:#f6e7ff; --ink-soft:#c5a8d4; --sun:#f28cbd; --sun-deep:#d977b7; --sun-light:#754b82; --rule:rgba(221,174,235,.16); --line-number:#997ca6; --line-number-active:#ec8fc3; --timed-muted:rgba(241,221,249,.36); --romaji:#ed9ac7; --glow-color:#ffacd4; --glow-shadow:0 0 6px rgba(255,172,212,.88),0 0 16px rgba(224,111,170,.5),0 0 28px rgba(164,92,210,.2); --scroll-thumb:rgba(219,113,184,.48); --aside:#ba92c5; --control-border:rgba(242,140,189,.44); --control-fill:rgba(242,140,189,.13); }
 html[data-theme="dark"] .song-over-next-rainbow .hero { background:linear-gradient(90deg,rgba(25,13,38,.96) 0%,rgba(43,22,58,.82) 45%,rgba(34,13,48,.3) 78%); }
 html[data-theme="dark"] .song-over-next-rainbow .library-link,html[data-theme="dark"] .song-over-next-rainbow .theme-toggle { border-color:rgba(221,174,235,.16); background:rgba(39,20,52,.64); box-shadow:0 8px 28px rgba(9,2,14,.38); }
