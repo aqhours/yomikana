@@ -738,50 +738,76 @@ const myMaiTonightLyrics: LyricLine[] = [
   mmt("My|舞{まい}☆|tonight|（Dancing tonight）", "MY舞☆TONIGHT（DANCING TONIGHT）", true),
 ];
 
+// Learning units keep compound verbs and inflections intact, while separating particles.
+const soraKokoroWordMeanings: Record<string, string> = {
+  "うまく":"顺利地", "いかなくて":"进展不顺，因而……", "泣きそうに":"快要哭出来（接なる）", "なる":"变得", "時":"时候", "は":"主题助词，读 wa",
+  "くちびる":"嘴唇", "噛みつつ":"一边咬着（つつ：同时）", "願う":"祈愿、盼望", "んだ":"说明、强调心情", "あした":"明天", "晴れ":"放晴；此处表达期盼",
+  "繋がりそうで":"看似能相通，却……", "繋がらない":"无法相通", "の":"连接名词：的", "心":"心", "と":"与；引用前面的内容",
+  "船":"船", "が":"主语助词", "夕焼け":"晚霞", "を":"宾语助词，读 o", "渡る":"渡过、穿过", "よ":"句末语气：提醒、强调",
+  "悩み":"烦恼", "持ち去る":"带走", "ように":"仿佛……一样", "私":"我", "まだまだ":"还远未到极限、仍然", "頑張れる":"还能努力（可能形）",
+  "消える":"消散、消失", "波":"海浪", "に":"对象、方向或到达点助词", "語ろう":"诉说吧（意志形）", "か":"疑问、自问语气", "ほら":"你看、瞧", "もう":"已经", "大丈夫":"没事、不要紧",
+  "家":"家", "まで":"直到……、到……为止", "走って":"跑着（て形连接后项）", "行こう":"走吧、去吧（意志形）", "面白い":"有趣的", "こと":"事情", "したく":"想做（したい的连用形）", "なった":"变得……了",
+  "君":"你", "伝えなくちゃ":"得告诉……（なくては的口语省略）", "帰ったら":"回去之后（たら）", "動き始めたら":"一开始行动（复合动词＋たら）",
+  "楽しく":"开心、快乐（接なる）", "けど":"虽然……但……", "壁":"墙壁；比喻障碍", "ぶつかる":"撞上；碰壁", "いっぱい":"很多；此处指屡次碰壁", "どう":"怎样、怎么办", "する":"做",
+  "いま":"现在", "考えても":"即使去想（ても）", "しかたない":"无济于事、也没办法", "それでも":"即便如此", "今日":"今天", "終わり":"结束，继而……（连用形）", "次":"下一个", "日":"日子、一天", "迎えたら":"迎来之后、如果迎来",
+  "また":"又、再次", "なってる":"正变得……（なっている的口语缩略）", "いい":"可以、没关系", "今度":"这一次", "もっと":"更加", "素早く":"迅速地", "立ち直れる":"能够重新振作（可能形）",
+  "月":"月亮", "眠り":"睡眠、睡意", "つれてくる":"带来（连れてくる）", "優しく":"温柔地", "撫でる":"轻抚", "ひとり":"独自一人", "そっと":"轻轻地、悄悄地", "呟いた":"低声自语了",
+  "早めに":"稍早一些、早点", "起きよう":"起床吧（意志形）", "かな":"自问、犹豫：要不要……呢", "新しい":"新的", "目覚めたら":"醒来之后", "ね":"句末语气：呢、哦",
+};
+
+const sk = (markup: string, zh: string, aside = false, meanings: Record<string, string> = {}): LyricLine => {
+  const line = cl(markup, zh, aside);
+  return { ...line, words: line.words.map((word) => {
+    const surface = word.jp.map((part) => part.text).join("").replace(/[「」！（）？?…\s]/g, "");
+    return { ...word, meaning: meanings[surface] ?? soraKokoroWordMeanings[surface] ?? word.meaning,
+      romaji: surface === "は" ? "wa" : word.romaji };
+  }) };
+};
+
 const soraKokoroLyrics: LyricLine[] = [
-  cl("うまく|いかなくて", "事事不尽人意"),
-  cl("泣{な}きそうに|なる|時{とき}は", "在泪水即将夺眶而出之时"),
-  cl("くちびる|噛{か}みつつ|願{ねが}うんだ", "咬紧嘴唇默默祈祷"),
-  cl("「あしたは|晴{は}れ」", "明天会放晴吧"),
-  cl("繋{つな}がりそうで", "我们似乎心心相印"),
-  cl("繋{つな}がらないの|心{こころ}と|心{こころ}", "却又无法紧密相连"),
-  cl("船{ふね}が|夕焼{ゆうや}けを|渡{わた}るよ", "千帆驶过黄昏景"),
-  cl("悩{なや}みを|持{も}ち|去{さ}るように", "好像能把烦恼带离远去"),
-  cl("私{わたし}は|まだまだ|頑張{がんば}れる", "我还能继续努力下去"),
-  cl("消{き}える|波{なみ}に|語{かた}ろうか", "向褪去的海浪如此诉说吧"),
-  cl("ほら|もう|大丈夫{だいじょうぶ}", "你看已经没事了"),
-  cl("家{いえ}まで|走{はし}って|行{い}こう", "就这样一直奔跑回家吧"),
-  cl("面白{おもしろ}いこと|したくなったと", "突然想做些有趣的事情"),
-  cl("君{きみ}に|伝{つた}えなくちゃ", "一定要传达给你才行"),
-  cl("家{いえ}に|帰{かえ}ったら", "等我回到家后"),
-  cl("動{うご}き|始{はじ}めたら", "开始行动之后"),
-  cl("楽{たの}しく|なるけど", "虽然变得很开心"),
-  cl("壁{かべ}に|ぶつかる|いっぱい", "但前方总是荆棘丛生"),
-  cl("どうする?", "该怎么做"),
-  cl("いま|考{かんが}えても|しかたない", "即使现在思考也于事无补"),
-  cl("「あしたよ|晴{は}れ」", "明天快放晴吧"),
-  cl("それでも|今日{きょう}が|終{お}わり", "即便如此今天结束"),
-  cl("次{つぎ}の|日{ひ}を|迎{むか}えたら", "迎接来明天之后"),
-  cl("また|泣{な}きそうに|なってるの?", "还会变得想要哭泣吗"),
-  cl("いいよ|今度{こんど}は|もっと|素早{すばや}く", "没关系 这次一定会更快地"),
-  cl("立{た}ち|直{なお}れるよ", "重振勇气"),
-  cl("月{つき}が|眠{ねむ}りを|つれてくる", "明月捎来浅睡之意"),
-  cl("優{やさ}しく|撫{な}でるように", "好似在温柔抚摸着我"),
-  cl("私{わたし}は|まだまだ|頑張{がんば}れる", "我还能继续努力下去"),
-  cl("ひとり|そっと|呟{つぶや}いた", "独自一人轻吟低诉"),
-  cl("ほら|もう|大丈夫{だいじょうぶ}", "你看已经没事了"),
-  cl("早{はや}めに|起{お}きようかな", "趁早起身吧"),
-  cl("新{あたら}しいこと|したくなったと", "突然想要尝试全新的事物"),
-  cl("君{きみ}に|伝{つた}えなくちゃ", "一定要传达给你才行"),
-  cl("月{つき}が|眠{ねむ}りを|つれてくる", "明月捎来浅睡之意"),
-  cl("優{やさ}しく|撫{な}でるように", "好似在温柔抚摸着我"),
-  cl("私{わたし}は|まだまだ|頑張{がんば}れる", "我还能继续努力下去"),
-  cl("ひとり|そっと|呟{つぶや}いた", "独自一人轻吟低诉"),
-  cl("ほら|もう|大丈夫{だいじょうぶ}", "你看已经没事了"),
-  cl("早{はや}めに|起{お}きようかな", "趁早起身吧"),
-  cl("新{あたら}しいこと|したくなったと", "突然想要尝试全新的事物"),
-  cl("君{きみ}に|伝{つた}えなくちゃ", "一定要传达给你才行"),
-  cl("目覚{めざ}めたらね", "等我醒来之后"),
+  sk("うまく|いかなくて", "事情进展得不顺利"),
+  sk("泣{な}きそうに|なる|時{とき}|は", "难过得快要哭出来的时候"),
+  sk("くちびる|噛{か}みつつ|願{ねが}う|んだ", "我一边咬着嘴唇，一边祈愿"),
+  sk("「あした|は|晴{は}れ！」", "“愿明天放晴！”"),
+  sk("繋{つな}がりそうで|繋{つな}がらない|の", "看似就要相通，却总是无法相通", false, { "の": "句末语气：说明心情" }),
+  sk("心{こころ}|と|心{こころ}", "一颗心与另一颗心"),
+  sk("船{ふね}|が|夕焼{ゆうや}け|を|渡{わた}る|よ", "船儿驶过晚霞"),
+  sk("悩{なや}み|を|持{も}ち去{さ}る|ように", "仿佛要把烦恼一并带走"),
+  sk("私{わたし}|は|まだまだ|頑張{がんば}れる", "我还可以继续努力下去"),
+  sk("消{き}える|波{なみ}|に|語{かた}ろう|か", "要不要把这句话说给渐渐消散的海浪听呢"),
+  sk("ほら|もう|大丈夫{だいじょうぶ}！", "你看，已经没事了！"),
+  sk("家{いえ}|まで|走{はし}って|行{い}こう", "一路跑回家吧"),
+  sk("面白{おもしろ}い|こと|したく|なった|と", "我又想做些有趣的事了"),
+  sk("君{きみ}|に|伝{つた}えなくちゃ", "得把这份心情告诉你才行"),
+  sk("家{いえ}|に|帰{かえ}ったら…", "等我回到家以后……"),
+  sk("動{うご}き始{はじ}めたら", "一旦开始行动"),
+  sk("（楽{たの}しく|なる|けど）", "（虽然会变得开心起来）", true),
+  sk("壁{かべ}|に|ぶつかる|いっぱい", "却也会一次次碰壁"),
+  sk("（どう|する？）", "（该怎么办呢？）", true),
+  sk("いま|考{かんが}えても|しかたない", "现在想这些也无济于事"),
+  sk("「あした|よ|晴{は}れ！」", "“明天啊，放晴吧！”", false, { "よ": "呼唤：……啊" }),
+  sk("それでも|今日{きょう}|が|終{お}わり", "可就算今天过去了"),
+  sk("次{つぎ}|の|日{ひ}|を|迎{むか}えたら", "等到迎来新的一天"),
+  sk("また|泣{な}きそうに|なってる|の？", "我又会变得快要哭出来吗？", false, { "の": "句末疑问：……吗？" }),
+  sk("いい|よ！|今度{こんど}|は|もっと|素早{すばや}く", "没关系！这一次，一定能更快地"),
+  sk("立{た}ち直{なお}れる|よ", "重新振作起来"),
+  sk("月{つき}|が|眠{ねむ}り|を|つれてくる", "月亮带来了睡意"),
+  sk("優{やさ}しく|撫{な}でる|ように", "仿佛在温柔地轻抚着我"),
+  sk("私{わたし}|は|まだまだ|頑張{がんば}れる", "我还可以继续努力下去"),
+  sk("ひとり|そっと|呟{つぶや}いた", "我独自轻轻地这样低语"),
+  sk("ほら|もう|大丈夫{だいじょうぶ}！", "你看，已经没事了！"),
+  sk("早{はや}めに|起{お}きよう|かな", "要不要早点起床呢"),
+  sk("新{あたら}しい|こと|したく|なった|と", "我又想尝试新的事情了"),
+  sk("君{きみ}|に|伝{つた}えなくちゃ", "得把这份心情告诉你才行"),
+  sk("月{つき}|が|眠{ねむ}り|を|つれてくる", "月亮带来了睡意"),
+  sk("優{やさ}しく|撫{な}でる|ように", "仿佛在温柔地轻抚着我"),
+  sk("私{わたし}|は|まだまだ|頑張{がんば}れる", "我还可以继续努力下去"),
+  sk("ひとり|そっと|呟{つぶや}いた", "我独自轻轻地这样低语"),
+  sk("ほら|もう|大丈夫{だいじょうぶ}！", "你看，已经没事了！"),
+  sk("早{はや}めに|起{お}きよう|かな", "要不要早点起床呢"),
+  sk("新{あたら}しい|こと|したく|なった|と", "我又想尝试新的事情了"),
+  sk("君{きみ}|に|伝{つた}えなくちゃ", "得把这份心情告诉你才行"),
+  sk("目覚{めざ}めたら|ね…", "就等醒来以后，告诉你吧……"),
 ];
 
 const waterBlueNewWorldLyrics: LyricLine[] = [
@@ -1262,6 +1288,15 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
   const [durationMs, setDurationMs] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
+  const [lyricFont, setLyricFont] = useState<"sans" | "serif">("sans");
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("yomikana-lyric-font");
+      // Restore the browser preference after hydration; the server renders the default.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (saved === "sans" || saved === "serif") setLyricFont(saved);
+    } catch { /* Keep the default when browser storage is unavailable. */ }
+  }, []);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const displayCharacters = useMemo(() => collectDisplayCharacters(lyrics), [lyrics]);
   const { timingByKey, lineRanges } = useMemo(() => alignTimings(displayCharacters, timedCharacters, lyrics), [displayCharacters, timedCharacters, lyrics]);
@@ -1396,7 +1431,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
           <a className="start-link" href="#lyrics" data-umami-event="reader-start" data-umami-event-song={song.slug}>开始阅读 <span aria-hidden="true">↓</span></a>
         </div>
       </header>
-      <section className="reader" id="lyrics" aria-label="歌词正文">
+      <section className="reader" data-lyric-font={lyricFont} id="lyrics" aria-label="歌词正文">
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
@@ -1412,6 +1447,17 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>
           <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)} data-umami-event={autoScroll ? "auto-follow-disable" : "auto-follow-enable"} data-umami-event-song={song.slug}><ListRestart aria-hidden="true" /><span className="sr-only">自动跟随</span></button>
+          <label className="lyric-font-control">
+            <span>字体</span>
+            <select aria-label="歌词字体" value={lyricFont} onChange={(event) => {
+              const nextFont = event.currentTarget.value === "serif" ? "serif" : "sans";
+              setLyricFont(nextFont);
+              try { localStorage.setItem("yomikana-lyric-font", nextFont); } catch { /* Font switching still works without storage. */ }
+            }}>
+              <option value="sans">Noto Sans</option>
+              <option value="serif">原衬线字体</option>
+            </select>
+          </label>
         </div>
         <ol className="lyrics-list" ref={readerRef}>
           {lyrics.map((line, lineIndex) => (

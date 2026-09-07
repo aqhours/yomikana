@@ -1,4 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&display=swap");
 @import "tailwindcss";
 
 :root { color-scheme:light; --ink:#07517f; --ink-soft:#4f7890; --paper:#eaf8ff; --cream:#dff3fb; --sun:#0ba9e3; --sun-deep:#058dc7; --sun-light:#9bddf3; --rule:rgba(10,111,163,.2); --line-number:#70a7c0; --line-number-active:#328eae; --timed-muted:rgba(7,81,127,.38); --romaji:#0785bd; --glow-color:#008fc9; --glow-shadow:0 0 5px rgba(126,225,255,.85),0 0 14px rgba(37,194,242,.5),0 0 26px rgba(37,194,242,.18); --scroll-thumb:rgba(8,137,192,.48); --aside:#548ba5; --control-border:rgba(11,169,227,.4); --control-fill:rgba(11,169,227,.1); --ease-out:cubic-bezier(.23,1,.32,1); --frame-gap:clamp(3rem,4.5vw,4.5rem); --jp-row-height:4.5rem; }
@@ -195,9 +194,16 @@ h1 em { color:var(--sun); font-style:normal; }
 .start-link { display:inline-flex; gap:1rem; align-items:center; margin-top:2.7rem; text-decoration:none; font-size:.82rem; letter-spacing:.12em; border-bottom:1px solid var(--ink); padding-bottom:.45rem; }
 .start-link span { color:var(--sun); }
 .reader { --reader-inline:clamp(2rem,5vw,4.5rem); display:grid; grid-template-rows:auto minmax(0,1fr); width:100%; height:100vh; height:100dvh; margin:0; overflow:hidden; scroll-margin-top:0; background:rgba(226,246,253,.66); border-radius:0; box-shadow:none; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
-.player-bar { position:relative; z-index:5; display:grid; grid-template-columns:3.5rem 2rem minmax(0,1fr) 2rem; gap:.68rem; align-items:center; width:min(72rem,calc(100% - clamp(1.5rem,4vw,3rem))); margin:clamp(.75rem,1.8vw,1.25rem) auto 0; padding:1.72rem clamp(1rem,3vw,2.25rem) 1.32rem; border:1px solid var(--rule); border-radius:1.15rem; background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
+.player-bar { position:relative; z-index:5; display:grid; grid-template-columns:3.5rem 2rem minmax(0,1fr) 2rem auto; gap:.68rem; align-items:center; width:min(72rem,calc(100% - clamp(1.5rem,4vw,3rem))); margin:clamp(.75rem,1.8vw,1.25rem) auto 0; padding:1.72rem clamp(1rem,3vw,2.25rem) 1.32rem; border:1px solid var(--rule); border-radius:1.15rem; background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
 .song-page .player-bar { border-color:color-mix(in srgb,var(--ink) 10%,transparent); background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
 .audio-player { display:none; }
+.lyric-font-control { display:flex; align-items:center; gap:.4rem; margin-left:.35rem; color:var(--ink-soft); font-size:.72rem; }
+.lyric-font-control select { min-width:0; max-width:8rem; padding:.45rem .35rem; border:1px solid var(--rule); border-radius:.45rem; background:var(--paper); color:var(--ink); font:inherit; cursor:pointer; }
+.lyric-font-control select:focus-visible { outline:2px solid var(--sun); outline-offset:3px; }
+.reader[data-lyric-font="sans"] .word-jp { font-family:"Noto Sans JP",sans-serif; }
+.reader[data-lyric-font="sans"] rt { font-family:"Noto Sans JP",sans-serif; }
+.reader[data-lyric-font="sans"] .word-romaji { font-family:"Noto Sans JP",sans-serif; }
+.reader[data-lyric-font="sans"] .word-meaning,.reader[data-lyric-font="sans"] .translation { font-family:"Noto Sans SC",sans-serif; }
 .mini-cover { display:block; width:3.5rem; height:3.5rem; border-radius:.46rem; object-fit:cover; box-shadow:0 6px 16px rgba(7,81,127,.22); }
 .play-toggle,.scroll-toggle { display:grid; place-items:center; width:2rem; height:2rem; padding:0; border:1px solid rgba(7,81,127,.16); border-radius:50%; cursor:pointer; transition:transform .14s var(--ease-out),background-color .18s ease,color .18s ease,border-color .18s ease; }
 .play-toggle { border-color:rgba(7,81,127,.08); background:var(--ink); color:#fff; box-shadow:0 5px 16px rgba(7,81,127,.2); }
@@ -249,7 +255,7 @@ ruby { ruby-position:over; }
 rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spacing:.06em; }
 .word-romaji { display:block; white-space:nowrap; color:var(--romaji); font:600 .82rem/1.55 var(--font-geist-mono),monospace; letter-spacing:.025em; transition:color .32s ease; }
 .word-meaning { display:block; width:max-content; max-width:17rem; margin-top:.24rem; color:var(--ink-soft); font-family:"Noto Serif SC","Songti SC",serif; font-size:.86rem; font-weight:400; line-height:1.5; transition:color .32s ease; }
-.translation { display:flex; gap:.9rem; align-items:baseline; margin:1.6rem 0 0; color:var(--ink); font-family:"Noto Serif SC","Songti SC",serif; font-size:1.16rem; font-weight:400; line-height:1.75; letter-spacing:.025em; transition:color .32s ease; }
+.translation { display:flex; gap:.9rem; align-items:baseline; margin:1.6rem 0 0; color:var(--ink); font-family:"Noto Serif SC","Songti SC",serif; font-size:1.16rem; font-weight:500; line-height:1.75; letter-spacing:.025em; transition:color .32s ease; }
 .lyric-line.is-active .word-romaji { color:var(--romaji); }
 .is-aside .word-jp { color:var(--aside); font-size:clamp(1.4rem,2.55vw,1.8rem); }
 .is-aside .line-content { padding-left:1.1rem; border-left:2px solid var(--sun-light); }
@@ -288,6 +294,7 @@ rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spac
   .mini-cover { width:3rem; height:3rem; border-radius:.4rem; }
   .play-toggle,.scroll-toggle { width:1.9rem; height:1.9rem; }
   .timeline,.progress-slider { height:2.15rem; }
+  .lyric-font-control { grid-column:1 / -1; justify-self:end; margin-top:.7rem; }
   .song-meta { gap:.38rem; font-size:.66rem; }
   .song-meta span { font-size:.61rem; }
   .lyric-line { grid-template-columns:1.8rem 1fr; gap:.35rem; margin:.5rem -.55rem; padding:2.55rem .55rem 2.75rem; border-radius:1rem; }

@@ -292,7 +292,7 @@ const recentSongs = [
   { slug: "yume-kataru-yori-yume-utaou", title: /ユメ語るより/, translation: /与其诉说梦想的话语/, audio: "yume-kataru-yori-yume-utaou", cover: covers.yumeKataru, lines: 71 },
   { slug: "miracle-wave", title: /MIRACLE/, translation: /极限来临前绝不停歇/, audio: "miracle-wave", cover: covers.miracleWave, lines: 56 },
   { slug: "my-mai-tonight", title: /MY舞☆/, translation: /为了让心炽热起来/, audio: "my-mai-tonight", cover: covers.miracleWave, lines: 66, displayLines: 32 },
-  { slug: "sora-mo-kokoro-mo-hareru-kara", title: /空も心も/, translation: /明天会放晴吧/, audio: "sora-mo-kokoro-mo-hareru-kara", cover: covers.soraKokoro, lines: 43 },
+  { slug: "sora-mo-kokoro-mo-hareru-kara", title: /空も心も/, translation: /愿明天放晴/, audio: "sora-mo-kokoro-mo-hareru-kara", cover: covers.soraKokoro, lines: 43, displayLines: 43 },
   { slug: "water-blue-new-world", title: /WATER BLUE/, translation: /现在就是现在 不同于昨天/, audio: "water-blue-new-world", cover: covers.waterBlueNewWorld, lines: 82, displayLines: 46 },
 ];
 
@@ -319,6 +319,25 @@ for (const song of recentSongs) {
     }
   });
 }
+
+test("segments sora kokoro compounds and particles with contextual translations", async () => {
+  const html = await (await render("/songs/sora-mo-kokoro-mo-hareru-kara")).text();
+  const words = renderedJapaneseWords(html);
+  assert.deepEqual(words[5], ["心", "と", "心"]);
+  assert.deepEqual(words[7], ["悩み", "を", "持ち去る", "ように"]);
+  assert.deepEqual(words[15], ["動き始めたら"]);
+  assert.deepEqual(words[25], ["立ち直れる", "よ"]);
+  assert.deepEqual(words[31], ["早めに", "起きよう", "かな"]);
+  assert.match(html, /船儿驶过晚霞/);
+  assert.match(html, /要不要早点起床呢/);
+  assert.match(html, /呼唤：……啊/);
+  assert.match(html, /句末疑问：……吗？/);
+  const particleReadings = [...html.matchAll(/<span class="word-jp">([\s\S]*?)<\/span><span class="word-romaji"[^>]*>([^<]*)<\/span>/g)]
+    .filter((match) => match[1].replace(/<[^>]+>/g, "") === "は");
+  assert.ok(particleReadings.length > 0);
+  assert.ok(particleReadings.every((match) => match[2] === "wa"));
+  assert.doesNotMatch(html, /千帆|趁早起身|浅睡之意/);
+});
 
 test("keeps WATER BLUE NEW WORLD in semantic lyric phrases", async () => {
   const html = await (await render("/songs/water-blue-new-world")).text();
