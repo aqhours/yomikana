@@ -3,6 +3,7 @@
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ListRestart, Moon, Pause, Play, Sun } from "lucide-react";
 import { loadAudio } from "./audio-cache";
+import FontSelector from "./font-selector";
 
 type Segment = { text: string; reading?: string };
 type Word = { jp: Segment[]; romaji: string; meaning: string };
@@ -1451,17 +1452,10 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>
           <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)} data-umami-event={autoScroll ? "auto-follow-disable" : "auto-follow-enable"} data-umami-event-song={song.slug}><ListRestart aria-hidden="true" /><span className="sr-only">自动跟随</span></button>
-          <label className="lyric-font-control">
-            <span>字体</span>
-            <select aria-label="歌词字体" value={lyricFont} onChange={(event) => {
-              const nextFont = event.currentTarget.value === "serif" ? "serif" : "sans";
-              setLyricFont(nextFont);
-              try { localStorage.setItem("yomikana-lyric-font", nextFont); } catch { /* Font switching still works without storage. */ }
-            }}>
-              <option value="sans">Noto Sans</option>
-              <option value="serif">原衬线字体</option>
-            </select>
-          </label>
+          <FontSelector value={lyricFont} onChange={(nextFont) => {
+            setLyricFont(nextFont);
+            try { localStorage.setItem("yomikana-lyric-font", nextFont); } catch { /* Font switching still works without storage. */ }
+          }} />
         </div>
         <ol className="lyrics-list" ref={readerRef}>
           {lyrics.map((line, lineIndex) => (

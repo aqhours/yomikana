@@ -197,9 +197,27 @@ h1 em { color:var(--sun); font-style:normal; }
 .player-bar { position:relative; z-index:5; display:grid; grid-template-columns:3.5rem 2rem minmax(0,1fr) 2rem auto; gap:.68rem; align-items:center; width:min(72rem,calc(100% - clamp(1.5rem,4vw,3rem))); margin:clamp(.75rem,1.8vw,1.25rem) auto 0; padding:1.72rem clamp(1rem,3vw,2.25rem) 1.32rem; border:1px solid var(--rule); border-radius:1.15rem; background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
 .song-page .player-bar { border-color:color-mix(in srgb,var(--ink) 10%,transparent); background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
 .audio-player { display:none; }
-.lyric-font-control { display:flex; align-items:center; gap:.4rem; margin-left:.35rem; color:var(--ink-soft); font-size:.72rem; }
-.lyric-font-control select { min-width:0; max-width:8rem; padding:.45rem .35rem; border:1px solid var(--rule); border-radius:.45rem; background:var(--paper); color:var(--ink); font:inherit; cursor:pointer; }
-.lyric-font-control select:focus-visible { outline:2px solid var(--sun); outline-offset:3px; }
+.lyric-font-control { position:relative; margin-left:.35rem; font-size:.72rem; }
+.font-trigger { display:flex; align-items:center; justify-content:center; gap:.55rem; min-height:2.5rem; padding:.5rem .7rem; border:1px solid var(--rule); border-radius:.75rem; background:color-mix(in srgb,var(--ink) 4%,transparent); color:var(--ink); font:inherit; font-weight:550; cursor:pointer; transition:background-color .15s ease,border-color .15s ease; }
+.font-trigger svg { width:.95rem; height:.95rem; color:var(--ink-soft); }
+.font-trigger .font-chevron { width:.75rem; height:.75rem; }
+.font-trigger[aria-expanded="true"] { background:color-mix(in srgb,var(--ink) 9%,transparent); border-color:color-mix(in srgb,var(--ink) 25%,transparent); }
+.font-trigger[aria-expanded="true"] .font-chevron { transform:rotate(180deg); }
+.font-menu { position:absolute; top:calc(100% + .6rem); right:0; z-index:10; width:min(15rem,calc(100vw - 2rem)); padding:.4rem; border:1px solid var(--rule); border-radius:1rem; background:var(--paper); color:var(--ink); box-shadow:0 12px 36px color-mix(in srgb,var(--ink) 16%,transparent),0 2px 6px color-mix(in srgb,var(--ink) 6%,transparent); }
+.font-menu-heading { padding:.5rem .6rem .6rem; color:var(--ink-soft); font-size:.65rem; letter-spacing:.08em; }
+.font-option { display:flex; align-items:center; gap:.7rem; width:100%; min-height:4rem; padding:.6rem; border:0; border-radius:.65rem; background:transparent; color:var(--ink); text-align:left; cursor:pointer; font:inherit; }
+.font-option + .font-option { margin-top:.2rem; }
+.font-option[aria-checked="true"] { background:color-mix(in srgb,var(--ink) 7%,transparent); }
+.font-preview { display:grid; place-items:center; flex:none; width:2.35rem; height:2.5rem; border:1px solid var(--rule); border-radius:.5rem; background:var(--paper); font-size:1.4rem; }
+.font-preview-sans { font-family:"Noto Sans JP",sans-serif; }
+.font-preview-serif { font-family:"Yu Mincho","Hiragino Mincho ProN",serif; }
+.font-option-copy { display:grid; gap:.3rem; flex:1; }
+.font-option-copy strong { font-size:.76rem; font-weight:600; }
+.font-option-copy small { color:var(--ink-soft); font-size:.64rem; }
+.font-check { width:.9rem; height:.9rem; flex:none; opacity:0; }
+.font-option[aria-checked="true"] .font-check { opacity:1; }
+.font-trigger:focus-visible,.font-option:focus-visible { outline:2px solid var(--sun); outline-offset:2px; }
+@media (hover:hover) and (pointer:fine) { .font-trigger:hover,.font-option:hover { background:color-mix(in srgb,var(--ink) 10%,transparent); } }
 .reader[data-lyric-font="sans"] .word-jp { font-family:"Noto Sans JP",sans-serif; }
 .reader[data-lyric-font="sans"] rt { font-family:"Noto Sans JP",sans-serif; }
 .reader[data-lyric-font="sans"] .word-romaji { font-family:"Noto Sans JP",sans-serif; }
