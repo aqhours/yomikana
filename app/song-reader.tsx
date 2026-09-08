@@ -492,48 +492,52 @@ const aozoraJumpingHeartLyrics: LyricLine[] = [
   ajh("みんな|と|なら　|説明{せつめい}|は|できない|けど|だいじょうぶ|さ…|まっしぐら！", "只要大家都在一起，虽然说不出为什么，但一定没问题的……一路向前冲吧！"),
 ];
 
-const miraiLightLine: LyricLine = { words: [yw("hi-ka-ri-ni", "成为光芒", s("ヒカリに")), yw("na-ro-u", "成为吧", s("なろう"))], zh: "成为光芒吧" };
-const miraiIlluminateLine: LyricLine = { words: [yw("mi-ra-i-o", "未来", s("ミライを")), yw("te-ra-shi-ta-i", "好想照耀", s("照", "て"), s("らしたい"))], zh: "好想照耀未来" };
-const miraiNoLongerLostLine: LyricLine = { words: [yw("i-ma-wa", "如今", s("いまは")), yw("mo-u", "已经", s("もう")), yw("ma-yo-wa-na-i", "不再迷惘", s("迷", "まよ"), s("わない"))], zh: "我们已经不再迷惘" };
-const miraiShipLine: LyricLine = { words: [yw("fu-ne-ga", "船", s("船", "ふね"), s("が")), yw("yu-ku-yo", "要启航了", s("往", "ゆ"), s("くよ")), yw("mi-ra-i-e", "迈向未来", s("ミライへ")), yw("ta-bi-da-to-u", "踏上旅途吧", s("旅立", "たびだ"), s("とう"))], zh: "船要启航了 旅途迈向未来" };
-const miraiSkyLine: LyricLine = { words: [yw("a-o-i", "湛蓝的", s("青", "あお"), s("い")), yw("so-ra", "天空", s("空", "そら")), yw("wa-ra-t-te-ru", "正笑着", s("笑", "わら"), s("ってる")), yw("na-ni-ga-shi-ta-i", "想做什么呢", s("（なにがしたい）"))], zh: "青空正笑着（想要做什么呢）" };
-const miraiOverflowLine: LyricLine = { words: [yw("ka-ga-ya-ki-wa", "闪耀", s("輝", "かがや"), s("きは")), yw("ko-ko-ro-ka-ra", "从心中", s("心", "こころ"), s("から")), yw("a-fu-re-da-shi-te", "满溢而出", s("あふれ"), s("出", "だ"), s("して"))], zh: "心中的闪耀满溢而出" };
-const miraiBeyondLine: LyricLine = { words: [yw("mo-t-to", "更多", s("もっと")), yw("sa-ki-no", "前方的", s("先", "さき"), s("の")), yw("ke-shi-ki", "景色", s("景色", "けしき")), yw("no-zo-mu-n-da", "期待看见", s("望", "のぞ"), s("むんだ"))], zh: "期待看见更多前方的景色" };
+const miraiTicketWordMeanings: Record<string, string> = {
+  "ヒカリ":"光芒","に":"目标、状态助词","なろう":"成为吧","ミライ":"未来","を":"宾语助词","照らしたい":"想要照亮",
+  "輝き":"光辉","は":"主题助词","心":"心、内心","から":"起点助词：从","あふれ出す":"涌出、满溢而出","よ":"句末语气：哦、呀",
+  "夢":"梦想","が":"主语助词","生まれ":"诞生","の":"所属、修饰助词：的","ため":"目的：为了","泣いた":"哭泣过","とき":"时候","で":"状态、原因助词","も":"也；即使……也",
+  "あきらめない":"不放弃","こと":"形式名词：将动作名词化","繋がった":"连接在一起了","みんな":"大家","悩み":"烦恼着","ながら":"接续助词：一边……","ここ":"这里","へ":"方向助词：向、往","辿りついた":"终于抵达了","ね":"句末语气：呢、吧",
+  "これから":"从现在起、接下来","だ":"判断助动词：是","いま":"现在","もう":"已经","迷わない":"不再迷茫","あこがれ":"憧憬","抱きしめて":"紧紧怀抱","次":"下一步","進む":"前进","ん":"说明语气：の的口语形式",
+  "僕たち":"我们","だけ":"限定助词：只有","新世界":"新世界","（きっと":"（一定","ある）":"存在）","船":"船","往く":"前行、启航","旅立とう":"出发吧","青い":"蔚蓝的","空":"天空","笑ってる":"正微笑着","（なに":"（什么","したい？）":"想做？）",
+  "あふれ出して":"满溢而出","もっと":"更加、更远","先":"前方","景色":"风景","望む":"期望、向往","Ah!":"啊！","やっと":"终于","手":"手","した":"做了；手にした：拿到手中","ミライチケット":"未来车票","かざして…！":"高高举起吧……！",
+};
+
+const mt = (markup: string, zh: string): LyricLine => {
+  const line = cl(markup, zh, false, miraiTicketWordMeanings);
+  return {
+    ...line,
+    words: line.words.map((word) => {
+      const surface = word.jp.map((segment) => segment.text).join("").replace(/[\s\p{P}]/gu, "");
+      if (surface === "あふれ出す" || surface === "あふれ出して") {
+        const ending = surface === "あふれ出す" ? "す" : "して";
+        return { ...word, jp: [s("あふれ"), s("出", "だ"), s(ending)], romaji: ending === "す" ? "a-fu-re-da-su" : "a-fu-re-da-shi-te" };
+      }
+      return surface === "は" ? { ...word, romaji: "wa" } : surface === "へ" ? { ...word, romaji: "e" } : word;
+    }),
+  };
+};
 
 const miraiTicketLyrics: LyricLine[] = [
-  miraiLightLine,
-  miraiIlluminateLine,
-  { words: [yw("ka-ga-ya-ki-wa", "闪耀", s("輝", "かがや"), s("きは")), yw("ko-ko-ro-ka-ra", "从心中", s("心", "こころ"), s("から")), yw("a-fu-re-da-su-yo", "满溢而出", s("あふれ"), s("出", "だ"), s("すよ"))], zh: "心中的闪耀满溢而出" },
-  { words: [yw("yu-me-ga", "梦想", s("夢", "ゆめ"), s("が")), yw("u-ma-re", "诞生", s("生", "う"), s("まれ"))], zh: "梦想诞生" },
-  { words: [yw("yu-me-no-ta-me-ni", "为了梦想", s("夢", "ゆめ"), s("のために")), yw("na-i-ta", "哭泣", s("泣", "な"), s("いた")), yw("to-ki-de-mo", "即使在那时", s("ときでも"))], zh: "即使为了梦想而哭泣" },
-  { words: [yw("a-ki-ra-me-na-i", "不放弃", s("あきらめない")), yw("ko-to-de", "因为这件事", s("ことで")), yw("tsu-na-ga-t-ta", "心系着心", s("繋", "つな"), s("がった"))], zh: "我们也因为不放弃而心系着心" },
-  { words: [yw("mi-n-na-mi-n-na", "大家都是", s("みんなみんな"))], zh: "大家都是" },
-  { words: [yw("na-ya-mi-na-ga-ra", "一边烦恼", s("悩", "なや"), s("みながら")), yw("ko-ko-e", "抵达这里", s("ここへ")), yw("ta-do-ri-tsu-i-ta-ne", "终于走到了呢", s("辿", "たど"), s("りついたね"))], zh: "一边烦恼一边抵达这里" },
-  { words: [yw("ko-re-ka-ra-da-yo", "现在才要开始", s("これからだよ"))], zh: "现在才要开始" },
-  miraiNoLongerLostLine,
-  { words: [yw("a-ko-ga-re", "憧憬", s("あこがれ")), yw("da-ki-shi-me-te", "拥抱", s("抱", "だ"), s("きしめて"))], zh: "拥抱憧憬" },
-  { words: [yw("tsu-gi-e", "向下一步", s("次", "つぎ"), s("へ")), yw("su-su-mu-n-da", "往前迈进", s("進", "すす"), s("むんだ"))], zh: "往前迈进" },
-  { words: [yw("bo-ku-ta-chi-da-ke-no", "只属于我们的", s("僕", "ぼく"), s("たちだけの")), yw("shi-n-se-ka-i-ga", "新世界", s("新世界", "しんせかい"), s("が"))], zh: "只属于我们的新世界" },
-  { words: [yw("ki-t-to", "一定", s("きっと")), yw("a-ru", "就在某处", s("ある"))], zh: "一定就在某处" },
-  { words: [yw("We say", "我们高呼", s("We say")), yw("yo-o-so-ro-o", "YO~SORO、航向正确", s("ヨーソロー"))], zh: "We say YO~SORO（※曜的口头禅;源自航海用语：表示一切安好如此前进没有问题）", aside: true },
-  miraiShipLine,
-  miraiSkyLine,
-  miraiLightLine,
-  miraiIlluminateLine,
-  miraiOverflowLine,
-  miraiBeyondLine,
-  miraiLightLine,
-  miraiIlluminateLine,
-  miraiNoLongerLostLine,
-  miraiShipLine,
-  miraiSkyLine,
-  miraiLightLine,
-  miraiIlluminateLine,
-  miraiOverflowLine,
-  miraiBeyondLine,
-  { words: [yw("Ah", "啊", s("Ah")), yw("ya-t-to", "终于", s("やっと")), yw("te-ni-shi-ta", "拿到手的", s("手", "て"), s("にした"))], zh: "挥舞终于拿到手的" },
-  { words: [yw("mi-ra-i-chi-ke-t-to", "未来门票", s("ミライチケット")), yw("ka-za-shi-te", "挥舞吧", s("かざして"))], zh: "未来门票吧" },
-  { words: [yw("La la la la la la la", "啦啦啦", s("La la la la la la la"))], zh: "La la la la la la la", aside: true },
+  mt("ヒカリ|に|なろう　|ミライ|を|照{て}らしたい", "成为光芒吧，想要照亮未来"),
+  mt("輝{かがや}き|は|心{こころ}|から|あふれ出{だ}す|よ", "光辉会从心中不断满溢而出"),
+  mt("夢{ゆめ}|が|生{う}まれ　|夢{ゆめ}|の|ため|に|泣{な}いた|とき|で|も", "梦想诞生了，即使也曾为了梦想而流泪"),
+  mt("あきらめない|こと|で|繋{つな}がった", "正因为没有放弃，我们才一路紧紧相连"),
+  mt("みんな|みんな　|悩{なや}み|ながら|ここ|へ|辿{たど}りついた|ね", "大家、大家，都是一边烦恼着，一边终于走到了这里吧"),
+  mt("これから|だ|よ　|いま|は|もう|迷{まよ}わない", "真正的旅程才刚刚开始，现在已经不会再迷茫了"),
+  mt("あこがれ|抱{だ}きしめて　|次{つぎ}|へ|進{すす}む|ん|だ", "紧紧怀抱着憧憬，向着下一步前进吧"),
+  mt("僕{ぼく}たち|だけ|の|新世界{しんせかい}|が|（きっと|ある）", "只属于我们的新世界（一定存在）"),
+  { words: [yw("We", "我们", s("We ")), yw("say", "喊着、说", s("say ")), yw("yo-o-so-ro-o", "航海口令：保持航向、前进！", s("“ヨーソロー‼”"))], zh: "我们喊着——“ヨーソロー！！”" },
+  mt("船{ふね}|が|往{ゆ}く|よ　|ミライ|へ|旅立{たびだ}とう", "船要启航了，向着未来出发吧"),
+  mt("青{あお}い|空{そら}|笑{わら}ってる|（なに|が|したい？）", "蔚蓝的天空正微笑着（你想做些什么？）"),
+  mt("ヒカリ|に|なろう　|ミライ|を|照{て}らしたい", "成为光芒吧，想要照亮未来"),
+  mt("輝{かがや}き|は|心{こころ}|から|あふれ出{だ}して　|もっと|先{さき}|の|景色{けしき}|望{のぞ}む|ん|だ", "光辉从心中不断满溢而出，还想去看更前方的风景"),
+  mt("ヒカリ|に|なろう　|ミライ|を|照{て}らしたい", "成为光芒吧，想要照亮未来"),
+  mt("いま|は|もう|迷{まよ}わない", "现在已经不会再迷茫了"),
+  mt("船{ふね}|が|往{ゆ}く|よ　|ミライ|へ|旅立{たびだ}とう", "船要启航了，向着未来出发吧"),
+  mt("青{あお}い|空{そら}|笑{わら}ってる|（なに|が|したい？）", "蔚蓝的天空正微笑着（你想做些什么？）"),
+  mt("ヒカリ|に|なろう　|ミライ|を|照{て}らしたい", "成为光芒吧，想要照亮未来"),
+  mt("輝{かがや}き|は|心{こころ}|から|あふれ出{だ}して　|もっと|先{さき}|の|景色{けしき}|望{のぞ}む|ん|だ", "光辉从心中不断满溢而出，还想去看更前方的风景"),
+  mt("Ah! |やっと|手{て}|に|した|ミライチケット|かざして…！", "Ah！终于握在手中的未来车票，高高举起吧……！"),
 ];
 
 const yumeKataruWordsLine: LyricLine = { words: [yw("yu-me-o", "梦想", s("ユメを")), yw("ka-ta-ru", "诉说", s("語", "かた"), s("る")), yw("ko-to-ba-yo-ri", "与其使用话语", s("言葉", "ことば"), s("より"))], zh: "与其诉说梦想的话语" };
@@ -1442,7 +1446,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             {isPlaying ? <Pause aria-hidden="true" /> : <Play className="play-icon" aria-hidden="true" />}
           </button>
           <div className="timeline">
-            <span className="song-meta"><strong>{song.title}{song.titleAccent}</strong><span>{song.artist}</span>{!audioSrc && <span className="song-loading-status" role="status">歌曲加载中...</span>}</span>
+            <span className="song-meta"><strong>{song.slug === "mirai-ticket" ? "MIRAI TICKET" : `${song.title}${song.titleAccent}`}</strong><span>{song.artist}</span>{!audioSrc && <span className="song-loading-status" role="status">歌曲加载中...</span>}</span>
             <input className="progress-slider" type="range" min="0" max={durationMs ? durationMs / 1000 : 0} step="0.01" value={currentMs / 1000} disabled={!durationMs} onInput={(event) => seekToTime(Number(event.currentTarget.value))} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); seekFromPointer(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) seekFromPointer(event); }} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)} aria-label="播放进度" style={{ "--progress": `${durationMs ? Math.min(100, currentMs / durationMs * 100) : 0}%` } as React.CSSProperties} />
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>

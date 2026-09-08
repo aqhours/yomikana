@@ -279,13 +279,21 @@ test("renders the annotated MIRAI TICKET reader", async () => {
   const html = await response.text();
   assert.match(html, /MIRAI/);
   assert.match(html, /TICKET/);
-  assert.match(html, /hi-ka-ri-ni/);
-  assert.match(html, /期待看见更多前方的景色/);
+  assert.match(html, /hi-ka-ri/);
+  assert.match(html, /还想去看更前方的风景/);
   assert.match(html, /data-source="\/audio\/mirai-ticket\.mp3"/);
   assert.equal(html.split(covers.miraiTicket).length - 1, 2);
   assert.match(html, /composer/);
   assert.match(html, /EFFY/);
-  assert.doesNotMatch(html, />歌词应援语</);
+  const words = renderedJapaneseWords(html);
+  assert.equal(words.length, 20);
+  assert.deepEqual(words[1], ["輝き", "は", "心", "から", "あふれ出す", "よ"]);
+  assert.deepEqual(words[4], ["みんな", "みんな", "悩み", "ながら", "ここ", "へ", "辿りついた", "ね"]);
+  assert.match(html, />wa<\/span><span class="word-meaning" lang="zh-CN">主题助词<\/span>/);
+  const yrc = await readFile(new URL("../public/audio/mirai-ticket.yrc", import.meta.url), "utf8");
+  // The requested display ends before the final wordless La la la outro.
+  assert.equal(alignableJapanese(renderedJapanese(html)), alignableJapanese(yrcJapanese(yrc).slice(0, -1)));
+  assert.doesNotMatch(html, />歌词应援语|>歌词表达/);
 });
 
 const recentSongs = [
