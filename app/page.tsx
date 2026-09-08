@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, Moon, Sun } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const catalog = [
@@ -57,11 +57,6 @@ export default function Home() {
             <h1 id="library-title">聴いて、読んで、<br /><em>歌をひらく。</em></h1>
             <p>在旋律里学习日语。</p>
           </header>
-
-          <a className="catalog-link" href="#songs">
-            <span>开始</span>
-            <ArrowDown aria-hidden="true" />
-          </a>
         </div>
       </section>
 

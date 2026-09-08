@@ -5,8 +5,8 @@ import { Check, ChevronDown, Type } from "lucide-react";
 
 type Font = "sans" | "serif";
 const options = [
-  { value: "sans", label: "Noto Sans", description: "无衬线 · 清晰简洁" },
-  { value: "serif", label: "原衬线字体", description: "衬线 · 经典书卷感" },
+  { value: "sans", label: "Noto Sans", description: "清晰简洁" },
+  { value: "serif", label: "衬线字体", description: "经典书卷感" },
 ] as const;
 
 export default function FontSelector({ value, onChange }: { value: Font; onChange: (font: Font) => void }) {
