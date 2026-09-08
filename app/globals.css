@@ -218,6 +218,16 @@ h1 em { color:var(--sun); font-style:normal; }
 .font-option[aria-checked="true"] .font-check { opacity:1; }
 .font-trigger:focus-visible,.font-option:focus-visible { outline:2px solid var(--sun); outline-offset:2px; }
 @media (hover:hover) and (pointer:fine) { .font-trigger:hover,.font-option:hover { background:color-mix(in srgb,var(--ink) 10%,transparent); } }
+/* Local surfaces must not inherit the songs' light paper color in dark mode. */
+html[data-theme="dark"] .lyric-font-control { --paper:#14212b; }
+html[data-theme="dark"] .font-trigger { background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.16); }
+html[data-theme="dark"] .font-trigger[aria-expanded="true"] { background:rgba(255,255,255,.12); border-color:rgba(255,255,255,.28); }
+html[data-theme="dark"] .font-menu { border-color:rgba(255,255,255,.14); box-shadow:0 16px 40px rgba(0,0,0,.4),0 3px 10px rgba(0,0,0,.25); }
+html[data-theme="dark"] .font-preview { background:#1d2c37; border-color:rgba(255,255,255,.14); }
+html[data-theme="dark"] .font-option[aria-checked="true"] { background:rgba(255,255,255,.1); }
+@media (hover:hover) and (pointer:fine) {
+  html[data-theme="dark"] .font-trigger:hover,html[data-theme="dark"] .font-option:hover { background:rgba(255,255,255,.14); }
+}
 .reader[data-lyric-font="sans"] .word-jp { font-family:"Noto Sans JP",sans-serif; }
 .reader[data-lyric-font="sans"] rt { font-family:"Noto Sans JP",sans-serif; }
 .reader[data-lyric-font="sans"] .word-romaji { font-family:"Noto Sans JP",sans-serif; }
