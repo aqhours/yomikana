@@ -297,7 +297,7 @@ test("renders the annotated MIRAI TICKET reader", async () => {
 });
 
 const recentSongs = [
-  { slug: "yume-kataru-yori-yume-utaou", title: /ユメ語るより/, translation: /与其诉说梦想的话语/, audio: "yume-kataru-yori-yume-utaou", cover: covers.yumeKataru, lines: 71 },
+  { slug: "yume-kataru-yori-yume-utaou", title: /ユメ語るより/, translation: /比起用言语诉说梦想/, audio: "yume-kataru-yori-yume-utaou", cover: covers.yumeKataru, lines: 71, displayLines: 35 },
   { slug: "miracle-wave", title: /MIRACLE/, translation: /极限来临前绝不停歇/, audio: "miracle-wave", cover: covers.miracleWave, lines: 56 },
   { slug: "my-mai-tonight", title: /MY舞☆/, translation: /为了让心炽热起来/, audio: "my-mai-tonight", cover: covers.miracleWave, lines: 66, displayLines: 32 },
   { slug: "sora-mo-kokoro-mo-hareru-kara", title: /空も心も/, translation: /愿明天放晴/, audio: "sora-mo-kokoro-mo-hareru-kara", cover: covers.soraKokoro, lines: 43, displayLines: 43 },

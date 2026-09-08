@@ -541,90 +541,72 @@ const miraiTicketLyrics: LyricLine[] = [
   mt("Ah! |やっと|手{て}|に|した|ミライチケット|かざして…！", "Ah！终于握在手中的未来车票，高高举起吧……！"),
 ];
 
-const yumeKataruWordsLine: LyricLine = { words: [yw("yu-me-o", "梦想", s("ユメを")), yw("ka-ta-ru", "诉说", s("語", "かた"), s("る")), yw("ko-to-ba-yo-ri", "与其使用话语", s("言葉", "ことば"), s("より"))], zh: "与其诉说梦想的话语" };
-const yumeKataruSongLine: LyricLine = { words: [yw("yu-me-o", "梦想", s("ユメを")), yw("ka-ta-ru", "诉说", s("語", "かた"), s("る")), yw("u-ta-ni-shi-yo-u", "化作歌曲吧", s("歌", "うた"), s("にしよう"))], zh: "不如为梦想放声歌唱吧" };
-const yumeKataruNowLine: LyricLine = { words: [yw("so-re-na-ra-ba", "这样的话", s("それならば")), yw("i-ma-o", "现在", s("今", "いま"), s("を"))], zh: "这样的话" };
-const yumeKataruConveyLine: LyricLine = { words: [yw("tsu-ta-e-ra-re-ru", "能够传达", s("伝", "つた"), s("えられる")), yw("ki-ga-su-ru-ka-ra", "因为感觉可以", s("気", "き"), s("がするから"))], zh: "应该就能传达现在的心情" };
-const yumeKataruWordsFromLine: LyricLine = { words: [yw("yu-me-o", "梦想", s("ユメを")), yw("ka-ta-ru", "诉说", s("語", "かた"), s("る")), yw("ko-to-ba-ka-ra", "从话语中", s("言葉", "ことば"), s("から"))], zh: "诉说着梦想的话语" };
-const yumeKataruSongBornLine: LyricLine = { words: [yw("yu-me-o", "梦想", s("ユメを")), yw("ka-ta-ru", "诉说", s("語", "かた"), s("る")), yw("u-ta-ga", "歌曲", s("歌", "うた"), s("が"))], zh: "然后诞生出" };
-const yumeKataruBornLine: LyricLine = { words: [yw("u-ma-re-ru-n-da-ne", "诞生出来呢", s("生", "う"), s("まれるんだね"))], zh: "梦想的歌曲" };
-const yumeKataruFeelingLine: LyricLine = { words: [yw("hi-ro-ga-ru", "延展开来", s("ひろがる")), yw("ko-no", "这份", s("この")), yw("o-mo-i-wa", "心情", s("思", "おも"), s("いは"))], zh: "这份延展开来的心情" };
-const yumeKataruMelodyLine: LyricLine = { words: [yw("da-i-su-ki-na", "最喜欢的", s("大好", "だいす"), s("きな")), yw("melody-no", "旋律的", s("メロディーの"))], zh: "同最喜欢的旋律" };
-const yumeKataruConnectedLine: LyricLine = { words: [yw("tsu-na-ga-ri-da-yo-ne", "紧紧相连", s("つながりだよね"))], zh: "紧紧相连" };
-const yumeKataruEscapeLine: LyricLine = { words: [yw("mo-u", "已经、再也", s("もう")), yw("ni-ge-na-i-de", "别逃避", s("逃", "に"), s("げないで"))], zh: "别再逃避了" };
-const yumeKataruNewPlaceLine: LyricLine = { words: [yw("a-ta-ra-shi-i", "崭新的", s("あたらしい")), yw("ba-sho-e", "前往场所", s("場所", "ばしょ"), s("へ"))], zh: "前往崭新的场所" };
-const yumeKataruSingingLine: LyricLine = { words: [yw("Singing my song", "唱着我的歌", s("Singing my song")), yw("for my dream", "为了我的梦想", s(" for my dream"))], zh: "为自己的梦想而歌唱", aside: true };
+const yumeKataruMeanings: Record<string, string> = {
+  "で":"方式助词：由、以",
+  "もっと":"更多","なにか":"某些事物","探して":"寻找","どんどん":"不断地","外":"外面","へ":"方向助词：向","行く":"前往","ん":"说明语气：の的口语形式","だ":"判断助动词","やって":"去做","みたら":"试过之后","意外":"意外","と":"方式、引用、并列助词","ハッピー":"幸福、快乐","みつかる":"发现、找到","もん":"说明语气：もの的口语形式","さ":"句末语气：啊",
+  "悩み":"烦恼着","ながら":"接续助词：一边……","笑われ":"被人笑","めげない":"不气馁","負けない":"不认输","泣いちゃう":"不由得哭出来","かも":"也许、说不定","ね？":"确认语气：吧？","でも":"不过","いい":"没关系、可以","の":"修饰助词；形式名词","明日":"明天","が":"主语助词","見えて":"看得见","きた":"逐渐……起来",
+  "ユメ":"梦想","を":"宾语助词","語る":"诉说","言葉":"话语","より":"比较助词：比起","歌":"歌曲","に":"对象、目的助词","しよう":"做成……吧","それ":"那样","ならば":"如果……的话","今":"此刻","伝えられる":"能够传达","気":"感觉","する":"产生、做","から":"起点、原因助词","生まれる":"诞生","ね":"句末语气：呢、吧","ひろがる":"延展开来","この":"这份","想い":"心意","は":"主题助词",
+  "大好き":"最喜欢","な":"连体助动词：……的","メロディー":"旋律","つながり":"连接、联系","よ":"句末语气：哦、呀","もう":"已经","逃げないで":"不要逃避","進む":"前进","時":"时候","あたらしい":"崭新的","場所":"地方",
+  "きっと":"一定","始まる":"开始","わいわい":"热热闹闹","みんな":"大家","エネルギー":"能量","みる":"试着做","気持ち":"心意、心情","ぎゅっと":"紧紧地","ひとつ":"一体、一个","なって":"变成","感じたい":"想要感受","ときめきたい":"想要心动","君":"你","願う":"祈愿","こと":"事情","僕":"我","も":"也","願ってた":"一直祈愿着","心":"心","近づいてる":"正在靠近","嬉しい":"开心",
+  "ミライ":"未来","望む":"期盼","なる":"成为","こそ":"强调助词：正是","飛びだしたい":"想要飞奔出去","胸":"胸口","熱さ":"炽热","あふれだしたら":"如果满溢而出","とめないで":"不要阻止","遠く":"远方","旅":"旅途","でる":"出发","ほら":"你看","楽しくて":"开心、快乐","どこ":"哪里","まで":"直到","行こう":"前进吧","季節":"季节","そう":"是这样","すぐ":"马上","決められない":"无法决定","だけど":"可是","身体":"身体","なぜか":"不知为何","踊りだして":"开始舞动","合わせてた":"一直跟随着、配合着","おいで":"过来、来吧","よ…":"句末语气：呀……","よ！":"句末语气：呀！",
+};
+
+// Parse kanji-only annotations so leading kana stays visible and pronounceable.
+const ykLine = (markup: string, zh: string): LyricLine => ({
+  words: markup.split("|").map((token) => {
+    const jp: Segment[] = [];
+    for (const match of token.matchAll(/([\p{Script=Han}々]+)\{([^{}]+)\}|([^{}]+)/gu)) {
+      if (match[1]) jp.push(s(match[1], match[2]));
+      else jp.push(s(match[3]));
+    }
+    const surface = jp.map((part) => part.text).join("").trim();
+    const pronunciation = jp.map((part) => part.reading ?? part.text).join("");
+    const romaji = surface === "は" ? "wa" : surface === "へ" ? "e" : surface === "メロディー" ? "me-ro-dii" : surface === "ハッピー" ? "ha-ppii" : surface === "エネルギー" ? "e-ne-ru-gii" : romanizeKana(pronunciation);
+    const meaning = surface === "な" && markup.startsWith("感{かん}じたい") ? "句末语气：真想……啊" : yumeKataruMeanings[surface];
+    return yw(romaji, meaning, ...jp);
+  }),
+  zh,
+});
+const yumeKataruSingingLine: LyricLine = {
+  words: [yw("Singing my song", "唱着我的歌", s("Singing my song ")), yw("for my dream!", "为了我的梦想！", s("for my dream!"))],
+  zh: "Singing my song for my dream!",
+  aside: true,
+};
 
 const yumeKataruYoriLyrics: LyricLine[] = [
-  { words: [yw("mo-t-to", "更多", s("もっと")), yw("na-ni-ka", "某些事物", s("なにか")), yw("sa-ga-shi-te", "探寻", s("探", "さが"), s("して"))], zh: "为了探寻更多事物" },
-  { words: [yw("do-n-do-n", "不断地", s("どんどん")), yw("so-to-e", "向外面", s("外", "そと"), s("へ")), yw("i-ku-n-da", "去寻找吧", s("行", "い"), s("くんだ"))], zh: "不断外出寻找吧" },
-  { words: [yw("ya-t-te-mi-ta-ra", "尝试过后", s("やってみたら"))], zh: "这样尝试过后" },
-  { words: [yw("i-ga-i-to", "出乎意料地", s("意外", "いがい"), s("と")), yw("happy", "开心", s("ハッピー")), yw("mi-tsu-ka-ru-mon-sa", "会发现的", s("みつかるもんさ"))], zh: "竟感觉出乎意料的开心" },
-  { words: [yw("na-ya-mi-na-ga-ra", "一边烦恼", s("悩", "なや"), s("みながら"))], zh: "一边烦恼着" },
-  { words: [yw("wa-ra-wa-re-na-ga-ra", "一边被嘲笑", s("笑", "わら"), s("われながら"))], zh: "一边备受嘲笑" },
-  { words: [yw("me-ge-na-i", "别气馁", s("めげない")), yw("ma-ke-na-i", "别认输", s("負", "ま"), s("けない"))], zh: "别气馁 别认输" },
-  { words: [yw("na-i-cha-u-ka-mo-ne", "或许会流泪吧", s("ないちゃうかもね？"))], zh: "虽说或许会流泪吧？" },
-  { words: [yw("de-mo", "但是", s("でも")), yw("i-i-no-sa", "没有关系", s("いいのさ"))], zh: "但也没有关系" },
-  { words: [yw("a-shi-ta-ga", "明天", s("明日", "あした"), s("が")), yw("mi-e-te-ki-ta", "渐渐看见", s("見", "み"), s("えてきた"))], zh: "明天啊就近在眼前" },
-  yumeKataruWordsLine,
-  yumeKataruSongLine,
-  yumeKataruNowLine,
-  yumeKataruConveyLine,
-  yumeKataruWordsFromLine,
-  yumeKataruSongBornLine,
-  yumeKataruBornLine,
-  yumeKataruFeelingLine,
-  yumeKataruMelodyLine,
-  yumeKataruConnectedLine,
-  yumeKataruEscapeLine,
-  { words: [yw("su-su-mu", "前进", s("進", "すす"), s("む")), yw("to-ki-da-yo", "正是时刻", s("ときだよ"))], zh: "现在正是前进的时刻" },
-  yumeKataruNewPlaceLine,
+  ykLine("もっと|なにか|探{さが}して　|どんどん|外{そと}|へ|行{い}く|ん|だ", "再去寻找些什么吧，不断地走向更广阔的外面"),
+  ykLine("やって|みたら　|意外{いがい}|と|ハッピー|みつかる|もん|さ", "只要试着去做，意外地就会发现幸福其实就在身边"),
+  ykLine("悩{なや}み|ながら　|笑{わら}われ|ながら", "一边烦恼着，一边被人笑着"),
+  ykLine("めげない　|負{ま}けない　|泣{な}いちゃう|かも|ね？", "也不会气馁，也不会认输，说不定还是会哭出来吧？"),
+  ykLine("でも|いい|の|さ　|明日{あした}|が　|見{み}えて|きた", "不过没关系，因为已经渐渐看见明天了"),
+  ykLine("ユメ|を|語{かた}る|言葉{ことば}|より　|ユメ|を|語{かた}る|歌{うた}|に|しよう", "比起用言语诉说梦想，不如把梦想唱成歌吧"),
+  ykLine("それ|ならば|今{いま}|を|伝{つた}えられる|気{き}|が|する|から", "因为那样的话，感觉就能把此刻的心情传达出去"),
+  ykLine("ユメ|を|語{かた}る|言葉{ことば}|から　|ユメ|を|語{かた}る|歌{うた}|が|生{う}まれる|ん|だ|ね", "从诉说梦想的话语里，也会诞生出歌唱梦想的歌吧"),
+  ykLine("ひろがる|この|想{おも}い|は", "这份不断延展开来的心意"),
+  ykLine("大好{だいす}き|な|メロディー|の|つながり|だ|よ|ね", "正是由最喜欢的旋律彼此连接起来的吧"),
+  ykLine("もう|逃{に}げないで|進{すす}む|時{とき}|だ|よ　|あたらしい|場所{ばしょ}|へ", "已经到了不再逃避、继续向前的时候了，向着崭新的地方"),
   yumeKataruSingingLine,
   yumeKataruSingingLine,
-  { words: [yw("ki-t-to", "一定", s("きっと")), yw("na-ni-ka", "有什么", s("なにか")), yw("ha-ji-ma-ru", "将要开始", s("始", "はじ"), s("まる"))], zh: "一定有什么将要开始" },
-  { words: [yw("wa-i-wa-i", "热闹沸腾", s("わいわい")), yw("mi-n-na-no", "大家的", s("みんなの")), yw("energy", "能量", s("エネルギー"))], zh: "大家的能量正沸腾不已" },
-  { words: [yw("ya-t-te-mi-ru-yo", "试着动手去做吧", s("やってみるよ")), yw("ki-mo-chi-ga", "心情", s("気持", "きも"), s("ちが"))], zh: "试着动手去做吧 大家的心情" },
-  { words: [yw("gyu-t-to", "紧紧地", s("ぎゅっと")), yw("hi-to-tsu-ni", "合而为一", s("ひとつに")), yw("na-t-te", "变得", s("なって"))], zh: "已然紧紧相连" },
-  { words: [yw("ka-n-ji-ta-i-na", "好想感受", s("感", "かん"), s("じたいな")), yw("to-ki-me-ki-ta-i-na", "好想心跳不已", s("ときめきたいな"))], zh: "好想去感受心跳不已的悸动" },
-  { words: [yw("ki-mi-ga", "与你、你所", s("君", "きみ"), s("が"))], zh: "与你" },
-  { words: [yw("ne-ga-u", "许下愿望", s("願", "ねが"), s("う")), yw("ko-to-o", "事情", s("ことを")), yw("bo-ku-mo", "我也", s("僕", "ぼく"), s("も"))], zh: "许下了" },
-  { words: [yw("ne-ga-t-te-ta", "期盼着", s("願", "ねが"), s("ってた"))], zh: "相同的愿望" },
-  { words: [yw("ko-ko-ro-wa", "彼此的心灵", s("心", "こころ"), s("は"))], zh: "彼此的心灵" },
-  { words: [yw("chi-ka-zu-i-te-ru", "更加接近", s("近", "ちか"), s("づいてる"))], zh: "更加地接近" },
-  { words: [yw("so-re-ga", "那件事", s("それが")), yw("u-re-shi-i-ne", "令人喜悦", s("嬉", "うれ"), s("しいね"))], zh: "充满了无限的喜悦" },
-  { words: [yw("mi-ra-i", "未来", s("ミライ")), yw("no-zo-mu", "期盼", s("望", "のぞ"), s("む")), yw("ko-to-ba-ka-ra", "从话语中", s("言葉", "ことば"), s("から"))], zh: "从期盼未来的话语中" },
-  { words: [yw("mi-ra-i", "未来", s("ミライ")), yw("no-zo-mu", "期盼", s("望", "のぞ"), s("む")), yw("u-ta-ni-na-ru-yo", "化作歌曲", s("歌", "うた"), s("になるよ"))], zh: "诞生出期盼未来的歌曲" },
-  { words: [yw("so-re-ko-so-ga", "这正是", s("それこそが"))], zh: "这正是" },
-  { words: [yw("i-ma-no", "如今的", s("今", "いま"), s("の")), yw("to-bi-da-shi-ta-i", "想要展翅高飞", s("飛", "と"), s("びだしたい")), yw("mu-ne-no", "心中的", s("胸", "むね"), s("の")), yw("a-tsu-sa", "热情", s("熱", "あつ"), s("さ"))], zh: "如今心中想要展翅高飞的热情" },
-  { words: [yw("mi-ra-i", "未来", s("ミライ")), yw("no-zo-mu", "期盼", s("望", "のぞ"), s("む")), yw("ko-to-ba-ka-ra", "从话语中", s("言葉", "ことば"), s("から"))], zh: "从期盼未来的话语中" },
-  { words: [yw("mi-ra-i", "未来", s("ミライ")), yw("no-zo-mu", "期盼", s("望", "のぞ"), s("む")), yw("u-ta-ga", "歌曲", s("歌", "うた"), s("が")), yw("a-fu-re-da-shi-ta-ra", "如果满溢而出", s("あふれだしたら"))], zh: "期盼未来的歌曲满溢而出的话" },
-  { words: [yw("to-me-na-i-de-yo", "别让它停下", s("とめないでよ")), yw("to-o-ku-e", "传向远方", s("遠", "とお"), s("くへ"))], zh: "就让它传向远方吧" },
-  { words: [yw("da-i-su-ki-na", "最喜欢的", s("大好", "だいす"), s("きな")), yw("melody-to", "带着旋律", s("メロディーと"))], zh: "带着最喜欢的旋律" },
-  { words: [yw("ta-bi-ni", "踏上旅程", s("旅", "たび"), s("に")), yw("de-ru-n-da", "出发", s("でるんだ"))], zh: "踏上旅程" },
-  { words: [yw("ho-ra", "来吧", s("ほら")), yw("ta-no-shi-ku-te", "欢快地", s("楽", "たの"), s("しくて"))], zh: "让我们欢快地" },
-  { words: [yw("do-ko-ma-de-mo", "无论到哪里", s("どこまでも")), yw("i-ko-u", "前行吧", s("行", "い"), s("こう"))], zh: "走向大千世界吧" },
-  { words: [yw("a-ta-ra-shi-i", "崭新的", s("新", "あたら"), s("しい")), yw("ki-se-tsu", "季节", s("季節", "きせつ"))], zh: "在这崭新的季节" },
-  { words: [yw("so-u-da-yo-ne", "就是如此", s("そうだよね"))], zh: "就是如此" },
-  { words: [yw("su-gu-ni-wa", "立即", s("すぐには")), yw("ki-me-ra-re-na-i", "无法下定决心", s("決", "き"), s("められない"))], zh: "虽然无法立即下定决心" },
-  { words: [yw("da-ke-do-sa", "但是呢", s("だけどさ")), yw("ka-ra-da-wa", "身体却", s("体", "からだ"), s("は"))], zh: "但身体却" },
-  { words: [yw("na-ze-ka", "不由自主地", s("なぜか")), yw("o-do-ri-da-shi-te", "翩翩起舞", s("踊", "おど"), s("りだして"))], zh: "不由自主地翩翩起舞" },
-  { words: [yw("da-i-su-ki-na", "最喜欢的", s("大好", "だいす"), s("きな")), yw("melody-ni", "同旋律", s("メロディーに"))], zh: "同最喜欢的旋律" },
-  { words: [yw("a-wa-se-te-ta", "合而为一", s("合", "あ"), s("わせてた"))], zh: "合而为一" },
-  { words: [yw("o-i-de-yo", "快跟上吧", s("おいでよ"))], zh: "快跟上吧" },
-  { words: [yw("o-i-de-yo", "快跟上吧", s("おいでよ"))], zh: "快跟上吧" },
-  yumeKataruWordsLine,
-  yumeKataruSongLine,
-  yumeKataruNowLine,
-  yumeKataruConveyLine,
-  yumeKataruWordsFromLine,
-  yumeKataruSongBornLine,
-  yumeKataruBornLine,
-  yumeKataruFeelingLine,
-  yumeKataruMelodyLine,
-  yumeKataruConnectedLine,
-  yumeKataruEscapeLine,
-  { words: [yw("ki-mi-to", "与你", s("君", "きみ"), s("と")), yw("bo-ku-to-de", "和我一起", s("僕", "ぼく"), s("とで")), yw("su-su-mu", "前进", s("進", "すす"), s("む")), yw("to-ki-da-yo", "正是时刻", s("ときだよ"))], zh: "现在正是我们共同前进的时刻" },
-  { ...yumeKataruNewPlaceLine, zh: "一起前往崭新的场所" },
+  ykLine("きっと|なにか|始{はじ}まる　|わいわい|みんな|の|エネルギー", "一定会有什么开始吧，热热闹闹的大家汇聚成满满的能量"),
+  ykLine("やって|みる|よ　|気持{きも}ち|が|ぎゅっと|ひとつ|に|なって", "那就去试试看吧，让彼此的心意紧紧地汇聚成一体"),
+  ykLine("感{かん}じたい|な　|ときめきたい|な", "想要去感受，想要感受到心动"),
+  ykLine("君{きみ}|が|願{ねが}う|こと|を　|僕{ぼく}|も|願{ねが}ってた　|心{こころ}|は　|近{ちか}づいてる", "你所祈愿的事情，其实也是我一直在祈愿的，我们的心正在一点点靠近"),
+  ykLine("それ|が|嬉{うれ}しい|ね", "这真的让人很开心啊"),
+  ykLine("ミライ|望{のぞ}む|言葉{ことば}|から　|ミライ|望{のぞ}む|歌{うた}|に|なる|よ", "从期盼未来的话语里，会诞生出期盼未来的歌"),
+  ykLine("それ|こそ|が|今{いま}|の|飛{と}びだしたい|胸{むね}|の|熱{あつ}さ", "那正是此刻胸口这份想要立刻奔出去的炽热心情"),
+  ykLine("ミライ|望{のぞ}む|言葉{ことば}|から　|ミライ|望{のぞ}む|歌{うた}|が|あふれだしたら", "从期盼未来的话语里，如果歌唱未来的歌不断满溢而出"),
+  ykLine("とめないで|よ|遠{とお}く|へ", "就不要阻止它，让它去往更远的地方吧"),
+  ykLine("大好{だいす}き|な|メロディー|と|旅{たび}|に|でる|ん|だ", "和最喜欢的旋律一起踏上旅途"),
+  ykLine("ほら|楽{たの}しくて|どこ|まで|も|行{い}こう　|あたらしい|季節{きせつ}", "你看，这么开心的话，就一直走到更远的地方吧，迎向崭新的季节"),
+  ykLine("そう|だ|よ|ね　|すぐ|に|は|決{き}められない", "是啊，有些事情没办法立刻做出决定"),
+  ykLine("だけど|さ|身体{からだ}|は|なぜか|踊{おど}りだして", "可是啊，身体却不知为何已经开始舞动"),
+  ykLine("大好{だいす}き|な|メロディー|に|合{あ}わせてた　|おいで|よ…|おいで|よ！", "跟随着最喜欢的旋律，来吧……来吧！"),
+  ykLine("ユメ|を|語{かた}る|言葉{ことば}|より　|ユメ|を|語{かた}る|歌{うた}|に|しよう", "比起用言语诉说梦想，不如把梦想唱成歌吧"),
+  ykLine("それ|ならば|今{いま}|を|伝{つた}えられる|気{き}|が|する|から", "因为那样的话，感觉就能把此刻的心情传达出去"),
+  ykLine("ユメ|を|語{かた}る|言葉{ことば}|から　|ユメ|を|語{かた}る|歌{うた}|が|生{う}まれる|ん|だ|ね", "从诉说梦想的话语里，也会诞生出歌唱梦想的歌吧"),
+  ykLine("ひろがる|この|想{おも}い|は", "这份不断延展开来的心意"),
+  ykLine("大好{だいす}き|な|メロディー|の|つながり|だ|よ|ね", "正是由最喜欢的旋律彼此连接起来的吧"),
+  ykLine("もう|逃{に}げないで|君{きみ}|と|僕{ぼく}|と|で|進{すす}む|時{とき}|だ|よ　|あたらしい|場所{ばしょ}|へ", "已经到了不再逃避、由你和我一起向前的时候了，向着崭新的地方"),
   yumeKataruSingingLine,
   yumeKataruSingingLine,
 ];
