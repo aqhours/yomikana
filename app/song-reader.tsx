@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ListRestart, Moon, Pause, Play, Sun } from "lucide-react";
+import { ArrowLeft, ListRestart, Moon, Pause, Play, Sun, X } from "lucide-react";
 import { loadAudio } from "./audio-cache";
 import FontSelector from "./font-selector";
 
@@ -1265,6 +1265,18 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
   const song = songs[songSlug] ?? songs["kimi-no-kokoro"];
   const lyrics = song.lyrics;
   const audioRef = useRef<HTMLAudioElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const startRef = useRef<HTMLButtonElement>(null);
+  const readerMotionRef = useRef<Animation[]>([]);
+  const readerClosingRef = useRef(false);
+  useEffect(() => () => { readerMotionRef.current.forEach((animation) => animation.cancel()); }, []);
+  const [readerOpen, setReaderOpen] = useState(false);
+  useEffect(() => {
+    if (!readerOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previousOverflow; };
+  }, [readerOpen]);
   const readerRef = useRef<HTMLElement>(null);
   const lineRefs = useRef<(HTMLLIElement | null)[]>([]);
   const animationRef = useRef<number | null>(null);
@@ -1340,12 +1352,12 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
     };
   }, []);
   useEffect(() => {
-    if (!autoScroll || activeLine < 0) return;
+    if (!readerOpen || !autoScroll || activeLine < 0) return;
     const reader = readerRef.current;
     const line = lineRefs.current[activeLine];
     if (!reader || !line) return;
     reader.scrollTo({ top: line.offsetTop - reader.clientHeight / 2 + line.clientHeight / 2, behavior: "smooth" });
-  }, [activeLine, autoScroll]);
+  }, [activeLine, autoScroll, readerOpen]);
   useEffect(() => () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
   }, []);
@@ -1388,6 +1400,53 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
     lastClockUpdateRef.current = range.start;
     setCurrentMs(range.start);
   };
+  const openReader = () => {
+    const dialog = dialogRef.current;
+    if (!dialog || dialog.open) return;
+    readerMotionRef.current.forEach((animation) => animation.cancel());
+    readerClosingRef.current = false;
+    dialog.showModal();
+    setReaderOpen(true);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fade = dialog.animate([{ opacity: 0 }, { opacity: 1 }], {
+      duration: reducedMotion ? 120 : 240, easing: "cubic-bezier(.23,1,.32,1)",
+    });
+    const content = dialog.querySelector<HTMLElement>(".reader");
+    const lift = !reducedMotion && content ? content.animate([
+      { transform: "translateY(10px)" }, { transform: "translateY(0)" },
+    ], { duration: 280, easing: "cubic-bezier(.23,1,.32,1)" }) : null;
+    readerMotionRef.current = lift ? [fade, lift] : [fade];
+  };
+  const closeReader = () => {
+    const dialog = dialogRef.current;
+    if (!dialog?.open || readerClosingRef.current) return;
+    readerClosingRef.current = true;
+    audioRef.current?.pause();
+    // Capture the current frame before cancelling an interrupted entrance.
+    const opacity = getComputedStyle(dialog).opacity;
+    const content = dialog.querySelector<HTMLElement>(".reader");
+    const transform = content ? getComputedStyle(content).transform : "none";
+    readerMotionRef.current.forEach((animation) => animation.cancel());
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const fade = dialog.animate([{ opacity }, { opacity: 0 }], {
+      duration: reducedMotion ? 100 : 160, easing: "cubic-bezier(.23,1,.32,1)", fill: "forwards",
+    });
+    const settle = !reducedMotion && content ? content.animate([
+      { transform }, { transform: "translateY(6px)" },
+    ], { duration: 160, easing: "cubic-bezier(.23,1,.32,1)", fill: "forwards" }) : null;
+    readerMotionRef.current = settle ? [fade, settle] : [fade];
+    void fade.finished.then(() => {
+      dialog.close();
+      readerMotionRef.current.forEach((animation) => animation.cancel());
+      readerMotionRef.current = [];
+      readerClosingRef.current = false;
+    }).catch(() => { /* Cancellation is expected when the reader unmounts. */ });
+  };
+  const onReaderClosed = () => {
+    audioRef.current?.pause();
+    setReaderOpen(false);
+    startRef.current?.focus({ preventScroll: true });
+  };
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
     localStorage.setItem("yomikana-theme", nextTheme);
@@ -1415,9 +1474,10 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             <div><dt>編曲</dt><dd>{song.credits.arranger}</dd></div>
             <div><dt>演唱</dt><dd>{song.artist}</dd></div>
           </dl>
-          <a className="start-link" href="#lyrics" data-umami-event="reader-start" data-umami-event-song={song.slug}>开始阅读 <span aria-hidden="true">↓</span></a>
+          <button ref={startRef} className="start-link" type="button" onClick={openReader} aria-haspopup="dialog" aria-controls="lyrics-dialog" data-umami-event="reader-start" data-umami-event-song={song.slug}>开始阅读 <span aria-hidden="true">↗</span></button>
         </div>
       </header>
+      <dialog ref={dialogRef} id="lyrics-dialog" className="reader-dialog" aria-label={`${song.title}${song.titleAccent} · 歌词阅读`} onClose={onReaderClosed} onCancel={(event) => { event.preventDefault(); closeReader(); }}>
       <section className="reader" data-lyric-font={lyricFont} id="lyrics" aria-label="歌词正文">
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
@@ -1438,6 +1498,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
             setLyricFont(nextFont);
             try { localStorage.setItem("yomikana-lyric-font", nextFont); } catch { /* Font switching still works without storage. */ }
           }} />
+          <button className="reader-close" type="button" onClick={closeReader} aria-label="关闭歌词界面" title="关闭歌词界面（Esc）"><X aria-hidden="true" /></button>
         </div>
         <ol className="lyrics-list" ref={readerRef}>
           {lyrics.map((line, lineIndex) => (
@@ -1455,6 +1516,7 @@ export default function SongReader({ songSlug }: { songSlug: string }) {
           ))}
         </ol>
       </section>
+      </dialog>
     </main>
   );
 }
