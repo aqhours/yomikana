@@ -221,8 +221,11 @@ const cl = (markup: string, zh: string, aside = false, meanings: Record<string, 
       if (match[1]) { jp.push(s(match[1], match[2])); pronunciation += match[2]; }
       else if (match[3]) { jp.push(s(match[3])); pronunciation += match[3]; }
     }
-    const romaji = romanizeKana(pronunciation);
     const surface = jp.map((segment) => segment.text).join("").trim();
+    // Standalone particles keep their grammatical reading, even beside punctuation.
+    // Do not alter lexical は / へ inside words such as はじめる or はず.
+    const particle = surface.replace(/[\s\p{P}\p{S}]/gu, "");
+    const romaji = particle === "は" ? "wa" : particle === "へ" ? "e" : romanizeKana(pronunciation);
     return yw(romaji, meanings[surface] ?? compactWordMeanings[surface] ?? wordMeanings[meaningKey(romaji)] ?? "歌词表达", ...jp);
   }),
   zh,
@@ -446,7 +449,14 @@ const aozoraJumpingHeartWordMeanings: Record<string, string> = {
   "どこ？":"在哪里？","どこ":"哪里","だろう？":"推测、疑问语气：会在哪里呢？","わからない！":"不知道！","でも":"但是","楽しそう":"看起来很有趣","未来":"未来","さ…":"句末语气：啊……","まっしぐら！":"一路向前冲！",
 };
 
-const ajh = (markup: string, zh: string, aside = false) => cl(markup, zh, aside, aozoraJumpingHeartWordMeanings);
+const ajh = (markup: string, zh: string, aside = false): LyricLine => {
+  const line = cl(markup, zh, aside, aozoraJumpingHeartWordMeanings);
+  return { ...line, words: line.words.map((word) =>
+    word.jp.map((segment) => segment.text).join("") === "（さあっどこへ）"
+      ? { ...word, romaji: "sa-a-ddo-ko-e" }
+      : word
+  ) };
+};
 
 
 const aozoraJumpingHeartLyrics: LyricLine[] = [
