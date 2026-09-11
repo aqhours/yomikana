@@ -99,7 +99,8 @@ test("server-renders the song library", async () => {
   assert.ok(html.includes(covers.miracleWave));
   assert.ok(html.includes(covers.soraKokoro));
   assert.ok(html.includes(covers.waterBlueNewWorld));
-  assert.equal(html.match(/class="release-card"/g)?.length, 13);
+  assert.equal(html.match(/class="release-card"/g)?.length, 14);
+  assert.match(html, /href="\/songs\/thank-you-friends"/);
   assert.equal(html.match(/class="release-year"/g)?.length, 7);
   assert.doesNotMatch(html, /2015\.10\.07|2017\.11\.29|2024\.12\.18/);
   const chronologicalSlugs = [

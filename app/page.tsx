@@ -4,6 +4,7 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const catalog = [
+  { slug: "thank-you-friends", title: "Thank you, FRIENDS!!", artist: "Aqours", releaseDate: "2018-08-01", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Thank%20you%2C%20FRIENDS%21%213000x3000bb.jpg" },
   { slug: "kimi-no-kokoro", title: "君のこころは輝いてるかい？", artist: "Aqours", releaseDate: "2015-10-07", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%90%9B%E3%81%AE%E3%81%93%E3%81%93%E3%82%8D%E3%81%AF%20%E8%BC%9D%E3%81%84%E3%81%A6%E3%82%8B%E3%81%8B%E3%81%84%EF%BC%9F3000x3000bb.jpg" },
   { slug: "aozora-jumping-heart", title: "青空Jumping Heart", artist: "Aqours", releaseDate: "2016-07-20", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E9%9D%92%E7%A9%BAJumping%20Heart3000x3000bb.jpg" },
   { slug: "yume-kataru-yori-yume-utaou", title: "ユメ語るよりユメ歌おう", artist: "Aqours", releaseDate: "2016-08-24", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%E8%AA%9E%E3%82%8B%E3%82%88%E3%82%8A%E3%83%A6%E3%83%A1%E6%AD%8C%E3%81%8A%E3%81%863000x3000bb.jpg" },
