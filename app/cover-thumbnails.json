@@ -50,5 +50,9 @@
   "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/WATER%20BLUE%20NEW%20WORLD3000x3000bb.jpg": {
     "256": "/covers/505ab7517285cf9b-256.webp",
     "640": "/covers/7936de5c82a868ff-640.webp"
+  },
+  "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/bd/2c/a2/bd2ca2fc-1284-b89b-6b5b-677712c5ebc8/4540774144709.png/3000x3000bb.jpg": {
+    "256": "/covers/78f4c4e82d4005e1-256.webp",
+    "640": "/covers/a9ab1ad84eafb9aa-640.webp"
   }
 }

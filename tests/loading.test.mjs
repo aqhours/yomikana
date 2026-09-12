@@ -17,7 +17,7 @@ async function render(path) {
 test("the library eagerly loads only its first cover", async () => {
   const html = await render("/");
   const images = [...html.matchAll(/<img\b[^>]*>/g)].map(([tag]) => tag);
-  assert.equal(images.length, 14);
+  assert.equal(images.length, 15);
   assert.match(images[0], /loading="eager"/);
   for (const tag of images.slice(1)) assert.match(tag, /loading="lazy"/);
 });

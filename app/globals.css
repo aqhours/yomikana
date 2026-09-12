@@ -193,8 +193,8 @@ h1 em { color:var(--sun); font-style:normal; }
 .credits dd { margin:0; color:var(--ink); font-weight:600; }
 .start-link { appearance:none; background:none; color:var(--ink); font-family:inherit; border:0; cursor:pointer; padding:0; display:inline-flex; gap:1rem; align-items:center; margin-top:2.7rem; text-decoration:none; font-size:.82rem; letter-spacing:.12em; border-bottom:1px solid var(--ink); padding-bottom:.45rem; }
 .start-link span { color:var(--sun); }
-.reader { --reader-inline:clamp(2rem,5vw,4.5rem); display:grid; grid-template-rows:auto minmax(0,1fr); width:100%; height:100vh; height:100dvh; margin:0; overflow:hidden; scroll-margin-top:0; background:rgba(226,246,253,.66); border-radius:0; box-shadow:none; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
-.player-bar { position:relative; z-index:5; display:grid; grid-template-columns:3.5rem 2rem minmax(0,1fr) 2rem auto 2.5rem; gap:.68rem; align-items:center; width:min(72rem,calc(100% - clamp(1.5rem,4vw,3rem))); margin:clamp(.75rem,1.8vw,1.25rem) auto 0; padding:1.72rem clamp(1rem,3vw,2.25rem) 1.32rem; border:1px solid var(--rule); border-radius:1.15rem; background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
+.reader { --player-gutter:clamp(1.5rem,4vw,3rem); --player-padding:clamp(1rem,3vw,2.25rem); --cover-size:4.25rem; --reader-inline:max(calc(var(--player-gutter) / 2 + var(--player-padding)),calc((100% - 72rem) / 2 + var(--player-padding))); display:grid; grid-template-rows:auto minmax(0,1fr); width:100%; height:100vh; height:100dvh; margin:0; overflow:hidden; scroll-margin-top:0; background:rgba(226,246,253,.66); border-radius:0; box-shadow:none; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+.player-bar { position:relative; z-index:5; display:grid; grid-template-columns:var(--cover-size) 2rem minmax(0,1fr) 2rem auto 2.5rem; gap:.68rem; align-items:center; width:min(72rem,calc(100% - var(--player-gutter))); margin:clamp(.75rem,1.8vw,1.25rem) auto 0; padding:1.72rem var(--player-padding) 1.32rem; border:1px solid var(--rule); border-radius:1.15rem; background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
 .song-page .player-bar { border-color:color-mix(in srgb,var(--ink) 10%,transparent); background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
 .audio-player { display:none; }
 .lyric-font-control { position:relative; margin-left:0; font-size:.72rem; }
@@ -230,7 +230,7 @@ html[data-theme="dark"] .font-option[aria-checked="true"] { background:rgba(255,
 .reader[data-lyric-font="sans"] rt { font-family:"Noto Sans JP",sans-serif; }
 .reader[data-lyric-font="sans"] .word-romaji { font-family:var(--font-geist-sans),"Noto Sans JP",sans-serif; font-weight:450; letter-spacing:.015em; }
 .reader[data-lyric-font="sans"] .word-meaning,.reader[data-lyric-font="sans"] .translation { font-family:"Noto Sans SC","PingFang SC",sans-serif; letter-spacing:.01em; }
-.mini-cover { display:block; width:3.5rem; height:3.5rem; border-radius:.46rem; object-fit:cover; box-shadow:0 6px 16px rgba(7,81,127,.22); }
+.mini-cover { display:block; width:var(--cover-size); height:var(--cover-size); border-radius:.46rem; object-fit:cover; box-shadow:0 6px 16px rgba(7,81,127,.22); }
 .play-toggle,.scroll-toggle { display:grid; place-items:center; width:2rem; height:2rem; padding:0; border:1px solid rgba(7,81,127,.16); border-radius:50%; cursor:pointer; transition:transform .14s var(--ease-out),background-color .18s ease,color .18s ease,border-color .18s ease; }
 .play-toggle { border-color:rgba(7,81,127,.08); background:var(--ink); color:#fff; box-shadow:0 5px 16px rgba(7,81,127,.2); }
 .play-toggle:disabled { cursor:wait; opacity:.5; }
@@ -260,10 +260,8 @@ html[data-theme="dark"] .font-option[aria-checked="true"] { background:rgba(255,
 .lyrics-list { position:relative; min-height:0; margin:0; padding:0 var(--reader-inline) 5rem; overflow-y:auto; overscroll-behavior:contain; scroll-behavior:smooth; scrollbar-width:thin; scrollbar-color:var(--scroll-thumb) transparent; list-style:none; }
 .lyrics-list::-webkit-scrollbar { width:8px; }
 .lyrics-list::-webkit-scrollbar-thumb { background:var(--scroll-thumb); border:2px solid transparent; border-radius:999px; background-clip:padding-box; }
-.lyric-line { display:grid; grid-template-columns:3.6rem 1fr; gap:1rem; margin:.35rem -1.25rem; padding:1.65rem 1.25rem 1.85rem; border-radius:1.35rem; opacity:.56; transition:opacity .42s var(--ease-out); }
+.lyric-line { display:grid; grid-template-columns:minmax(0,1fr); margin:.35rem -1.25rem; padding:1.65rem 1.25rem 1.85rem; border-radius:1.35rem; opacity:.56; transition:opacity .42s var(--ease-out); }
 .lyric-line.is-active { opacity:1; }
-.line-number { padding-top:1.35rem; color:var(--line-number); font:500 .74rem/1 var(--font-geist-mono),monospace; letter-spacing:.1em; transition:color .32s ease; }
-.lyric-line.is-active .line-number { color:var(--line-number-active); }
 .line-seek { width:100%; margin:0; padding:0; border:0; border-radius:.7rem; background:transparent; color:inherit; text-align:left; cursor:pointer; transform-origin:left center; transition:transform .4s var(--ease-out),background-color .18s ease; }
 .lyric-line.is-active .line-seek { transform:scale(1.018); }
 .line-seek:disabled { cursor:default; }
@@ -314,17 +312,16 @@ rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spac
   .release-card { width:auto; padding:0; border-radius:.85rem; }
   .release-card-copy { padding:.75rem; }
   .release-card-copy h3 { font-size:.82rem; }
-  .reader { --reader-inline:1rem; border-radius:0; }
-  .player-bar { grid-template-columns:3rem 1.9rem minmax(0,1fr) 1.9rem 2rem 2.5rem; gap:.45rem; width:calc(100% - 1rem); margin:.5rem auto 0; padding:1.62rem .8rem 1.22rem; border-radius:.9rem; }
-  .mini-cover { width:3rem; height:3rem; border-radius:.4rem; }
+  .reader { --player-gutter:1rem; --player-padding:.8rem; --cover-size:3.75rem; border-radius:0; }
+  .player-bar { grid-template-columns:var(--cover-size) 1.9rem minmax(0,1fr) 1.9rem 2rem 2.5rem; gap:.45rem; width:calc(100% - 1rem); margin:.5rem auto 0; padding:1.62rem var(--player-padding) 1.22rem; border-radius:.9rem; }
+  .mini-cover { border-radius:.4rem; }
   .play-toggle,.scroll-toggle { width:1.9rem; height:1.9rem; }
   .timeline,.progress-slider { height:2.15rem; }
   .lyric-font-control { grid-column:5; grid-row:1; margin:0; }
   .song-meta { gap:.38rem; font-size:.66rem; }
   .song-meta span { font-size:.61rem; }
-  .lyric-line { grid-template-columns:1.8rem 1fr; gap:.35rem; margin:.25rem -.55rem; padding:1.25rem .55rem 1.45rem; border-radius:1rem; }
+  .lyric-line { grid-template-columns:minmax(0,1fr); margin:.25rem -.55rem; padding:1.25rem .55rem 1.45rem; border-radius:1rem; }
   .lyric-line.is-active .line-seek { transform:scale(1.01); }
-  .line-number { padding-top:1.35rem; font-size:.6rem; }
   .word-strip { gap:.8rem .9rem; }
   .word-block { width:max-content; min-width:0; padding:.25rem 0; }
   .word-jp { font-size:1.52rem; }
@@ -434,7 +431,6 @@ html[data-theme="dark"] .song-page .player-bar { background:transparent; }
 .reader-dialog:not([open]) { display:none; }
 .reader-dialog::backdrop { background:transparent; }
 .reader-dialog .reader { padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
-html[data-theme="dark"] .reader-dialog { background-color:#061722; }
 .reader-close { display:grid; place-items:center; width:2.5rem; height:2.5rem; padding:0; border:1px solid var(--rule); border-radius:50%; background:color-mix(in srgb,var(--ink) 5%,transparent); color:var(--ink); cursor:pointer; }
 .reader-close svg { width:1.1rem; height:1.1rem; }
 .reader-close:focus-visible,.start-link:focus-visible { outline:2px solid var(--sun); outline-offset:4px; }
@@ -480,8 +476,7 @@ html[data-theme="dark"] .reader-dialog { background-color:#061722; }
     color-mix(in srgb,var(--cover-color-2,#244777) 35%,transparent) 55%,
     color-mix(in srgb,var(--cover-color-5,#303b50) 72%,transparent));
 }
-html[data-theme="dark"] .reader-dialog::before { filter:blur(120px) saturate(1.5) brightness(.58); }
-.song-page .reader-dialog .reader {
+html .song-page .reader-dialog .reader {
   background:transparent;
   box-shadow:none;
   -webkit-backdrop-filter:none;

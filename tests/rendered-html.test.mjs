@@ -105,12 +105,13 @@ test("server-renders the song library", async () => {
   assert.ok(html.includes(thumbnails[covers.miracleWave][640]));
   assert.ok(html.includes(thumbnails[covers.soraKokoro][640]));
   assert.ok(html.includes(thumbnails[covers.waterBlueNewWorld][640]));
-  assert.equal(html.match(/class="release-card"/g)?.length, 14);
+  assert.equal(html.match(/class="release-card"/g)?.length, 15);
   assert.match(html, /href="\/songs\/thank-you-friends"/);
   assert.equal(html.match(/class="release-year"/g)?.length, 7);
   assert.doesNotMatch(html, /2015\.10\.07|2017\.11\.29|2024\.12\.18/);
   const chronologicalSlugs = [
     "kimi-no-kokoro",
+    "mattete-ai-no-uta",
     "aozora-jumping-heart",
     "yume-kataru-yori-yume-utaou",
     "sora-mo-kokoro-mo-hareru-kara",
@@ -120,6 +121,7 @@ test("server-renders the song library", async () => {
     "my-mai-tonight",
     "miracle-wave",
     "water-blue-new-world",
+    "thank-you-friends",
     "over-next-rainbow",
     "yume-mirai",
     "eternal-hours",
@@ -440,4 +442,27 @@ test("ships all local audio assets", async () => {
     access(new URL("../public/audio/water-blue-new-world.mp3", import.meta.url)),
     access(new URL("../public/audio/water-blue-new-world.yrc", import.meta.url)),
   ]);
+});
+
+test("renders Mattete Ai no Uta with the user's booklet layout and aligned timing", async () => {
+  const html = await (await render("/songs/mattete-ai-no-uta")).text();
+  const booklet = (await readFile(new URL("../imports/mattete-ai-no-uta/booklet.ja.txt", import.meta.url), "utf8")).trim().split(/\r?\n/);
+  assert.equal(booklet.length, 40);
+  assert.deepEqual(renderedJapanese(html), booklet);
+  assert.match(html, /闭上眼睛静静听着，那一遍又一遍重复的海浪声/);
+  assert.match(html, /望着心中的憧憬，不断追逐下去/);
+  assert.match(html, /data-source="\/audio\/mattete-ai-no-uta\.mp3"/);
+  const metadata = JSON.parse(await readFile(new URL("../imports/mattete-ai-no-uta/apple-music.json", import.meta.url), "utf8"));
+  assertArtwork(html, metadata.artworkUrl3000);
+  const yrc = await readFile(new URL("../public/audio/mattete-ai-no-uta.yrc", import.meta.url), "utf8");
+  assert.equal(yrc.trim().split("\n").length, 40);
+  assert.equal(alignableJapanese(yrcJapanese(yrc)), alignableJapanese(booklet));
+  const tokens = [...yrc.matchAll(/\((\d+),(\d+),0\)/g)].map((m) => ({ start: Number(m[1]), end: Number(m[1]) + Number(m[2]) }));
+  assert.equal(tokens[0].start, 19011);
+  for (const [i, token] of tokens.entries()) {
+    assert.ok(token.end > token.start, `Empty timing at character ${i}`);
+    assert.ok(token.end <= 360908, `Timing extends beyond audio at character ${i}`);
+    if (i) assert.ok(token.start >= tokens[i - 1].start, `Out-of-order timing at character ${i}`);
+  }
+  await access(new URL("../public/audio/mattete-ai-no-uta.mp3", import.meta.url));
 });

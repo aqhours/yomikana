@@ -360,7 +360,6 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
         <ol className="lyrics-list" ref={readerRef}>
           {lyrics.map((line, lineIndex) => (
             <li className={`lyric-line${line.aside ? " is-aside" : ""}${lineIndex === activeLine ? " is-active" : ""}`} key={lineIndex} ref={(element) => { lineRefs.current[lineIndex] = element; }}>
-              <span className="line-number" aria-hidden="true">{String(lineIndex + 1).padStart(2, "0")}</span>
               <button className="line-content line-seek" type="button" disabled={!lineRanges[lineIndex]} onClick={() => seekToLine(lineIndex)} aria-label={`跳转到第 ${lineIndex + 1} 句：${line.zh}`}>
                 <span className="word-strip" lang="ja">{line.words.map((word, wordIndex) => {
                   const range = lineRanges[lineIndex];
