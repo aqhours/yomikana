@@ -27,3 +27,9 @@ npm test
 ## 生产部署
 
 生产环境运行在 `https://yomikana.aqhours.cn`。推送到 `main` 后，GitHub webhook 会触发 `deploy.sh`，按该提交构建并更新服务。
+
+## 专辑封面配色
+
+歌词背景使用 `node-vibrant` 提取封面的 Vibrant、DarkVibrant、LightVibrant、Muted、DarkMuted、LightMuted 六类颜色。配色保存于 `app/cover-palettes.json`，浏览器无需下载提色库或执行图片分析。
+
+添加或更新 `app/song-reader.tsx` 中的封面后，运行 `npm run palette:generate` 并提交生成的 JSON。该命令需要访问封面图床；支持 JPEG 和 WebP，提取失败时不会覆盖已有配色。背景保留封面原始颜色的空间分布，以大范围模糊消除图像细节；提取的主色和深色用于统一色调及底部明暗，不将六个色块直接拼接。边缘虚化只作用于可见文字，不处理背景。

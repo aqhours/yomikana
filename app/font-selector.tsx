@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { Check, ChevronDown, Type } from "lucide-react";
+import { Check, Type } from "lucide-react";
 
 type Font = "sans" | "serif";
 const options = [
@@ -33,10 +33,10 @@ export default function FontSelector({ value, onChange }: { value: Font; onChang
     <div className="lyric-font-control" ref={root} onBlur={(event) => {
       if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
     }}>
-      <button ref={trigger} className="font-trigger" type="button" aria-label={`歌词字体：${options[selected].label}`} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? menuId : undefined} onClick={() => setOpen(!open)} onKeyDown={(event) => {
+      <button ref={trigger} className="font-trigger" type="button" title="歌词字体" aria-label={`歌词字体：${options[selected].label}`} aria-haspopup="menu" aria-expanded={open} aria-controls={open ? menuId : undefined} onClick={() => setOpen(!open)} onKeyDown={(event) => {
         if (event.key === "ArrowDown" || event.key === "ArrowUp") { event.preventDefault(); setOpen(true); }
       }}>
-        <Type aria-hidden="true" /><span>{options[selected].label}</span><ChevronDown className="font-chevron" aria-hidden="true" />
+        <Type aria-hidden="true" />
       </button>
       {open && <div className="font-menu" id={menuId} role="menu" tabIndex={-1} aria-label="歌词字体" onKeyDown={(event) => {
         if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); close(); return; }
