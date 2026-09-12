@@ -519,8 +519,11 @@ html .song-page .reader-dialog .mini-cover { box-shadow:none; }
   html .song-page .reader-dialog :is(.play-toggle,.scroll-toggle,.font-trigger,.fullscreen-toggle,.reader-close):hover { background:none; color:#fff; }
 }
 html .song-page .reader-dialog :is(.play-toggle,.scroll-toggle,.font-trigger,.fullscreen-toggle,.reader-close):active { transform:scale(.94); }
-.reader-dialog .lyric-line { opacity:.76; }
-.reader-dialog .lyric-line.is-active { opacity:1; }
+.reader-dialog .lyric-line { opacity:.76; filter:blur(1px); transition:opacity .42s var(--ease-out),filter .3s var(--ease-out); }
+.reader-dialog .lyric-line.is-active { opacity:1; filter:blur(0); }
+.reader-dialog .lyric-line:focus-within { filter:blur(0); }
+@media (prefers-reduced-motion:reduce) { .reader-dialog .lyric-line { transition:none; } }
+@media print { .reader-dialog .lyric-line { filter:none; } }
 .reader-dialog .word-romaji,.reader-dialog .lyric-line.is-active .word-romaji { color:var(--ink-soft); }
 .reader-dialog rt { color:var(--ink-soft); font-weight:500; letter-spacing:.02em; }
 .reader-dialog .timed-character::after { color:var(--ink); text-shadow:none; }
