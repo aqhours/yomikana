@@ -456,7 +456,8 @@ html[data-theme="dark"] .song-page .player-bar { background:transparent; }
   --scroll-thumb:rgba(255,255,255,.25);
   background:var(--ambient-bottom);
 }
-.reader-dialog::before {
+.reader-surface { position:relative; isolation:isolate; width:100%; height:100%; overflow:clip; background:var(--ambient-bottom); }
+.reader-surface::before {
   content:"";
   position:absolute;
   z-index:-1;
@@ -465,7 +466,7 @@ html[data-theme="dark"] .song-page .player-bar { background:transparent; }
   background:var(--song-backdrop) center/cover no-repeat;
   filter:blur(120px) saturate(1.5) brightness(.72);
 }
-.reader-dialog::after {
+.reader-surface::after {
   content:"";
   position:absolute;
   z-index:-1;

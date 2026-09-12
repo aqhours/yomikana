@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type RefObject } from "react";
 
 function subscribe(callback: () => void) {
   document.addEventListener("fullscreenchange", callback);
   return () => document.removeEventListener("fullscreenchange", callback);
 }
 
-export function useReaderFullscreen() {
+export function useReaderFullscreen(target: RefObject<HTMLDivElement | null>) {
   const isFullscreen = useSyncExternalStore(subscribe, () => Boolean(document.fullscreenElement), () => false);
   const supported = useSyncExternalStore(subscribe, () => Boolean(document.fullscreenEnabled), () => false);
   const owned = useRef(false);
@@ -37,9 +37,10 @@ export function useReaderFullscreen() {
       if (document.fullscreenElement) {
         await document.exitFullscreen();
       } else {
-        // A dialog itself cannot enter native fullscreen. Its document can,
-        // while the modal keeps its focus handling and cover-backed surface.
-        await document.documentElement.requestFullscreen();
+        // Fullscreen must sit above the modal in the browser top layer.
+        // A dialog cannot be a fullscreen target, so use its content surface.
+        if (!target.current) return;
+        await target.current.requestFullscreen();
         owned.current = true;
       }
     } catch {
