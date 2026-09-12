@@ -15,6 +15,12 @@ async function render(path = "/") {
 
 const decodeEntities = (text) => text.replaceAll("&quot;", '"').replaceAll("&#x27;", "'").replaceAll("&amp;", "&").replaceAll("&lt;", "<").replaceAll("&gt;", ">");
 
+const thumbnails = JSON.parse(await readFile(new URL("../app/cover-thumbnails.json", import.meta.url), "utf8"));
+function assertArtwork(html, source) {
+  assert.ok(html.includes(`src="${thumbnails[source][256]}"`));
+  assert.ok(html.includes(`--song-backdrop:url(${source})`));
+}
+
 const covers = {
   kimi: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%90%9B%E3%81%AE%E3%81%93%E3%81%93%E3%82%8D%E3%81%AF%20%E8%BC%9D%E3%81%84%E3%81%A6%E3%82%8B%E3%81%8B%E3%81%84%EF%BC%9F3000x3000bb.jpg",
   yume: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E3%83%A6%E3%83%A1%2B%E3%83%9F%E3%83%A9%E3%82%A4%3D%20%E7%84%A1%E9%99%90%E5%A4%A73000x3000bb.jpg",
@@ -87,18 +93,18 @@ test("server-renders the song library", async () => {
   assert.match(html, /href="\/songs\/my-mai-tonight"/);
   assert.match(html, /href="\/songs\/sora-mo-kokoro-mo-hareru-kara"/);
   assert.match(html, /href="\/songs\/water-blue-new-world"/);
-  assert.ok(html.includes(covers.kimi));
-  assert.ok(html.includes(covers.yume));
-  assert.ok(html.includes(covers.happyPartyTrain));
-  assert.ok(html.includes(covers.yuukiWaDokoNi));
-  assert.ok(html.includes(covers.overNextRainbow));
-  assert.ok(html.includes(covers.eternalHours));
-  assert.ok(html.includes(covers.aozoraJumpingHeart));
-  assert.ok(html.includes(covers.miraiTicket));
-  assert.ok(html.includes(covers.yumeKataru));
-  assert.ok(html.includes(covers.miracleWave));
-  assert.ok(html.includes(covers.soraKokoro));
-  assert.ok(html.includes(covers.waterBlueNewWorld));
+  assert.ok(html.includes(thumbnails[covers.kimi][640]));
+  assert.ok(html.includes(thumbnails[covers.yume][640]));
+  assert.ok(html.includes(thumbnails[covers.happyPartyTrain][640]));
+  assert.ok(html.includes(thumbnails[covers.yuukiWaDokoNi][640]));
+  assert.ok(html.includes(thumbnails[covers.overNextRainbow][640]));
+  assert.ok(html.includes(thumbnails[covers.eternalHours][640]));
+  assert.ok(html.includes(thumbnails[covers.aozoraJumpingHeart][640]));
+  assert.ok(html.includes(thumbnails[covers.miraiTicket][640]));
+  assert.ok(html.includes(thumbnails[covers.yumeKataru][640]));
+  assert.ok(html.includes(thumbnails[covers.miracleWave][640]));
+  assert.ok(html.includes(thumbnails[covers.soraKokoro][640]));
+  assert.ok(html.includes(thumbnails[covers.waterBlueNewWorld][640]));
   assert.equal(html.match(/class="release-card"/g)?.length, 14);
   assert.match(html, /href="\/songs\/thank-you-friends"/);
   assert.equal(html.match(/class="release-year"/g)?.length, 7);
@@ -120,7 +126,7 @@ test("server-renders the song library", async () => {
   ];
   assert.deepEqual([...html.matchAll(/class="release-card" href="\/songs\/([^"]+)"/g)].map((match) => match[1]), chronologicalSlugs);
   assert.doesNotMatch(html, /song-card-number|song-card-arrow|你的心灵是否光芒闪耀|梦想 \+ 未来 = 无限大|快乐派对列车/);
-  assert.doesNotMatch(html, /src="\/covers\//);
+
   const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
   assert.match(css, /https:\/\/jgox-image-1316409677\.cos\.ap-guangzhou\.myqcloud\.com\/eternal-hours-project\/numazu_bg\.png/);
   assert.doesNotMatch(css, /\/numazu-seaside\.png/);
@@ -146,7 +152,7 @@ test("renders the annotated HAPPY PARTY TRAIN reader", async () => {
   assert.match(html, /盛开了的/);
   assert.match(html, /快乐派对列车/);
   assert.match(html, /data-source="\/audio\/happy-party-train\.mp3"/);
-  assert.equal(html.split(covers.happyPartyTrain).length - 1, 2);
+  assertArtwork(html, covers.happyPartyTrain);
   assert.doesNotMatch(html, /\/covers\/happy-party-train\.jpg/);
   assert.match(html, /渡辺拓也/);
   assert.match(html, /EFFY/);
@@ -165,7 +171,7 @@ test("renders the annotated 勇気はどこに？君の胸に！ reader", async 
   assert.match(html, /yu-u-ki/);
   assert.match(html, /不论几次都要奋起追赶，别就此认输/);
   assert.match(html, /data-source="\/audio\/yuuki-wa-doko-ni\.mp3"/);
-  assert.equal(html.split(covers.yuukiWaDokoNi).length - 1, 2);
+  assertArtwork(html, covers.yuukiWaDokoNi);
   assert.match(html, /小高光太郎 \/ UiNA/);
   const words = renderedJapaneseWords(html);
   assert.deepEqual(words[2], ["僕", "だって", "最初", "から", "できた", "ワケ", "じゃ", "ない", "よ"]);
@@ -188,7 +194,7 @@ test("renders the annotated Over The Next Rainbow reader", async () => {
   assert.match(html, /向那渐渐消失的彩虹许下约定吧/);
   assert.match(html, /Saint Aqours Snow/);
   assert.match(html, /data-source="\/audio\/over-next-rainbow\.mp3"/);
-  assert.equal(html.split(covers.overNextRainbow).length - 1, 2);
+  assertArtwork(html, covers.overNextRainbow);
   assert.match(html, /Kanata Okajima/);
   assert.match(html, /TAKAROT \/ Shinji Tanaka/);
   assert.doesNotMatch(html, />歌词应援语</);
@@ -217,7 +223,7 @@ test("renders the original synchronized lyric reader", async () => {
   assert.match(html, /畑亜貴/);
   assert.match(html, /光增ハジメ/);
   assert.match(html, /EFFY/);
-  assert.equal(html.split(covers.kimi).length - 1, 2);
+  assertArtwork(html, covers.kimi);
   assert.doesNotMatch(html, /\/covers\/kimi-no-kokoro\.jpg/);
   assert.doesNotMatch(html, /class="album-art"/);
   assert.doesNotMatch(html, />歌词应援语</);
@@ -233,7 +239,7 @@ test("renders the annotated 永久hours reader", async () => {
   assert.match(html, /wa-su-re-na-i-de/);
   assert.match(html, /如果真要数起来的话，根本数也数不完！不完！不完！对吧？/);
   assert.match(html, /data-source="\/audio\/eternal-hours\.mp3"/);
-  assert.equal(html.split(covers.eternalHours).length - 1, 2);
+  assertArtwork(html, covers.eternalHours);
   assert.match(html, /Kanata Okajima \/ Hayato Yamamoto/);
   const words = renderedJapaneseWords(html);
   assert.deepEqual(words[0], ["忘れないで", "忘れない", "よ！"]);
@@ -257,7 +263,7 @@ test("renders the annotated 青空Jumping Heart reader", async () => {
   assert.match(html, /a-o-i/);
   assert.match(html, /那片蓝天在等着我们/);
   assert.match(html, /data-source="\/audio\/aozora-jumping-heart\.mp3"/);
-  assert.equal(html.split(covers.aozoraJumpingHeart).length - 1, 2);
+  assertArtwork(html, covers.aozoraJumpingHeart);
   assert.match(html, /伊藤賢 \/ 光増ハジメ/);
   const yrc = await readFile(new URL("../public/audio/aozora-jumping-heart.yrc", import.meta.url), "utf8");
   const rendered = renderedJapanese(html);
@@ -283,7 +289,7 @@ test("renders the annotated MIRAI TICKET reader", async () => {
   assert.match(html, /hi-ka-ri/);
   assert.match(html, /还想去看更前方的风景/);
   assert.match(html, /data-source="\/audio\/mirai-ticket\.mp3"/);
-  assert.equal(html.split(covers.miraiTicket).length - 1, 2);
+  assertArtwork(html, covers.miraiTicket);
   assert.match(html, /composer/);
   assert.match(html, /EFFY/);
   const words = renderedJapaneseWords(html);
@@ -313,7 +319,7 @@ for (const song of recentSongs) {
     assert.match(html, song.title);
     assert.match(html, song.translation);
     assert.match(html, new RegExp(`data-source="/audio/${song.audio}\\.mp3"`));
-    assert.equal(html.split(song.cover).length - 1, 2);
+    assertArtwork(html, song.cover);
     assert.doesNotMatch(html, />歌词应援语</);
     assert.doesNotMatch(html, />歌词表达</);
     const yrc = await readFile(new URL(`../public/audio/${song.audio}.yrc`, import.meta.url), "utf8");
@@ -368,7 +374,7 @@ test("keeps individual compact-word meanings and requested song colors", async (
   assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["踊れ", "踊れ", "熱く", "なる", "ため"])));
   assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["この", "世界", "は", "いつも", "諦めない", "心", "に"])));
   assert.ok(words.some((line) => JSON.stringify(line) === JSON.stringify(["答え", "じゃなく", "道", "を", "探す", "手掛かり", "を", "くれる", "から"])));
-  assert.match(html, /舞动吧　舞动吧　为了让心炽热起来/);
+  assert.match(html, /舞动吧\u3000舞动吧\u3000为了让心炽热起来/);
   assert.match(html, /class="word-meaning" lang="zh-CN">主题助词/);
   assert.match(html, /class="word-meaning" lang="zh-CN">宾语助词/);
   assert.match(html, /class="word-meaning" lang="zh-CN">原因助词：因为/);
@@ -388,7 +394,7 @@ test("renders the new annotated ユメ+ミライ=無限大 reader", async () => 
   assert.match(html, /律动、心跳/);
   assert.match(html, /梦想是无限大的/);
   assert.match(html, /data-source="\/audio\/yume-mirai\.mp3"/);
-  assert.equal(html.split(covers.yume).length - 1, 2);
+  assertArtwork(html, covers.yume);
   assert.doesNotMatch(html, /\/covers\/yume-mirai\.jpg/);
   assert.match(html, /前迫潤哉/);
   assert.match(html, /サイトウリョースケ/);

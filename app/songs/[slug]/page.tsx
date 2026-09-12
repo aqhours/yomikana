@@ -1,6 +1,9 @@
 import SongReader from "../../song-reader";
+import { songs } from "../../song-data";
+import coverPalettes from "../../cover-palettes.json";
+import coverThumbnails from "../../cover-thumbnails.json";
 
-const songSlugs = ["kimi-no-kokoro", "yume-mirai", "happy-party-train", "yuuki-wa-doko-ni", "over-next-rainbow", "eternal-hours", "aozora-jumping-heart", "mirai-ticket", "yume-kataru-yori-yume-utaou", "miracle-wave", "my-mai-tonight", "sora-mo-kokoro-mo-hareru-kara", "water-blue-new-world", "thank-you-friends"];
+const songSlugs = Object.keys(songs);
 
 export function generateStaticParams() {
   return songSlugs.map((slug) => ({ slug }));
@@ -8,5 +11,9 @@ export function generateStaticParams() {
 
 export default async function SongPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  return <SongReader songSlug={songSlugs.includes(slug) ? slug : "kimi-no-kokoro"} />;
+  const song = songs[slug] ?? songs["kimi-no-kokoro"];
+  const coverColors = (coverPalettes as Record<string, string[]>)[song.cover] ?? [];
+  const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
+  const songWithThumbnail = { ...song, cover: thumbnails[song.cover]?.[256] ?? song.cover };
+  return <SongReader key={song.slug} song={songWithThumbnail} coverColors={coverColors} />;
 }

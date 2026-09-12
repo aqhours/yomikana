@@ -1,7 +1,7 @@
-"use client";
+import ThemeToggle from "./theme-toggle";
+import coverThumbnails from "./cover-thumbnails.json";
 
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState } from "react";
+const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
 
 const catalog = [
   { slug: "thank-you-friends", title: "Thank you, FRIENDS!!", artist: "Aqours", releaseDate: "2018-08-01", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Thank%20you%2C%20FRIENDS%21%213000x3000bb.jpg" },
@@ -26,31 +26,9 @@ const releaseTimeline = [...new Set(catalog.map((song) => song.releaseDate.slice
 }));
 
 export default function Home() {
-  const [theme, setTheme] = useState<"light" | "dark">("light");
-
-  useEffect(() => {
-    const syncTheme = () => {
-      const saved = localStorage.getItem("yomikana-theme");
-      const nextTheme = saved === "light" || saved === "dark" ? saved : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      setTheme(nextTheme);
-    };
-    syncTheme();
-  }, []);
-
-  const toggleTheme = () => {
-    const nextTheme = theme === "dark" ? "light" : "dark";
-    localStorage.setItem("yomikana-theme", nextTheme);
-    document.documentElement.dataset.theme = nextTheme;
-    document.documentElement.style.colorScheme = nextTheme;
-    setTheme(nextTheme);
-  };
-
   return (
     <main className="library-page">
-      <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === "dark" ? "切换到浅色模式" : "切换到暗色模式"} aria-pressed={theme === "dark"} data-umami-event="theme-change" data-umami-event-theme={theme === "dark" ? "light" : "dark"}>
-        <Moon className="theme-icon theme-icon-moon" aria-hidden="true" />
-        <Sun className="theme-icon theme-icon-sun" aria-hidden="true" />
-      </button>
+      <ThemeToggle />
 
       <section className="library-hero" aria-labelledby="library-title">
         <div className="library-hero-inner">
@@ -76,7 +54,7 @@ export default function Home() {
                   {songs.map((song) => (
                     <a className="release-card" href={`/songs/${song.slug}`} key={song.slug} data-umami-event="song-open" data-umami-event-song={song.slug}>
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={song.cover} width="1400" height="1400" alt="" />
+                      <img src={thumbnails[song.cover]?.[640] ?? song.cover} width="640" height="640" loading={song === catalog[0] ? "eager" : "lazy"} decoding="async" alt="" />
                       <div className="release-card-copy">
                         <h3>{song.title}</h3>
                         <p>{song.artist}</p>

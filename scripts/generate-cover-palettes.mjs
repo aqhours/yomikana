@@ -3,7 +3,7 @@ import { Vibrant } from "node-vibrant/node";
 import sharp from "sharp";
 
 // Offline generation keeps image decoding out of playback and avoids CDN canvas CORS.
-const source = await readFile(new URL("../app/song-reader.tsx", import.meta.url), "utf8");
+const source = await readFile(new URL("../app/song-data.ts", import.meta.url), "utf8");
 const covers = [...new Set([...source.matchAll(/cover: "([^"]+)"/g)].map((match) => match[1]))];
 const roles = ["Vibrant", "DarkVibrant", "LightVibrant", "Muted", "DarkMuted", "LightMuted"];
 const palettes = {};
