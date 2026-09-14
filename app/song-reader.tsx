@@ -4,6 +4,7 @@ import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ListRestart, Maximize, Minimize, Moon, Pause, Play, Sun, X } from "lucide-react";
 import { loadAudio } from "./audio-cache";
 import FontSelector from "./font-selector";
+import { useManualLyricScroll } from "./use-manual-lyric-scroll";
 import { useLyricEdgeSoftness } from "./use-lyric-edge-softness";
 import { useReaderFullscreen } from "./use-reader-fullscreen";
 
@@ -133,6 +134,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
     return () => { document.body.style.overflow = previousOverflow; };
   }, [readerOpen]);
   const readerRef = useRef<HTMLOListElement>(null);
+  const { manual: manualScroll, resumePlayback } = useManualLyricScroll(readerRef, readerOpen);
   useLyricEdgeSoftness(readerRef, readerOpen);
   const lineRefs = useRef<(HTMLLIElement | null)[]>([]);
   const animationRef = useRef<number | null>(null);
@@ -210,7 +212,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
     };
   }, []);
   useEffect(() => {
-    if (!readerOpen || !autoScroll || activeLine < 0) return;
+    if (!readerOpen || !autoScroll || manualScroll || activeLine < 0) return;
     const reader = readerRef.current;
     const line = lineRefs.current[activeLine];
     if (!reader || !line) return;
@@ -232,7 +234,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
     resize.observe(line);
     if (last && last !== line) resize.observe(last);
     return () => resize.disconnect();
-  }, [activeLine, autoScroll, readerOpen, lyrics.length]);
+  }, [activeLine, autoScroll, manualScroll, readerOpen, lyrics.length]);
   useEffect(() => () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
   }, []);
@@ -246,7 +248,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
     }
     if (!audioRef.current.paused) animationRef.current = requestAnimationFrame(updateClock);
   };
-  const beginClock = () => { setIsPlaying(true); if (animationRef.current) cancelAnimationFrame(animationRef.current); animationRef.current = requestAnimationFrame(updateClock); };
+  const beginClock = () => { resumePlayback(); setIsPlaying(true); if (animationRef.current) cancelAnimationFrame(animationRef.current); animationRef.current = requestAnimationFrame(updateClock); };
   const stopClock = () => { setIsPlaying(false); if (animationRef.current) cancelAnimationFrame(animationRef.current); updateClock(); };
   const togglePlayback = async () => {
     const audio = audioRef.current;
@@ -383,7 +385,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
           <button className="reader-close" type="button" onClick={closeReader} aria-label="关闭歌词界面" title="关闭歌词界面（Esc）"><X aria-hidden="true" /></button>
         </div>
         <div className="lyrics-viewport">
-        <ol className="lyrics-list" ref={readerRef}>
+        <ol className="lyrics-list" ref={readerRef} data-manual-scroll={manualScroll}>
           {lyrics.map((line, lineIndex) => (
             <li className={`lyric-line${line.aside ? " is-aside" : ""}${lineIndex === activeLine ? " is-active" : ""}`} key={lineIndex} ref={(element) => { lineRefs.current[lineIndex] = element; }}>
               <button className="line-content line-seek" type="button" disabled={!lineRanges[lineIndex]} onClick={() => seekToLine(lineIndex)} aria-label={`跳转到第 ${lineIndex + 1} 句：${line.zh}`}>

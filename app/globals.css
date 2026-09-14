@@ -552,3 +552,7 @@ html .song-page .reader-dialog .line-seek:hover:not(:disabled) { background:tran
 .fullscreen-toggle:focus-visible { outline:2px solid var(--sun); outline-offset:4px; }
 .fullscreen-toggle:disabled { opacity:.35; cursor:default; }
 .fullscreen-status { position:absolute; top:100%; right:var(--player-padding); max-width:calc(100% - 2rem); padding:.45rem .7rem; border-radius:.5rem; background:var(--paper); color:var(--ink); font-size:.75rem; }
+
+/* Manual browsing keeps every lyric readable, including text near the edges. */
+.reader-dialog .lyrics-list[data-manual-scroll="true"] .lyric-line { filter:none; }
+.reader-dialog .lyrics-list[data-manual-scroll="true"] :is(.word-jp,.word-romaji,.word-meaning,.translation) { filter:none !important; }
