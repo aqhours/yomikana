@@ -10,7 +10,7 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, view
 export const metadata: Metadata = {
   title: "Yomikana｜Aqours 日语歌词读本",
   description: "在旋律里读懂 Aqours：逐字同步、日语分词、假名注音、罗马音与中文释义。",
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  icons: { icon: { url: "/favicon.svg", type: "image/svg+xml" }, shortcut: "/favicon.svg" },
 };
 
 const themeBootScript = `(() => {
