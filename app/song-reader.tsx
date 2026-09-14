@@ -155,7 +155,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
       if (saved === "sans" || saved === "serif") setLyricFont(saved);
     } catch { /* Keep the default when browser storage is unavailable. */ }
   }, []);
-  const [theme, setTheme] = useState<"light" | "dark">("light");
+  const [theme, setTheme] = useState<"light" | "dark">("dark");
   const displayCharacters = useMemo(() => collectDisplayCharacters(lyrics), [lyrics]);
   const { timingByKey, lineRanges } = useMemo(() => alignTimings(displayCharacters, timedCharacters, lyrics), [displayCharacters, timedCharacters, lyrics]);
   const firstTimedLine = lineRanges.find((range) => range !== null);
@@ -168,17 +168,8 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
 
   useEffect(() => { fetch(song.timing).then((response) => response.text()).then((text) => setTimedCharacters(parseYrc(text))).catch(() => setTimedCharacters([])); }, [song.timing]);
   useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const syncTheme = () => {
-      const saved = localStorage.getItem("yomikana-theme");
-      const nextTheme = saved === "light" || saved === "dark" ? saved : media.matches ? "dark" : "light";
-      document.documentElement.dataset.theme = nextTheme;
-      document.documentElement.style.colorScheme = nextTheme;
-      setTheme(nextTheme);
-    };
+    const syncTheme = () => setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
     syncTheme();
-    media.addEventListener("change", syncTheme);
-    return () => media.removeEventListener("change", syncTheme);
   }, []);
   useEffect(() => {
     if (!audioRequested) return;
@@ -336,7 +327,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
   };
   const toggleTheme = () => {
     const nextTheme = theme === "dark" ? "light" : "dark";
-    localStorage.setItem("yomikana-theme", nextTheme);
+    try { localStorage.setItem("yomikana-theme", nextTheme); } catch { /* Theme still works without storage. */ }
     document.documentElement.dataset.theme = nextTheme;
     document.documentElement.style.colorScheme = nextTheme;
     setTheme(nextTheme);

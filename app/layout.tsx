@@ -16,7 +16,7 @@ const themeBootScript = `(() => {
     const saved = localStorage.getItem("yomikana-theme");
     const theme = saved === "light" || saved === "dark"
       ? saved
-      : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      : "dark";
     document.documentElement.dataset.theme = theme;
     document.documentElement.style.colorScheme = theme;
   } catch {}
@@ -26,7 +26,7 @@ const umamiWebsiteId = "869d44f0-dcf2-4693-93bb-76dcd5a53226";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="zh-CN" suppressHydrationWarning>
+    <html lang="zh-CN" data-theme="dark" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
