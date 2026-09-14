@@ -2,6 +2,7 @@
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, Moon, Pause, Play, Sun, X } from "lucide-react";
+import { readerChromeColor } from "./reader-chrome-color";
 import { loadAudio } from "./audio-cache";
 import FontSelector from "./font-selector";
 import { useManualLyricScroll } from "./use-manual-lyric-scroll";
@@ -133,6 +134,43 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previousOverflow; };
   }, [readerOpen]);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!readerOpen || !dialog) return;
+    // Match Safari's page-canvas fallback without changing the reader artwork.
+    const edgeColor = getComputedStyle(dialog).backgroundColor;
+    const surfaces = [document.documentElement, document.body];
+    const previous = surfaces.map((element) => ({
+      color: element.style.getPropertyValue("background-color"),
+      priority: element.style.getPropertyPriority("background-color"),
+    }));
+    let disposed = false;
+    let timer: ReturnType<typeof setTimeout>;
+    let generation = 0;
+    const apply = (color: string) => surfaces.forEach((element) => element.style.setProperty("background-color", color, "important"));
+    apply(edgeColor);
+    const update = () => {
+      const current = ++generation;
+      const surface = fullscreenRef.current;
+      if (!surface) return;
+      void readerChromeColor(surface, song.cover).then((color) => {
+        if (!disposed && current === generation && color) apply(color);
+      }).catch(() => { /* Keep the existing fallback if image sampling is unavailable. */ });
+    };
+    const resize = () => { clearTimeout(timer); timer = setTimeout(update, 150); };
+    update();
+    window.addEventListener("resize", resize);
+    return () => {
+      disposed = true;
+      clearTimeout(timer);
+      window.removeEventListener("resize", resize);
+      surfaces.forEach((element, index) => {
+      const saved = previous[index];
+      if (saved.color) element.style.setProperty("background-color", saved.color, saved.priority);
+      else element.style.removeProperty("background-color");
+    });
+    };
+  }, [readerOpen, coverColors, song.cover]);
   const readerRef = useRef<HTMLOListElement>(null);
   const { manual: manualScroll, resumePlayback } = useManualLyricScroll(readerRef, readerOpen);
   useLyricEdgeSoftness(readerRef, readerOpen);
