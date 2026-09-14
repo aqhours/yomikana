@@ -255,7 +255,7 @@ html[data-theme="dark"] .font-option[aria-checked="true"] { background:rgba(255,
 .progress-slider:disabled { cursor:wait; opacity:.55; }
 .progress-slider:active::-webkit-slider-thumb { transform:scale(1.16); }
 .progress-slider:active::-moz-range-thumb { transform:scale(1.16); }
-.time-display { position:absolute; inset:auto 0 .25rem; display:flex; justify-content:space-between; transform:translateY(100%); color:var(--ink-soft); font: 500 .76rem monospace; letter-spacing:.02em; font-variant-numeric:tabular-nums; pointer-events:none; }
+.time-display { position:absolute; inset:auto 0 .25rem; display:flex; justify-content:space-between; transform:translateY(100%); color:var(--ink-soft); font:500 .76rem "Noto Sans",sans-serif; letter-spacing:.02em; font-variant-numeric:tabular-nums; pointer-events:none; }
 .scroll-toggle { background:rgba(255,255,255,.46); color:var(--ink-soft); }
 .scroll-toggle.is-on { border-color:var(--control-border); background:var(--control-fill); color:var(--ink); }
 .scroll-toggle svg { width:.78rem; height:.78rem; stroke-width:2; }
@@ -597,3 +597,72 @@ html .song-page .reader-dialog .line-seek:hover:not(:disabled) { background:tran
   .hero::before { position:fixed; bottom:auto; height:100lvh; pointer-events:none; }
 }
 @media print { .hero-shade { display:none; } }
+
+/* Desktop reader: artwork and controls stay beside the independently scrolling lyrics. */
+@media screen and (min-width:1024px) {
+  html .song-page .reader-dialog .reader {
+    --reader-inline:clamp(1.5rem,3vw,3rem);
+    grid-template-columns:minmax(0,36%) minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr);
+    column-gap:clamp(2rem,4vw,5rem);
+    padding: max(1.5rem,env(safe-area-inset-top)) max(2rem,env(safe-area-inset-right)) max(1.5rem,env(safe-area-inset-bottom)) max(2.5rem,env(safe-area-inset-left));
+  }
+  html .song-page .reader-dialog .player-bar {
+    grid-column:1;
+    grid-row:1;
+    align-self:center;
+    justify-self:center;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    grid-template-rows:auto auto auto;
+    gap:1.25rem .5rem;
+    width:min(100%,clamp(12rem,calc(100dvh - 18rem),26rem));
+    min-width:0;
+    margin:0;
+    padding:0;
+  }
+  .reader-dialog .player-bar .mini-cover {
+    grid-column:1 / -1;
+    grid-row:1;
+    width:100%;
+    height:auto;
+    aspect-ratio:1;
+    border-radius:.85rem;
+  }
+  .reader-dialog .player-bar .timeline {
+    grid-column:1 / -1;
+    grid-row:2;
+    display:grid;
+    height:auto;
+    gap:.25rem;
+    margin-top:.35rem;
+  }
+  .reader-dialog .player-bar .song-meta {
+    position:static;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:.35rem;
+    white-space:normal;
+    overflow:visible;
+    line-height:1.4;
+    font-size:1.15rem;
+  }
+  .reader-dialog .player-bar .song-meta strong { overflow-wrap:anywhere; }
+  .reader-dialog .player-bar .song-meta span { font-size:.85rem; }
+  .reader-dialog .player-bar .time-display { position:static; transform:none; font-size:.72rem; }
+  .reader-dialog .player-bar :is(.scroll-toggle,.lyric-font-control,.play-toggle,.fullscreen-toggle,.reader-close) { grid-row:3; justify-self:center; }
+  .reader-dialog .player-bar .scroll-toggle { grid-column:1; }
+  .reader-dialog .player-bar .lyric-font-control { grid-column:2; }
+  html .song-page .reader-dialog .player-bar .play-toggle { grid-column:3; width:2.75rem; height:2.75rem; }
+  html .song-page .reader-dialog .player-bar .play-toggle svg { width:1.7rem; height:1.7rem; }
+  .reader-dialog .player-bar .fullscreen-toggle { grid-column:4; }
+  .reader-dialog .player-bar .reader-close { grid-column:5; }
+  .reader-dialog .player-bar .font-menu { top:auto; bottom:calc(100% + .75rem); left:0; right:auto; }
+  .reader-dialog .lyrics-viewport { grid-column:2; grid-row:1; min-width:0; }
+  .reader-dialog .lyrics-list { padding-top:clamp(1rem,5dvh,4rem); }
+}
+
+.mini-cover img { display:block; width:100%; height:100%; object-fit:cover; border-radius:inherit; }
+@media screen and (min-width:1024px) {
+  html .song-page .reader-dialog .player-bar .mini-cover { box-shadow:0 18px 44px -12px rgba(0,0,0,.36),0 4px 12px rgba(0,0,0,.12); }
+}

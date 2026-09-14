@@ -114,7 +114,7 @@ const WordBlock = memo(function WordBlock({ word, lineIndex, wordIndex, currentM
   );
 });
 
-export default function SongReader({ song, coverColors }: { song: Song; coverColors: string[] }) {
+export default function SongReader({ song, coverColors, originalCover }: { song: Song; coverColors: string[]; originalCover?: string }) {
   const lyrics = song.lyrics;
   const fullscreenRef = useRef<HTMLDivElement>(null);
   const fullscreen = useReaderFullscreen(fullscreenRef);
@@ -363,8 +363,10 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <audio ref={audioRef} className="audio-player" preload="metadata" loop src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="mini-cover" src={song.cover} width="256" height="256" decoding="async" loading="lazy" alt="" aria-hidden="true" />
+          <picture className="mini-cover">
+            <source media="(min-width:1024px)" srcSet={originalCover ?? song.cover} />
+            <img src={song.cover} width="256" height="256" decoding="async" loading="lazy" alt="" />
+          </picture>
           <button className="play-toggle" type="button" disabled={!audioSrc} onClick={togglePlayback} aria-label={isPlaying ? "暂停" : "播放"} data-umami-event={isPlaying ? "audio-pause" : "audio-play"} data-umami-event-song={song.slug}>
             {isPlaying ? <Pause aria-hidden="true" /> : <Play className="play-icon" aria-hidden="true" />}
           </button>

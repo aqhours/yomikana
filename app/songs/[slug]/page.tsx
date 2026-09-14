@@ -15,5 +15,5 @@ export default async function SongPage({ params }: { params: Promise<{ slug: str
   const coverColors = (coverPalettes as Record<string, string[]>)[song.cover] ?? [];
   const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
   const songWithThumbnail = { ...song, cover: thumbnails[song.cover]?.[256] ?? song.cover };
-  return <SongReader key={song.slug} song={songWithThumbnail} coverColors={coverColors} />;
+  return <SongReader key={song.slug} song={songWithThumbnail} coverColors={coverColors} originalCover={song.cover} />;
 }
