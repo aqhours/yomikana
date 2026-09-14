@@ -105,7 +105,7 @@ test("server-renders the song library", async () => {
   assert.ok(html.includes(thumbnails[covers.miracleWave][640]));
   assert.ok(html.includes(thumbnails[covers.soraKokoro][640]));
   assert.ok(html.includes(thumbnails[covers.waterBlueNewWorld][640]));
-  assert.equal(html.match(/class="release-card"/g)?.length, 15);
+  assert.equal(html.match(/class="release-card"/g)?.length, 16);
   assert.match(html, /href="\/songs\/thank-you-friends"/);
   assert.equal(html.match(/class="release-year"/g)?.length, 7);
   assert.doesNotMatch(html, /2015\.10\.07|2017\.11\.29|2024\.12\.18/);
@@ -122,6 +122,7 @@ test("server-renders the song library", async () => {
     "miracle-wave",
     "water-blue-new-world",
     "thank-you-friends",
+    "next-sparkling",
     "over-next-rainbow",
     "yume-mirai",
     "eternal-hours",

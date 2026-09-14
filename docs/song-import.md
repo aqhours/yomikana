@@ -24,6 +24,6 @@
 - `node scripts/import-qrc.mjs <source.qrc> <destination.yrc> <first-lyric-start-ms>` 转换真实时间轴，检查原始 QRC 是否为脚本支持的 XML 格式。
 - 更新 `app/song-data.ts` 与 `app/page.tsx`，按发行日和曲号排序。音频、时间轴放入 `public/audio/`。
 - 运行 `npm run covers:optimize` 和 `npm run palette:generate` 更新封面缩略图及背景配色。
-- 更新歌曲目录顺序相关断言，运行 lint、构建与现有测试，再检查播放和逐字高亮。
+- 不主动为 UI 编写单元测试。执行构建、lint 和非 UI 数据检查后，将歌词展示、播放、跳转及逐字高亮交给用户人工验收；禁止使用 Computer Use 或其他浏览器自动化进行 UI 验收，详见 `AGENTS.md`。
 
 资料未齐全时保存在 `imports/<slug>/`；接入播放器前必须取得真实音频和时间轴。

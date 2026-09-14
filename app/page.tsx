@@ -4,6 +4,7 @@ import coverThumbnails from "./cover-thumbnails.json";
 const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
 
 const catalog = [
+  {"slug": "next-sparkling", "title": "Next SPARKLING!!", "artist": "Aqours", "releaseDate": "2019-01-23", "trackNumber": 2, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/57/51/29/57512997-366f-deb2-2bb8-e89d695b93e0/4540774148318.png/3000x3000bb.jpg"},
   { slug: "mattete-ai-no-uta", title: "待ってて愛のうた", artist: "Aqours", releaseDate: "2016-04-27", trackNumber: 2, cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/bd/2c/a2/bd2ca2fc-1284-b89b-6b5b-677712c5ebc8/4540774144709.png/3000x3000bb.jpg" },
   { slug: "thank-you-friends", title: "Thank you, FRIENDS!!", artist: "Aqours", releaseDate: "2018-08-01", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/Thank%20you%2C%20FRIENDS%21%213000x3000bb.jpg" },
   { slug: "kimi-no-kokoro", title: "君のこころは輝いてるかい？", artist: "Aqours", releaseDate: "2015-10-07", trackNumber: 1, cover: "https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/%E5%90%9B%E3%81%AE%E3%81%93%E3%81%93%E3%82%8D%E3%81%AF%20%E8%BC%9D%E3%81%84%E3%81%A6%E3%82%8B%E3%81%8B%E3%81%84%EF%BC%9F3000x3000bb.jpg" },
