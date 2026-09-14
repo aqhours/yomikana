@@ -212,7 +212,8 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
     };
   }, []);
   useEffect(() => {
-    if (!readerOpen || !autoScroll || manualScroll || activeLine < 0) return;
+    // Manual browsing changes clarity, but the next lyric still resumes auto-follow.
+    if (!readerOpen || !autoScroll || activeLine < 0) return;
     const reader = readerRef.current;
     const line = lineRefs.current[activeLine];
     if (!reader || !line) return;
@@ -234,7 +235,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
     resize.observe(line);
     if (last && last !== line) resize.observe(last);
     return () => resize.disconnect();
-  }, [activeLine, autoScroll, manualScroll, readerOpen, lyrics.length]);
+  }, [activeLine, autoScroll, readerOpen, lyrics.length]);
   useEffect(() => () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
   }, []);
