@@ -273,6 +273,8 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
     const range = lineRanges[lineIndex];
     if (!audio || !range) return;
     audio.currentTime = range.start / 1000;
+    // Seeking during playback does not emit another play event.
+    if (!audio.paused) resumePlayback();
     lastClockUpdateRef.current = range.start;
     setCurrentMs(range.start);
   };
