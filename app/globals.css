@@ -10,7 +10,7 @@ a { color:inherit; }
 .library-page { position:relative; min-height:100vh; isolation:isolate; background:transparent; }
 .library-page::before { content:""; position:fixed; z-index:0; inset:0; background:url("https://jgox-image-1316409677.cos.ap-guangzhou.myqcloud.com/eternal-hours-project/numazu_bg.png") center/cover no-repeat; pointer-events:none; }
 .library-page::after { content:""; position:fixed; z-index:0; inset:0; background:linear-gradient(90deg,rgba(225,247,255,.72) 0%,rgba(225,247,255,.3) 42%,rgba(225,247,255,.04) 72%),linear-gradient(180deg,rgba(5,81,127,.03) 48%,rgba(4,54,83,.35) 100%); pointer-events:none; }
-.library-hero { position:relative; z-index:1; display:grid; align-items:end; min-height:100vh; min-height:100svh; min-height:100dvh; overflow:hidden; isolation:isolate; }
+.library-hero { position:relative; z-index:1; display:grid; align-items:end; min-height:100vh; min-height:100svh; overflow:hidden; isolation:isolate; }
 .library-hero-inner { width:min(1180px,calc(100% - 4rem)); margin:0 auto; padding:clamp(7rem,17vh,11rem) 0 clamp(6.5rem,13vh,9rem); }
 .library-heading { margin:0; }
 .library-heading h1 { max-width:none; color:var(--ink); font-size:clamp(3.8rem,7.3vw,7.5rem); line-height:.98; text-shadow:0 2px 32px rgba(226,248,255,.48); }
@@ -174,7 +174,7 @@ a { color:inherit; }
 .song-water-blue-new-world .library-link,.song-water-blue-new-world .theme-toggle,.song-water-blue-new-world .player-bar { background:rgba(241,250,255,.9); }
 .song-water-blue-new-world .reader { background:rgba(226,243,252,.76); box-shadow:0 20px 70px rgba(11,73,111,.19); }
 .song-water-blue-new-world .play-toggle { background:#174e76; }
-.hero { min-height:100vh; min-height:100svh; min-height:100dvh; display:grid; place-items:center; position:relative; overflow:hidden; background:linear-gradient(90deg,rgba(229,248,255,.92) 0%,rgba(229,248,255,.74) 40%,rgba(195,237,251,.08) 72%); border-bottom:1px solid rgba(197,239,255,.5); }
+.hero { min-height:100vh; min-height:100svh; display:grid; place-items:center; position:relative; overflow:hidden; background:linear-gradient(90deg,rgba(229,248,255,.92) 0%,rgba(229,248,255,.74) 40%,rgba(195,237,251,.08) 72%); border-bottom:1px solid rgba(197,239,255,.5); }
 .hero::before { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(220,247,255,.05),transparent 58%,rgba(0,103,151,.13)); }
 .hero::after { content:"かがやき"; position:absolute; right:3vw; top:6vh; color:rgba(255,255,255,.28); text-shadow:0 1px 10px rgba(25,78,107,.12); font:700 clamp(5rem,11vw,10rem)/.8 "Yu Mincho","Hiragino Mincho ProN",serif; writing-mode:vertical-rl; letter-spacing:.08em; }
 .theme-toggle { position:absolute; z-index:3; top:clamp(1.25rem,3vw,2.25rem); right:clamp(1.25rem,3vw,2.25rem); display:grid; place-items:center; width:2.4rem; height:2.4rem; padding:0; border:1px solid rgba(7,81,127,.14); border-radius:50%; background:rgba(239,251,255,.58); color:var(--ink); box-shadow:0 8px 24px rgba(7,81,127,.12); -webkit-backdrop-filter:blur(14px); backdrop-filter:blur(14px); cursor:pointer; transition:transform .22s var(--ease-out),background-color .28s ease,color .28s ease,border-color .28s ease,box-shadow .28s ease; }
@@ -284,7 +284,7 @@ rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spac
 .is-aside .word-jp { color:var(--aside); font-size:clamp(1.4rem,2.55vw,1.8rem); }
 @media (max-width:640px) {
   :root { --frame-gap:1.5rem; --jp-row-height:3.35rem; }
-  .hero { min-height:100vh; min-height:100svh; min-height:100dvh; }
+  .hero { min-height:100vh; min-height:100svh; }
   body { background-position:58% center; }
   .hero { background:linear-gradient(90deg,rgba(226,247,255,.9),rgba(205,239,251,.54)); }
   .hero-inner { width:min(100% - 2rem,1080px); padding:2.5rem 0 3rem; }
@@ -430,7 +430,7 @@ html[data-theme="dark"] .song-page .player-bar { background:transparent; }
 .reader-dialog { position:fixed; inset:0; width:100%; max-width:none; height:100vh; height:100dvh; max-height:none; margin:0; padding:0; border:0; overflow:clip; color:var(--ink); background:linear-gradient(rgba(8,142,198,.06),rgba(8,142,198,.06)),var(--song-backdrop) center/cover no-repeat; background-color:var(--paper); }
 .reader-dialog:not([open]) { display:none; }
 .reader-dialog::backdrop { background:transparent; }
-.reader-dialog .reader { padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
+.reader-dialog .reader { height:100%; padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
 .reader-close { display:grid; place-items:center; width:2.5rem; height:2.5rem; padding:0; border:1px solid var(--rule); border-radius:50%; background:color-mix(in srgb,var(--ink) 5%,transparent); color:var(--ink); cursor:pointer; }
 .reader-close svg { width:1.1rem; height:1.1rem; }
 .reader-close:focus-visible,.start-link:focus-visible { outline:2px solid var(--sun); outline-offset:4px; }
@@ -556,3 +556,15 @@ html .song-page .reader-dialog .line-seek:hover:not(:disabled) { background:tran
 /* Manual browsing keeps every lyric readable, including text near the edges. */
 .reader-dialog .lyrics-list[data-manual-scroll="true"] .lyric-line { filter:none; }
 .reader-dialog .lyrics-list[data-manual-scroll="true"] :is(.word-jp,.word-romaji,.word-meaning,.translation) { filter:none !important; }
+
+/* Keep artwork sizing independent of the browser's expanding address bar. */
+@supports (height:100lvh) {
+  .song-page { position:relative; isolation:isolate; background:none; }
+  .song-page::before { content:""; position:fixed; z-index:-1; top:0; left:0; width:100%; height:100lvh; pointer-events:none; background:linear-gradient(rgba(8,142,198,.06),rgba(8,142,198,.06)),var(--song-backdrop) center/cover no-repeat; }
+  .library-page::before,.library-page::after { bottom:auto; height:100lvh; }
+  .reader-surface::before { top:-25lvh; bottom:auto; height:150lvh; }
+  .reader-surface::after { bottom:auto; height:100lvh; }
+}
+@supports (height:100svh) {
+  .song-page,.library-page { min-height:100svh; }
+}

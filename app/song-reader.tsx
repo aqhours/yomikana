@@ -219,18 +219,23 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
     if (!reader || !line) return;
     const first = lineRefs.current[0];
     const last = lineRefs.current[lyrics.length - 1];
-    const followLine = () => {
+    const updateTailSpace = () => {
       const topInset = first?.offsetTop ?? 0;
       // Leave enough trailing space for even the final lyric to reach this anchor.
       const tailSpace = Math.max(80, reader.clientHeight - (last?.offsetHeight ?? 0) - topInset);
       reader.style.paddingBottom = `${tailSpace}px`;
+    };
+    const followLine = () => {
+      updateTailSpace();
+      const topInset = first?.offsetTop ?? 0;
       reader.scrollTo({
         top: Math.max(0, line.offsetTop - topInset),
         behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
       });
     };
     followLine();
-    const resize = new ResizeObserver(followLine);
+    // Toolbar height changes only update available space; do not interrupt browsing.
+    const resize = new ResizeObserver(updateTailSpace);
     resize.observe(reader);
     resize.observe(line);
     if (last && last !== line) resize.observe(last);
