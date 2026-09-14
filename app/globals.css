@@ -192,7 +192,7 @@ h1 em { color:var(--sun); font-style:normal; }
 .credits dt { color:var(--ink-soft); }
 .credits dd { margin:0; color:var(--ink); font-weight:600; }
 .start-link { appearance:none; background:none; color:var(--ink); font-family:inherit; border:0; cursor:pointer; padding:0; display:inline-flex; gap:1rem; align-items:center; margin-top:2.7rem; text-decoration:none; font-size:.82rem; letter-spacing:.12em; border-bottom:1px solid var(--ink); padding-bottom:.45rem; }
-.start-link span { color:var(--sun); }
+.start-link svg { width:1rem; height:1rem; flex-shrink:0; color:var(--sun); stroke-width:1.8; }
 .reader { --player-gutter:clamp(1.5rem,4vw,3rem); --player-padding:clamp(1rem,3vw,2.25rem); --cover-size:4.25rem; --reader-inline:max(calc(var(--player-gutter) / 2 + var(--player-padding)),calc((100% - 72rem) / 2 + var(--player-padding))); display:grid; grid-template-rows:auto minmax(0,1fr); width:100%; height:100vh; height:100dvh; margin:0; overflow:hidden; scroll-margin-top:0; background:rgba(226,246,253,.66); border-radius:0; box-shadow:none; -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
 .player-bar { position:relative; z-index:5; display:grid; grid-template-columns:var(--cover-size) 2rem minmax(0,1fr) repeat(4,2rem); gap:.68rem; align-items:center; width:min(72rem,calc(100% - var(--player-gutter))); margin:clamp(.75rem,1.8vw,1.25rem) auto 0; padding:1.72rem var(--player-padding) 1.32rem; border:1px solid var(--rule); border-radius:1.15rem; background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }
 .song-page .player-bar { border-color:color-mix(in srgb,var(--ink) 10%,transparent); background:transparent; box-shadow:0 8px 24px rgba(7,81,127,.07); }

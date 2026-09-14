@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ListRestart, Maximize, Minimize, Moon, Pause, Play, Sun, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, Moon, Pause, Play, Sun, X } from "lucide-react";
 import { loadAudio } from "./audio-cache";
 import FontSelector from "./font-selector";
 import { useManualLyricScroll } from "./use-manual-lyric-scroll";
@@ -354,7 +354,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
             <div><dt>編曲</dt><dd>{song.credits.arranger}</dd></div>
             <div><dt>演唱</dt><dd>{song.artist}</dd></div>
           </dl>
-          <button ref={startRef} className="start-link" type="button" onClick={openReader} aria-haspopup="dialog" aria-controls="lyrics-dialog" data-umami-event="reader-start" data-umami-event-song={song.slug}>开始阅读 <span aria-hidden="true">↗</span></button>
+          <button ref={startRef} className="start-link" type="button" onClick={openReader} aria-haspopup="dialog" aria-controls="lyrics-dialog" data-umami-event="reader-start" data-umami-event-song={song.slug}>开始阅读 <ArrowUpRight aria-hidden="true" /></button>
         </div>
       </header>
       <dialog ref={dialogRef} id="lyrics-dialog" className="reader-dialog" style={coverPalette} aria-label={`${song.title}${song.titleAccent} · 歌词阅读`} onClose={onReaderClosed} onCancel={(event) => { event.preventDefault(); if (document.fullscreenElement) { void document.exitFullscreen().catch(() => {}); } else { closeReader(); } }}>
