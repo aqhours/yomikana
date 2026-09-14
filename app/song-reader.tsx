@@ -158,6 +158,8 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const displayCharacters = useMemo(() => collectDisplayCharacters(lyrics), [lyrics]);
   const { timingByKey, lineRanges } = useMemo(() => alignTimings(displayCharacters, timedCharacters, lyrics), [displayCharacters, timedCharacters, lyrics]);
+  const firstTimedLine = lineRanges.find((range) => range !== null);
+  const awaitingFirstLyric = Boolean(firstTimedLine && currentMs < firstTimedLine.start);
   const activeLine = lineRanges.findIndex((range, index) => {
     if (!range || currentMs < range.start) return false;
     const next = lineRanges.slice(index + 1).find(Boolean);
@@ -343,6 +345,7 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
   return (
     <main className={`song-page song-${song.slug}`} style={{ "--song-backdrop": `url(${song.backdrop})` } as React.CSSProperties}>
       <header className="hero">
+        <div className="hero-shade" aria-hidden="true" />
         {/* vinext currently duplicates React when hydrating next/link in this client reader. */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a className="library-link" href="/" aria-label="返回歌词本"><ArrowLeft aria-hidden="true" /> <span>歌词本</span></a>
@@ -392,6 +395,18 @@ export default function SongReader({ song, coverColors }: { song: Song; coverCol
         </div>
         <div className="lyrics-viewport">
         <ol className="lyrics-list" ref={readerRef} data-manual-scroll={manualScroll}>
+          {awaitingFirstLyric && (
+            <li className="lyric-intro" data-playing={readerOpen && isPlaying}>
+              <span className="sr-only">前奏，歌词即将开始</span>
+              <span className="lyric-intro-dots" aria-hidden="true">
+                {[0, 1, 2].map((index) => {
+                  const introDuration = firstTimedLine?.start ?? 0;
+                  const progress = introDuration > 0 ? Math.max(0, Math.min(1, currentMs / introDuration * 3 - index)) : 0;
+                  return <i key={index} style={{ opacity: .3 + .7 * progress }} />;
+                })}
+              </span>
+            </li>
+          )}
           {lyrics.map((line, lineIndex) => (
             <li className={`lyric-line${line.aside ? " is-aside" : ""}${lineIndex === activeLine ? " is-active" : ""}`} key={lineIndex} ref={(element) => { lineRefs.current[lineIndex] = element; }}>
               <button className="line-content line-seek" type="button" disabled={!lineRanges[lineIndex]} onClick={() => seekToLine(lineIndex)} aria-label={`跳转到第 ${lineIndex + 1} 句：${line.zh}`}>
