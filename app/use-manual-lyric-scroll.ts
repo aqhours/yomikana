@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState, type RefObject } from "react";
+import { useCallback, useEffect, useState, type RefObject } from "react";
 
 export function useManualLyricScroll(ref: RefObject<HTMLOListElement | null>, open: boolean) {
   const [manual, setManual] = useState(false);
+  const resumePlayback = useCallback(() => setManual(false), []);
 
   useEffect(() => {
     const list = ref.current;
@@ -32,5 +33,5 @@ export function useManualLyricScroll(ref: RefObject<HTMLOListElement | null>, op
     };
   }, [ref, open]);
 
-  return { manual, resumePlayback: () => setManual(false) };
+  return { manual, resumePlayback };
 }

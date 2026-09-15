@@ -234,7 +234,7 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
     };
   }, []);
   useEffect(() => {
-    // Manual browsing changes clarity, but the next lyric still resumes auto-follow.
+    // Returning to the playing lyric also leaves manual browsing's clear state.
     if (!readerOpen || !autoScroll || activeLine < 0) return;
     const reader = readerRef.current;
     const line = lineRefs.current[activeLine];
@@ -256,13 +256,16 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
       });
     };
     followLine();
+    const restoreBlur = requestAnimationFrame(() => {
+      if (audioRef.current && !audioRef.current.paused) resumePlayback();
+    });
     // Toolbar height changes only update available space; do not interrupt browsing.
     const resize = new ResizeObserver(updateTailSpace);
     resize.observe(reader);
     resize.observe(line);
     if (last && last !== line) resize.observe(last);
-    return () => resize.disconnect();
-  }, [activeLine, autoScroll, readerOpen, lyrics.length]);
+    return () => { cancelAnimationFrame(restoreBlur); resize.disconnect(); };
+  }, [activeLine, autoScroll, readerOpen, lyrics.length, resumePlayback]);
   useEffect(() => () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
   }, []);
