@@ -273,9 +273,12 @@ html[data-theme="dark"] .font-option[aria-checked="true"] { background:rgba(255,
 .line-seek:focus-visible { outline:2px solid var(--sun); outline-offset:.75rem; }
 .line-seek:active:not(:disabled) { transform:scale(.992); }
 @media (hover:hover) { .line-seek:hover:not(:disabled) { background:rgba(255,255,255,.18); } }
-.word-strip { display:flex; flex-wrap:wrap; gap:.4rem 1.15rem; align-items:baseline; }
-.word-block { width:max-content; max-width:100%; display:grid; grid-template-rows:auto auto auto; align-content:start; padding:.35rem .1rem .25rem; }
-.word-jp { display:block; height:auto; white-space:nowrap; padding:.5em 0 .05em; font-family:"Yu Mincho","Hiragino Mincho ProN",serif; font-size:clamp(1.7rem,3vw,2.25rem); line-height:1.35; letter-spacing:.015em; }
+.reader { --lyric-inner-gap:.3rem; }
+.word-strip { display:flex; flex-wrap:wrap; gap:var(--lyric-inner-gap) 1.15rem; align-items:baseline; }
+.word-block { width:max-content; max-width:100%; display:grid; grid-template-rows:auto auto auto; align-content:start; padding:0 .1rem; }
+/* Only words with readings need extra space above their natural line box. */
+.word-jp { display:block; height:auto; white-space:nowrap; padding:0; font-family:"Yu Mincho","Hiragino Mincho ProN",serif; font-size:clamp(1.7rem,3vw,2.25rem); line-height:1.35; letter-spacing:.015em; }
+.word-jp:has(ruby) { padding-top:.4em; }
 .timed-character { --character-progress:0%; position:relative; display:inline-block; color:var(--ink); }
 .lyric-line.is-active .timed-character { color:var(--timed-muted); }
 .timed-character::after { content:attr(data-character); position:absolute; inset:0; overflow:hidden; color:var(--sun-deep); clip-path:inset(0 calc(100% - var(--character-progress)) 0 0); text-shadow:0 0 8px color-mix(in srgb,var(--sun) 20%,transparent); pointer-events:none; will-change:clip-path; }
@@ -284,7 +287,7 @@ ruby { ruby-position:over; }
 rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spacing:.06em; }
 .word-romaji { display:block; white-space:nowrap; color:var(--romaji); font:600 .82rem/1.55 var(--font-geist-mono),monospace; letter-spacing:.025em; transition:color .32s ease; }
 .word-meaning { display:block; width:max-content; max-width:17rem; margin-top:.24rem; color:var(--ink-soft); font-family:"Noto Serif SC","Songti SC",serif; font-size:.86rem; font-weight:400; line-height:1.5; transition:color .32s ease; }
-.translation { display:flex; gap:.9rem; align-items:baseline; margin:.15rem 0 0; color:var(--ink); font-family:"Noto Serif SC","Songti SC",serif; font-size:1.16rem; font-weight:500; line-height:1.75; letter-spacing:.025em; transition:color .32s ease; }
+.translation { display:flex; gap:.9rem; align-items:baseline; margin:var(--lyric-inner-gap) 0 0; color:var(--ink); font-family:"Noto Serif SC","Songti SC",serif; font-size:1.16rem; font-weight:500; line-height:1.75; letter-spacing:.025em; transition:color .32s ease; }
 .lyric-line.is-active .word-romaji { color:var(--romaji); }
 .is-aside .word-jp { color:var(--aside); font-size:clamp(1.4rem,2.55vw,1.8rem); }
 @media (max-width:640px) {
@@ -328,8 +331,8 @@ rt { color:var(--sun); font:600 .5em/1.1 "Hiragino Sans",sans-serif; letter-spac
   .lyric-line { grid-template-columns:minmax(0,1fr); margin:0 -.55rem; padding:0 .55rem; border-radius:1rem; }
   .lyric-line.is-active .line-seek { transform:scale(1.01); }
   .lyrics-list { gap:.9rem; }
-  .word-strip { gap:.3rem .9rem; }
-  .word-block { width:max-content; min-width:0; padding:.25rem 0; }
+  .word-strip { gap:var(--lyric-inner-gap) .9rem; }
+  .word-block { width:max-content; min-width:0; padding:0; }
   .word-jp { font-size:1.7rem; }
   .word-romaji { font-size:.72rem; }
   .word-meaning { font-size:.78rem; }
@@ -538,6 +541,9 @@ html .song-page .reader-dialog :is(.play-toggle,.scroll-toggle,.annotations-togg
 .reader-dialog .timed-character::after { color:var(--ink); text-shadow:none; }
 .reader-dialog .timed-character.is-current::after { color:var(--ink); text-shadow:0 0 12px color-mix(in srgb,var(--ink) 18%,transparent); }
 .reader-dialog .translation { font-size:1.55rem; font-weight:600; line-height:1.45; }
+@media (max-width:1023px) {
+  .reader-dialog .lyrics-list { padding-top:1.5rem; }
+}
 @media (max-width:640px) {
   .reader-dialog .translation { font-size:1.55rem; font-weight:700; }
   .reader-dialog .reader[data-lyric-font="sans"] .word-jp { font-size:1.85rem; font-weight:700; }
@@ -666,6 +672,9 @@ html .song-page .reader-dialog .line-seek:hover:not(:disabled) { background:tran
 }
 
 .mini-cover img { display:block; width:100%; height:100%; object-fit:cover; border-radius:inherit; }
+.reader-dialog .mini-cover { transform:scale(.92); opacity:.75; transform-origin:center; transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .35s ease; }
+.reader-dialog .mini-cover[data-playing="true"] { transform:scale(1); opacity:1; }
+@media (prefers-reduced-motion:reduce) { .reader-dialog .mini-cover { transform:none; transition:none; } }
 @media screen and (min-width:1024px) {
   html .song-page .reader-dialog .player-bar .mini-cover { box-shadow:0 18px 44px -12px rgba(0,0,0,.36),0 4px 12px rgba(0,0,0,.12); }
 }
@@ -676,4 +685,3 @@ html .song-page .reader-dialog .line-seek:hover:not(:disabled) { background:tran
 .reader[data-annotations="false"] :is(.word-romaji,.word-meaning) { display:none; }
 .reader[data-annotations="false"] .word-block { grid-template-rows:auto; padding-bottom:0; }
 .reader[data-annotations="false"] .word-jp { padding-bottom:0; }
-.reader[data-annotations="false"] .translation { margin-top:.05rem; }

@@ -397,7 +397,7 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
           <audio ref={audioRef} className="audio-player" preload="metadata" loop src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
-          <picture className="mini-cover">
+          <picture className="mini-cover" data-playing={isPlaying}>
             <source media="(min-width:1024px)" srcSet={originalCover ?? song.cover} />
             <img src={song.cover} width="256" height="256" decoding="async" loading="lazy" alt="" />
           </picture>
