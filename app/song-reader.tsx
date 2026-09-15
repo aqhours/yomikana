@@ -1,10 +1,9 @@
 "use client";
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, Moon, Pause, Play, Sun, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, Moon, Pause, Play, Repeat, Repeat1, Sun, X } from "lucide-react";
 import { readerChromeColor } from "./reader-chrome-color";
 import { loadAudio } from "./audio-cache";
-import FontSelector from "./font-selector";
 import { useManualLyricScroll } from "./use-manual-lyric-scroll";
 import { useLyricEdgeSoftness } from "./use-lyric-edge-softness";
 import { useReaderFullscreen } from "./use-reader-fullscreen";
@@ -184,15 +183,7 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
   const [durationMs, setDurationMs] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
-  const [lyricFont, setLyricFont] = useState<"sans" | "serif">("sans");
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem("yomikana-lyric-font");
-      // Restore the browser preference after hydration; the server renders the default.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (saved === "sans" || saved === "serif") setLyricFont(saved);
-    } catch { /* Keep the default when browser storage is unavailable. */ }
-  }, []);
+  const [repeatOne, setRepeatOne] = useState(true);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const displayCharacters = useMemo(() => collectDisplayCharacters(lyrics), [lyrics]);
   const { timingByKey, lineRanges } = useMemo(() => alignTimings(displayCharacters, timedCharacters, lyrics), [displayCharacters, timedCharacters, lyrics]);
@@ -398,11 +389,11 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
       </header>
       <dialog ref={dialogRef} id="lyrics-dialog" className="reader-dialog" style={coverPalette} aria-label={`${song.title}${song.titleAccent} · 歌词阅读`} onClose={onReaderClosed} onCancel={(event) => { event.preventDefault(); if (document.fullscreenElement) { void document.exitFullscreen().catch(() => {}); } else { closeReader(); } }}>
       <div ref={fullscreenRef} className="reader-surface">
-      <section className="reader" data-lyric-font={lyricFont} id="lyrics" aria-label="歌词正文">
+      <section className="reader" data-lyric-font="sans" id="lyrics" aria-label="歌词正文">
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <audio ref={audioRef} className="audio-player" preload="metadata" loop src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
+          <audio ref={audioRef} className="audio-player" preload="metadata" loop={repeatOne} src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
           <picture className="mini-cover">
             <source media="(min-width:1024px)" srcSet={originalCover ?? song.cover} />
             <img src={song.cover} width="256" height="256" decoding="async" loading="lazy" alt="" />
@@ -416,10 +407,9 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>
           <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)} data-umami-event={autoScroll ? "auto-follow-disable" : "auto-follow-enable"} data-umami-event-song={song.slug}><ListRestart aria-hidden="true" /><span className="sr-only">自动跟随</span></button>
-          <FontSelector value={lyricFont} onChange={(nextFont) => {
-            setLyricFont(nextFont);
-            try { localStorage.setItem("yomikana-lyric-font", nextFont); } catch { /* Font switching still works without storage. */ }
-          }} />
+          <button className={`repeat-toggle${repeatOne ? " is-on" : ""}`} type="button" aria-label={repeatOne ? "关闭单曲循环" : "开启单曲循环"} title={repeatOne ? "单曲循环已开启" : "单曲循环已关闭"} aria-pressed={repeatOne} onClick={() => setRepeatOne((value) => !value)}>
+            {repeatOne ? <Repeat1 aria-hidden="true" /> : <Repeat aria-hidden="true" />}
+          </button>
           <button className="fullscreen-toggle" type="button" onClick={fullscreen.toggle} disabled={!fullscreen.supported || fullscreen.pending} aria-label={fullscreen.isFullscreen ? "退出全屏" : "进入全屏"} aria-pressed={fullscreen.isFullscreen} title={!fullscreen.supported ? "当前浏览器不支持网页全屏" : fullscreen.isFullscreen ? "退出全屏（Esc）" : "进入全屏"}>
             {fullscreen.isFullscreen ? <Minimize aria-hidden="true" /> : <Maximize aria-hidden="true" />}
           </button>
