@@ -536,9 +536,9 @@ html .song-page .reader-dialog :is(.play-toggle,.scroll-toggle,.repeat-toggle,.f
 .reader-dialog rt { color:var(--ink-soft); font-weight:500; letter-spacing:.02em; }
 .reader-dialog .timed-character::after { color:var(--ink); text-shadow:none; }
 .reader-dialog .timed-character.is-current::after { color:var(--ink); text-shadow:0 0 12px color-mix(in srgb,var(--ink) 18%,transparent); }
-.reader-dialog .translation { font-size:1.55rem; font-weight:500; line-height:1.45; }
+.reader-dialog .translation { font-size:1.55rem; font-weight:600; line-height:1.45; }
 @media (max-width:640px) {
-  .reader-dialog .translation { font-size:1.55rem; font-weight:600; }
+  .reader-dialog .translation { font-size:1.55rem; font-weight:700; }
   .reader-dialog .reader[data-lyric-font="sans"] .word-jp { font-size:1.85rem; font-weight:700; }
   .reader-dialog .reader { --jp-row-height:3.65rem; }
 }
