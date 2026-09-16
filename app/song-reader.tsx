@@ -85,6 +85,42 @@ function alignTimings(display: DisplayCharacter[], timed: TimedCharacter[], lyri
     const values = display.filter((character) => character.lineIndex === lineIndex).map((character) => timingByKey.get(character.key)).filter((value): value is Timing => Boolean(value));
     return values.length ? { start: Math.min(...values.map((value) => value.start)), end: Math.max(...values.map((value) => value.end)) } : null;
   });
+  // Split an adjacent character's time window into ordered, non-overlapping
+  // sweeps. Punctuation uses the same renderer; the overall line timing stays put.
+  lyrics.forEach((line, lineIndex) => {
+    const characters = line.words.flatMap((word, wordIndex) => word.jp.flatMap((part, partIndex) =>
+      Array.from(part.text).map((text, characterIndex) => ({
+        text, key: `${lineIndex}-${wordIndex}-${partIndex}-${characterIndex}`,
+      })),
+    ));
+    const anchors = characters.flatMap((character, index) => {
+      const timing = timingByKey.get(character.key);
+      return timing ? [{ index, timing, members: [index] }] : [];
+    });
+    for (let index = 0; index < characters.length;) {
+      if (!/\p{P}/u.test(characters[index].text)) { index++; continue; }
+      const start = index;
+      while (index < characters.length && /[\p{P}\s]/u.test(characters[index].text)) index++;
+      const previous = anchors.findLast((anchor) => anchor.index < start);
+      const following = anchors.find((anchor) => anchor.index >= index);
+      const opening = /[\p{Ps}\p{Pi}]/u.test(characters[start].text);
+      const anchor = opening ? following ?? previous : previous ?? following;
+      if (anchor) {
+        for (let member = start; member < index; member++) {
+          if (/\p{P}/u.test(characters[member].text)) anchor.members.push(member);
+        }
+      }
+    }
+    for (const { timing, members } of anchors) {
+      if (members.length === 1) continue;
+      members.sort((a, b) => a - b);
+      const duration = (timing.end - timing.start) / members.length;
+      members.forEach((index, order) => timingByKey.set(characters[index].key, {
+        start: timing.start + duration * order,
+        end: order === members.length - 1 ? timing.end : timing.start + duration * (order + 1),
+      }));
+    }
+  });
   return { timingByKey, lineRanges };
 }
 
