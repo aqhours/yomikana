@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, Moon, Pause, Play, Languages, Sun, X } from "lucide-react";
-import { readerChromeColor } from "./reader-chrome-color";
+import ReaderBackground from "./reader-background";
 import { loadAudio } from "./audio-cache";
 import { useManualLyricScroll } from "./use-manual-lyric-scroll";
 import { useLyricEdgeSoftness } from "./use-lyric-edge-softness";
@@ -189,33 +189,15 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
       color: element.style.getPropertyValue("background-color"),
       priority: element.style.getPropertyPriority("background-color"),
     }));
-    let disposed = false;
-    let timer: ReturnType<typeof setTimeout>;
-    let generation = 0;
-    const apply = (color: string) => surfaces.forEach((element) => element.style.setProperty("background-color", color, "important"));
-    apply(edgeColor);
-    const update = () => {
-      const current = ++generation;
-      const surface = fullscreenRef.current;
-      if (!surface) return;
-      void readerChromeColor(surface, song.cover).then((color) => {
-        if (!disposed && current === generation && color) apply(color);
-      }).catch(() => { /* Keep the existing fallback if image sampling is unavailable. */ });
-    };
-    const resize = () => { clearTimeout(timer); timer = setTimeout(update, 150); };
-    update();
-    window.addEventListener("resize", resize);
+    surfaces.forEach((element) => element.style.setProperty("background-color", edgeColor, "important"));
     return () => {
-      disposed = true;
-      clearTimeout(timer);
-      window.removeEventListener("resize", resize);
       surfaces.forEach((element, index) => {
       const saved = previous[index];
       if (saved.color) element.style.setProperty("background-color", saved.color, saved.priority);
       else element.style.removeProperty("background-color");
     });
     };
-  }, [readerOpen, coverColors, song.cover]);
+  }, [readerOpen, coverColors]);
   const readerRef = useRef<HTMLOListElement>(null);
   const { manual: manualScroll, resumePlayback } = useManualLyricScroll(readerRef, readerOpen);
   useLyricEdgeSoftness(readerRef, readerOpen);
@@ -438,6 +420,7 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
       </header>
       <dialog ref={dialogRef} id="lyrics-dialog" className="reader-dialog" style={coverPalette} aria-label={`${song.title}${song.titleAccent} · 歌词阅读`} onClose={onReaderClosed} onCancel={(event) => { event.preventDefault(); if (document.fullscreenElement) { void document.exitFullscreen().catch(() => {}); } else { closeReader(); } }}>
       <div ref={fullscreenRef} className="reader-surface">
+      {readerOpen && <ReaderBackground album={song.cover} playing={isPlaying} />}
       <section className="reader" data-lyric-font="sans" data-annotations={showAnnotations} id="lyrics" aria-label="歌词正文">
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
