@@ -280,6 +280,8 @@ html[data-theme="dark"] .font-option[aria-checked="true"] { background:rgba(255,
 .word-jp { display:block; height:auto; white-space:nowrap; padding:0; font-family:"Yu Mincho","Hiragino Mincho ProN",serif; font-size:clamp(1.7rem,3vw,2.25rem); line-height:1.35; letter-spacing:.015em; }
 .word-jp:has(ruby) { padding-top:.4em; }
 .timed-character { --character-progress:0%; position:relative; display:inline-block; color:var(--ink); }
+.word-block { transform:translateY(0); transition:transform .6s cubic-bezier(.45,0,.55,1); }
+.lyric-line.is-active .word-block.is-started { transform:translateY(-2px); }
 .lyric-line.is-active .timed-character { color:var(--timed-muted); }
 .timed-character::after { content:attr(data-character); position:absolute; inset:0; overflow:hidden; color:var(--sun-deep); clip-path:inset(0 calc(100% - var(--character-progress)) 0 0); text-shadow:0 0 8px color-mix(in srgb,var(--sun) 20%,transparent); pointer-events:none; will-change:clip-path; }
 .timed-character.is-current::after { color:var(--glow-color); text-shadow:var(--glow-shadow); }
@@ -535,6 +537,7 @@ html .song-page .reader-dialog :is(.play-toggle,.scroll-toggle,.annotations-togg
 .reader-dialog .lyric-line.is-active { opacity:1; filter:blur(0); }
 .reader-dialog .lyric-line:focus-within { filter:blur(0); }
 @media (prefers-reduced-motion:reduce) { .reader-dialog .lyric-line { transition:none; } }
+@media (prefers-reduced-motion:reduce) { .word-block { transition:none; } .lyric-line.is-active .word-block.is-started { transform:none; } }
 @media print { .reader-dialog .lyric-line { filter:none; } }
 .reader-dialog .word-romaji,.reader-dialog .lyric-line.is-active .word-romaji { color:var(--ink-soft); }
 .reader-dialog rt { color:var(--ink-soft); font-weight:500; letter-spacing:.02em; }

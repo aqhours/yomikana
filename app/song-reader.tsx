@@ -105,8 +105,18 @@ function JapaneseWord({ word, lineIndex, wordIndex, currentMs, timingByKey }: { 
 }
 
 const WordBlock = memo(function WordBlock({ word, lineIndex, wordIndex, currentMs, timingByKey }: { word: Word; lineIndex: number; wordIndex: number; currentMs: number; timingByKey: Map<string, Timing> }) {
+  const wordStart = useMemo(() => {
+    let start = Infinity;
+    word.jp.forEach((part, partIndex) => {
+      Array.from(part.text).forEach((_, characterIndex) => {
+        const timing = timingByKey.get(`${lineIndex}-${wordIndex}-${partIndex}-${characterIndex}`);
+        if (timing) start = Math.min(start, timing.start);
+      });
+    });
+    return start;
+  }, [word, lineIndex, wordIndex, timingByKey]);
   return (
-    <span className="word-block">
+    <span className={`word-block${currentMs >= wordStart ? " is-started" : ""}`}>
       <JapaneseWord word={word} lineIndex={lineIndex} wordIndex={wordIndex} currentMs={currentMs} timingByKey={timingByKey} />
       <span className="word-romaji" lang="ja-Latn">{word.romaji}</span>
       <span className="word-meaning" lang="zh-CN">{word.meaning}</span>
