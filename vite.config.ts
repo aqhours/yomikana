@@ -1,5 +1,6 @@
 import { sites } from "@openai/sites-vite-plugin";
 import vinext from "vinext";
+import wasm from "vite-plugin-wasm";
 import { defineConfig } from "vite";
 
 // macOS Seatbelt blocks FSEvents, so Codex previews need polling for HMR.
@@ -24,7 +25,9 @@ export default defineConfig(async () => {
     server: isCodexSeatbeltSandbox
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
+    optimizeDeps: { exclude: ["@applemusic-like-lyrics/fft"] },
     plugins: [
+      wasm(),
       vinext(),
       sites(),
       cloudflare({

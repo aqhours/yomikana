@@ -660,7 +660,7 @@ html .song-page .reader-dialog .line-seek:hover:not(:disabled) { background:tran
 }
 
 .mini-cover img { display:block; width:100%; height:100%; object-fit:cover; border-radius:inherit; }
-.reader-dialog .mini-cover { transform:scale(.92); opacity:.75; transform-origin:center; transition:transform .45s cubic-bezier(.22,1,.36,1),opacity .35s ease; }
+.reader-dialog .mini-cover { transform:scale(.76); opacity:1; transform-origin:center; transition:transform .45s cubic-bezier(.22,1,.36,1); }
 .reader-dialog .mini-cover[data-playing="true"] { transform:scale(1); opacity:1; }
 @media (prefers-reduced-motion:reduce) { .reader-dialog .mini-cover { transform:none; transition:none; } }
 @media screen and (min-width:1024px) {

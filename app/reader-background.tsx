@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type RefObject } from "react";
 import type { BackgroundRender, MeshGradientRenderer } from "@applemusic-like-lyrics/core";
 
 // The library is imported only after the reader opens, never during SSR.
-export default function ReaderBackground({ album, playing }: { album: string; playing: boolean }) {
+export default function ReaderBackground({ album, playing, lowFreqVolumeRef }: { album: string; playing: boolean; lowFreqVolumeRef: RefObject<number> }) {
   const hostRef = useRef<HTMLDivElement>(null);
   const syncRef = useRef<(() => void) | null>(null);
   const playingRef = useRef(playing);
@@ -19,21 +19,36 @@ export default function ReaderBackground({ album, playing }: { album: string; pl
     let disposed = false;
     let background: BackgroundRender<MeshGradientRenderer> | undefined;
     let loadingAlbum = false;
+    let volumeFrame = 0;
+    let lastVolumeUpdate = 0;
+    let contextLost = false;
+    const updateVolume = (now: number) => {
+      if (now - lastVolumeUpdate >= 1000 / 30) {
+        background?.setLowFreqVolume(lowFreqVolumeRef.current);
+        lastVolumeUpdate = now;
+      }
+      volumeFrame = requestAnimationFrame(updateVolume);
+    };
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () => {
-      if (!background) return;
+      cancelAnimationFrame(volumeFrame);
+      if (!background || contextLost) return;
+      background.setLowFreqVolume(0);
       // Static mode still finishes the first artwork frame, unlike pause().
       const still = motion.matches || !playingRef.current;
       background.setFlowSpeed(still ? 0 : .2);
       background.setStaticMode(still);
       if (document.hidden) background.pause();
       else background.resume();
+      if (!still && !document.hidden) volumeFrame = requestAnimationFrame(updateVolume);
     };
     syncRef.current = sync;
     motion.addEventListener("change", sync);
     document.addEventListener("visibilitychange", sync);
     const lost = (event: Event) => {
       event.preventDefault();
+      contextLost = true;
+      cancelAnimationFrame(volumeFrame);
       host.dataset.ready = "false";
       background?.pause();
     };
@@ -71,6 +86,7 @@ export default function ReaderBackground({ album, playing }: { album: string; pl
     })();
     return () => {
       disposed = true;
+      cancelAnimationFrame(volumeFrame);
       syncRef.current = null;
       motion.removeEventListener("change", sync);
       document.removeEventListener("visibilitychange", sync);
@@ -80,7 +96,7 @@ export default function ReaderBackground({ album, playing }: { album: string; pl
         background?.getElement().remove();
       } else background?.dispose();
     };
-  }, [album]);
+  }, [album, lowFreqVolumeRef]);
 
   return <div ref={hostRef} className="reader-background" aria-hidden="true" />;
 }

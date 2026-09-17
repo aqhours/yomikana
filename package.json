@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@applemusic-like-lyrics/core": "^0.5.2",
+    "@applemusic-like-lyrics/fft": "0.2.2",
     "lucide-react": "^1.37.0",
     "react": "19.2.6",
     "react-dom": "19.2.6"
@@ -44,6 +45,7 @@
     "typescript-eslint": "8.59.3",
     "vinext": "1.0.0-beta.2",
     "vite": "8.0.13",
+    "vite-plugin-wasm": "^3.6.0",
     "wrangler": "4.92.0"
   },
   "type": "module"

@@ -44,10 +44,16 @@ npm test
 
 `app/reader-background.tsx` 在打开歌词页后动态加载 AMLL，采用 30 FPS、0.5 渲染比例和 0.2 流动速度。暂停或系统要求减少动态效果时使用静态模式；页面隐藏时暂停渲染，关闭歌词页后释放资源。图片加载或 WebGL 失败时退回静态模糊封面。Safari 页面底色保留封面深色兜底，移除了针对旧 CSS 渐变的颜色估算。
 
-第三方依赖：[@applemusic-like-lyrics/core](https://github.com/amll-dev/applemusic-like-lyrics)，版本 0.5.2，许可证 AGPL-3.0-only（见依赖包 LICENSE）。
+音频响应完整采用官方 `@applemusic-like-lyrics/fft@0.2.2`（WASM）：`AudioWorklet` 只负责采集播放音频的交织 PCM，交给 `FFTPlayer.pushDataF32()`；重采样、混音、加窗与 FFT 都由官方包处理。采用官方默认频段 80–2000 Hz、128 项频谱，每 50 ms 读取一次。随后复用 AMLL Player 的 `FFTToLowPassContext` 运算（前两项频谱、对数转换、10 项窗口和 0.003 帧时间平滑），按动画帧传给背景，不再叠加自定义增益、软压缩或起落参数。
+
+`app/vendor/amll-fft-to-low-pass.ts` 从 [AMLL Player 固定版本 6d21991](https://github.com/amll-dev/amll-player/blob/6d21991731c2ad3217680872cee8ab556b4866a3/packages/player/src/components/LocalMusicContext/index.tsx#L60-L142) 提取：只替换 React/Jotai 外壳，保留原运算和窗口行为；许可证见 `app/vendor/AMLL-LICENSE`。网页适配负责首次播放手势中的 AudioContext 启动、暂停/跳转/后台的 PCM 清理及资源释放。分析支路不输出声音，不需要麦克风权限；分析加载失败时保留普通播放。Vite 使用 `vite-plugin-wasm` 打包官方 WASM，跨域直连兜底音频不启用分析。
+
+非 UI 音频检查：`node --test tests/amll-fft.test.mjs`，验证官方 WASM 对 44.1/48 kHz PCM 的频谱分析，以及 PCM 交织、背压和跳转清理。
+
+第三方依赖：FFT 使用 [@applemusic-like-lyrics/fft](https://github.com/amll-dev/fft) 0.2.2，npm 元数据标注 GPL-3.0，但随包 LICENSE 文本为 AGPL-3.0，保留上游原始声明与许可证。背景使用 [@applemusic-like-lyrics/core](https://github.com/amll-dev/applemusic-like-lyrics)，版本 0.5.2，许可证 AGPL-3.0-only（见依赖包 LICENSE）。
 
 人工验收入口：`/songs/happy-party-train` → 开始阅读。请检查不同歌曲的色彩、播放/暂停、全屏切换、手机横竖屏、Safari 顶栏，以及关闭后重新打开。构建和 lint 不代表视觉验收通过。
 
 ## 致谢
 
-感谢 [Apple Music-like Lyrics（AMLL）](https://github.com/amll-dev/applemusic-like-lyrics) 项目及其维护者和贡献者。Yomikana 的歌词动态背景使用了该项目提供的 `MeshGradientRenderer`，让专辑封面的色彩以柔和流动的渐变呈现。感谢你们的开源分享与持续维护。
+感谢 [Apple Music-like Lyrics（AMLL）](https://github.com/amll-dev/applemusic-like-lyrics) 项目及其维护者和贡献者。Yomikana 的歌词动态背景使用了该项目提供的 `MeshGradientRenderer`、官方 FFT 包与播放器低频响应算法，让专辑封面的色彩以柔和流动的渐变呈现。感谢你们的开源分享与持续维护。
