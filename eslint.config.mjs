@@ -11,6 +11,9 @@ const eslintConfig = defineConfig([
   globalIgnores([
     ".next/**",
     "dist/**",
+    "dist-desktop/**",
+    "src-tauri/target/**",
+    "src-tauri/gen/**",
     "out/**",
     "build/**",
     "next-env.d.ts",

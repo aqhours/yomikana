@@ -13,6 +13,10 @@ npm run dev
 
 打开 `http://localhost:3000`。
 
+## Mac 应用
+
+Mac 版复用歌曲库与播放器，新增半透明黑底的桌面悬浮歌词，支持手柄拖动、字号调整、中日双语和鼠标穿透；Mac 播放模式为全曲库随机播放，悬浮窗可控制上一首、下一首和播放/暂停。要求 macOS 14+；安装 Rust 与 Xcode Command Line Tools 后，运行 `npm run mac:dev` 开发、`npm run mac:build` 打包。使用方法和人工验收清单见 [Mac 应用说明](docs/mac-app.md)。
+
 ## 检查
 
 ```bash

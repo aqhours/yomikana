@@ -1,0 +1,29 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Yomikana",
+  "version": "0.1.0",
+  "identifier": "cn.aqhours.yomikana",
+  "build": {
+    "beforeDevCommand": "npm run desktop:dev",
+    "devUrl": "http://127.0.0.1:1420",
+    "beforeBuildCommand": "npm run desktop:build",
+    "frontendDist": "../dist-desktop"
+  },
+  "app": {
+    "macOSPrivateApi": true,
+    "windows": [
+      { "label": "main", "title": "Yomikana", "width": 1100, "height": 780, "minWidth": 760, "minHeight": 560, "backgroundThrottling": "disabled" },
+      {
+        "label": "lyrics", "title": "Yomikana 悬浮歌词", "url": "index.html#/overlay",
+        "width": 420, "height": 120,
+        "decorations": false, "transparent": true, "shadow": false,
+        "alwaysOnTop": true, "visibleOnAllWorkspaces": true, "skipTaskbar": true,
+        "visible": false, "focus": false, "acceptFirstMouse": true, "resizable": false, "maximizable": false, "backgroundThrottling": "disabled"
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; connect-src 'self' ipc: http://ipc.localhost https:; media-src 'self' https: blob:; worker-src 'self' blob:; font-src 'self' data:"
+    }
+  },
+  "bundle": { "active": true, "targets": ["app", "dmg"], "icon": ["icons/icon.icns"], "macOS": { "minimumSystemVersion": "14.0" } }
+}

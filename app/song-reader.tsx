@@ -1,6 +1,7 @@
 "use client";
 
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
+import { listen } from "@tauri-apps/api/event";
 import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, Moon, Pause, Play, Languages, Sun, X } from "lucide-react";
 import ReaderBackground from "./reader-background";
 import { useAmllLowFreqVolume } from "./use-amll-low-freq-volume";
@@ -8,10 +9,12 @@ import { loadAudio } from "./audio-cache";
 import { useManualLyricScroll } from "./use-manual-lyric-scroll";
 import { useLyricEdgeSoftness } from "./use-lyric-edge-softness";
 import { useReaderFullscreen } from "./use-reader-fullscreen";
+import { useDesktopLyrics, type DesktopPlayback, type PlaybackAction } from "./desktop-lyrics";
 
 import type { Word, LyricLine, Song, Timing, TimedCharacter, DisplayCharacter } from "./song-types";
 
 const alignable = (character: string) => /[\p{L}\p{N}]/u.test(character);
+const emptyTimings: TimedCharacter[] = [];
 const normalized = (character: string) => character.normalize("NFKC").toLocaleLowerCase();
 const formatTime = (milliseconds: number) => {
   const seconds = Math.max(0, Math.floor(milliseconds / 1000));
@@ -161,7 +164,7 @@ const WordBlock = memo(function WordBlock({ word, lineIndex, wordIndex, currentM
   );
 });
 
-export default function SongReader({ song, coverColors, originalCover }: { song: Song; coverColors: string[]; originalCover?: string }) {
+export default function SongReader({ song, coverColors, originalCover, desktopPlayback }: { song: Song; coverColors: string[]; originalCover?: string; desktopPlayback?: DesktopPlayback }) {
   const lyrics = song.lyrics;
   const fullscreenRef = useRef<HTMLDivElement>(null);
   const fullscreen = useReaderFullscreen(fullscreenRef);
@@ -206,17 +209,33 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
   const lineRefs = useRef<(HTMLLIElement | null)[]>([]);
   const animationRef = useRef<number | null>(null);
   const lastClockUpdateRef = useRef(0);
-  const [timedCharacters, setTimedCharacters] = useState<TimedCharacter[]>([]);
+  const [timingResource, setTimingResource] = useState<{ source: string; characters: TimedCharacter[] } | null>(null);
+  const timedCharacters = timingResource?.source === song.timing ? timingResource.characters : emptyTimings;
   const [audioRequested, setAudioRequested] = useState(false);
-  const [audioSrc, setAudioSrc] = useState<string | null>(null);
+  const [audioResource, setAudioResource] = useState<{ source: string; url: string } | null>(null);
+  const audioSrc = audioResource?.source === song.audio ? audioResource.url : null;
   const [currentMs, setCurrentMs] = useState(0);
   const [durationMs, setDurationMs] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [showAnnotations, setShowAnnotations] = useState(true);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
+  const [playbackError, setPlaybackError] = useState("");
+  const [loadedSong, setLoadedSong] = useState(song.slug);
+  if (loadedSong !== song.slug) {
+    // Reset track data before committing the next render; keep the audio element mounted.
+    setLoadedSong(song.slug);
+    setAudioResource(null);
+    setTimingResource(null);
+    setCurrentMs(0);
+    setDurationMs(0);
+    setIsPlaying(false);
+    setPlaybackError("");
+    setAutoScroll(true);
+  }
   const displayCharacters = useMemo(() => collectDisplayCharacters(lyrics), [lyrics]);
   const { timingByKey, lineRanges } = useMemo(() => alignTimings(displayCharacters, timedCharacters, lyrics), [displayCharacters, timedCharacters, lyrics]);
+  useDesktopLyrics(audioRef, song, lineRanges, { ready: Boolean(audioSrc), canPrevious: Boolean(desktopPlayback?.canPrevious), canNext: Boolean(desktopPlayback && audioRequested), error: playbackError });
   const firstTimedLine = lineRanges.find((range) => range !== null);
   const awaitingFirstLyric = Boolean(firstTimedLine && currentMs < firstTimedLine.start);
   const activeLine = lineRanges.findIndex((range, index) => {
@@ -225,7 +244,18 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
     return !next || currentMs < next.start;
   });
 
-  useEffect(() => { fetch(song.timing).then((response) => response.text()).then((text) => setTimedCharacters(parseYrc(text))).catch(() => setTimedCharacters([])); }, [song.timing]);
+  useEffect(() => {
+    const controller = new AbortController();
+    void fetch(song.timing, { signal: controller.signal }).then((response) => {
+      if (!response.ok) throw new Error("Could not load lyric timings");
+      return response.text();
+    }).then((text) => {
+      if (!controller.signal.aborted) setTimingResource({ source: song.timing, characters: parseYrc(text) });
+    }).catch(() => {
+      if (!controller.signal.aborted) setTimingResource({ source: song.timing, characters: [] });
+    });
+    return () => controller.abort();
+  }, [song.timing]);
   useEffect(() => {
     const syncTheme = () => setTheme(document.documentElement.dataset.theme === "light" ? "light" : "dark");
     syncTheme();
@@ -239,11 +269,11 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
       .then(({ blob }) => {
         if (controller.signal.aborted) return;
         objectUrl = URL.createObjectURL(blob);
-        setAudioSrc(objectUrl);
+        setAudioResource({ source: song.audio, url: objectUrl });
       })
       .catch((error: unknown) => {
-        if (error instanceof DOMException && error.name === "AbortError") return;
-        setAudioSrc(song.audio);
+        if (controller.signal.aborted || (error instanceof DOMException && error.name === "AbortError")) return;
+        setAudioResource({ source: song.audio, url: song.audio });
       });
 
     return () => {
@@ -251,6 +281,13 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
       if (objectUrl) URL.revokeObjectURL(objectUrl);
     };
   }, [song.audio, audioRequested]);
+  useEffect(() => {
+    // The desktop reader survives track changes, retaining the audio element and its gesture permission.
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.pause();
+    audio.load();
+  }, [audioSrc]);
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -309,13 +346,15 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
     }
     if (!audioRef.current.paused) animationRef.current = requestAnimationFrame(updateClock);
   };
-  const beginClock = () => { resumePlayback(); setIsPlaying(true); if (animationRef.current) cancelAnimationFrame(animationRef.current); animationRef.current = requestAnimationFrame(updateClock); };
+  const beginClock = () => { setPlaybackError(""); resumePlayback(); setIsPlaying(true); if (animationRef.current) cancelAnimationFrame(animationRef.current); animationRef.current = requestAnimationFrame(updateClock); };
   const stopClock = () => { setIsPlaying(false); if (animationRef.current) cancelAnimationFrame(animationRef.current); updateClock(); };
   const togglePlayback = async () => {
     const audio = audioRef.current;
     if (!audio) return;
-    if (audio.paused) await Promise.all([activateAudioAnalyzer(), audio.play()]);
-    else audio.pause();
+    try {
+      if (audio.paused) await Promise.all([activateAudioAnalyzer(), audio.play()]);
+      else audio.pause();
+    } catch { setPlaybackError("播放失败，请点击播放重试，或切换下一首"); }
   };
   const seekToTime = (seconds: number) => {
     const audio = audioRef.current;
@@ -358,6 +397,46 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
     ], { duration: 280, easing: "cubic-bezier(.23,1,.32,1)" }) : null;
     readerMotionRef.current = lift ? [fade, lift] : [fade];
   };
+  const startDesktopTrack = useEffectEvent(() => {
+    openReader();
+    setAutoScroll(true);
+    const audio = audioRef.current;
+    if (!audio) return;
+    void Promise.all([activateAudioAnalyzer(), audio.play()]).catch((error: unknown) => {
+      if (error instanceof DOMException && error.name === "AbortError") return;
+      setPlaybackError("播放失败，请点击播放重试，或切换下一首");
+    });
+  });
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!desktopPlayback?.autoPlay || !audioSrc || !audio) return;
+    // The source-loading effect above schedules this media event after effects finish.
+    const ready = () => { if (!readerClosingRef.current) startDesktopTrack(); };
+    const cancel = () => audio.removeEventListener("canplay", ready);
+    const dialog = dialogRef.current;
+    audio.addEventListener("canplay", ready, { once: true });
+    dialog?.addEventListener("close", cancel);
+    return () => { cancel(); dialog?.removeEventListener("close", cancel); };
+  }, [desktopPlayback?.autoPlay, audioSrc]);
+  const handleDesktopAction = useEffectEvent((action: PlaybackAction) => {
+    if (!desktopPlayback) return;
+    if (action === "next") desktopPlayback.onNext();
+    else if (action === "previous") desktopPlayback.onPrevious();
+    else if (audioSrc) {
+      if (audioRef.current?.paused) openReader();
+      void togglePlayback();
+    }
+  });
+  const desktopEnabled = Boolean(desktopPlayback);
+  useEffect(() => {
+    if (!desktopEnabled) return;
+    let disposed = false;
+    let unlisten: (() => void) | undefined;
+    void listen<PlaybackAction>("player-command", ({ payload }) => handleDesktopAction(payload)).then((stop) => {
+      if (disposed) stop(); else unlisten = stop;
+    }).catch(() => { if (!disposed) setPlaybackError("悬浮窗播放控制连接失败，请重启应用"); });
+    return () => { disposed = true; unlisten?.(); };
+  }, [desktopEnabled]);
   const closeReader = () => {
     const dialog = dialogRef.current;
     if (!dialog?.open || readerClosingRef.current) return;
@@ -427,7 +506,7 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
         <div className="player-bar">
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <audio ref={audioRef} className="audio-player" preload="metadata" loop src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={stopClock} onSeeked={updateClock}>你的浏览器不支持音频播放。</audio>
+          <audio ref={audioRef} className="audio-player" preload={desktopPlayback?.autoPlay ? "auto" : "metadata"} loop={!desktopPlayback} src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={() => { stopClock(); desktopPlayback?.onNext(); }} onSeeked={updateClock} onEmptied={() => { lastClockUpdateRef.current = 0; setCurrentMs(0); setDurationMs(0); setIsPlaying(false); setPlaybackError(""); }} onError={() => { if (audioSrc) setPlaybackError("音频加载失败，请重试或切换下一首"); }}>你的浏览器不支持音频播放。</audio>
           <picture className="mini-cover" data-playing={isPlaying}>
             <source media="(min-width:1024px)" srcSet={originalCover ?? song.cover} />
             <img src={song.cover} width="256" height="256" decoding="async" loading="lazy" alt="" />
@@ -448,6 +527,7 @@ export default function SongReader({ song, coverColors, originalCover }: { song:
             {fullscreen.isFullscreen ? <Minimize aria-hidden="true" /> : <Maximize aria-hidden="true" />}
           </button>
           {fullscreen.error && <span className="fullscreen-status" role="status">{fullscreen.error}</span>}
+          {playbackError && <span className="fullscreen-status" role="status">{playbackError}</span>}
           <button className="reader-close" type="button" onClick={closeReader} aria-label="关闭歌词界面" title="关闭歌词界面（Esc）"><X aria-hidden="true" /></button>
         </div>
         <div className="lyrics-viewport">

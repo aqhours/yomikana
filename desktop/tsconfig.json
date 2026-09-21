@@ -1,0 +1,6 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "incremental": false },
+  "include": ["./**/*.ts", "./**/*.tsx", "../app/**/*.ts", "../app/**/*.tsx"],
+  "exclude": ["../node_modules", "../app/layout.tsx", "../app/songs"]
+}
