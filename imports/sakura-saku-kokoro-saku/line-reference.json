@@ -1,0 +1,279 @@
+{
+  "url": "https://llwiki.org/zh/SAKURA-saku_KOKORO-saku",
+  "revision": 81696,
+  "description": "Page states 以下歌词还原自歌词本; booklet transcription, not independently verified scan",
+  "lineCount": 30,
+  "lineGrouping": [
+    {
+      "referenceLine": 1,
+      "sourceQrcLines": [
+        1,
+        2
+      ],
+      "startMs": 5576,
+      "endMs": 12835
+    },
+    {
+      "referenceLine": 2,
+      "sourceQrcLines": [
+        3,
+        4
+      ],
+      "startMs": 13059,
+      "endMs": 20499
+    },
+    {
+      "referenceLine": 3,
+      "sourceQrcLines": [
+        5,
+        6
+      ],
+      "startMs": 36054,
+      "endMs": 42830
+    },
+    {
+      "referenceLine": 4,
+      "sourceQrcLines": [
+        7,
+        8
+      ],
+      "startMs": 43524,
+      "endMs": 50551
+    },
+    {
+      "referenceLine": 5,
+      "sourceQrcLines": [
+        9,
+        10
+      ],
+      "startMs": 51015,
+      "endMs": 57841
+    },
+    {
+      "referenceLine": 6,
+      "sourceQrcLines": [
+        11,
+        12
+      ],
+      "startMs": 58545,
+      "endMs": 65546
+    },
+    {
+      "referenceLine": 7,
+      "sourceQrcLines": [
+        13,
+        14
+      ],
+      "startMs": 66029,
+      "endMs": 73351
+    },
+    {
+      "referenceLine": 8,
+      "sourceQrcLines": [
+        15,
+        15
+      ],
+      "startMs": 73567,
+      "endMs": 79903
+    },
+    {
+      "referenceLine": 9,
+      "sourceQrcLines": [
+        16,
+        16
+      ],
+      "startMs": 80335,
+      "endMs": 88309
+    },
+    {
+      "referenceLine": 10,
+      "sourceQrcLines": [
+        17,
+        18
+      ],
+      "startMs": 88533,
+      "endMs": 95038
+    },
+    {
+      "referenceLine": 11,
+      "sourceQrcLines": [
+        19,
+        20
+      ],
+      "startMs": 95339,
+      "endMs": 103610
+    },
+    {
+      "referenceLine": 12,
+      "sourceQrcLines": [
+        21,
+        21
+      ],
+      "startMs": 103740,
+      "endMs": 110596
+    },
+    {
+      "referenceLine": 13,
+      "sourceQrcLines": [
+        22,
+        23
+      ],
+      "startMs": 124132,
+      "endMs": 131261
+    },
+    {
+      "referenceLine": 14,
+      "sourceQrcLines": [
+        24,
+        24
+      ],
+      "startMs": 131709,
+      "endMs": 138857
+    },
+    {
+      "referenceLine": 15,
+      "sourceQrcLines": [
+        25,
+        25
+      ],
+      "startMs": 139204,
+      "endMs": 146391
+    },
+    {
+      "referenceLine": 16,
+      "sourceQrcLines": [
+        26,
+        26
+      ],
+      "startMs": 146646,
+      "endMs": 153136
+    },
+    {
+      "referenceLine": 17,
+      "sourceQrcLines": [
+        27,
+        27
+      ],
+      "startMs": 153435,
+      "endMs": 161410
+    },
+    {
+      "referenceLine": 18,
+      "sourceQrcLines": [
+        28,
+        29
+      ],
+      "startMs": 161665,
+      "endMs": 168143
+    },
+    {
+      "referenceLine": 19,
+      "sourceQrcLines": [
+        30,
+        31
+      ],
+      "startMs": 168495,
+      "endMs": 179682
+    },
+    {
+      "referenceLine": 20,
+      "sourceQrcLines": [
+        32,
+        33
+      ],
+      "startMs": 196387,
+      "endMs": 203632
+    },
+    {
+      "referenceLine": 21,
+      "sourceQrcLines": [
+        34,
+        35
+      ],
+      "startMs": 204071,
+      "endMs": 214878
+    },
+    {
+      "referenceLine": 22,
+      "sourceQrcLines": [
+        36,
+        36
+      ],
+      "startMs": 215157,
+      "endMs": 219252
+    },
+    {
+      "referenceLine": 23,
+      "sourceQrcLines": [
+        37,
+        37
+      ],
+      "startMs": 219930,
+      "endMs": 227957
+    },
+    {
+      "referenceLine": 24,
+      "sourceQrcLines": [
+        38,
+        39
+      ],
+      "startMs": 228276,
+      "endMs": 236459
+    },
+    {
+      "referenceLine": 25,
+      "sourceQrcLines": [
+        40,
+        40
+      ],
+      "startMs": 236891,
+      "endMs": 244858
+    },
+    {
+      "referenceLine": 26,
+      "sourceQrcLines": [
+        41,
+        42
+      ],
+      "startMs": 245098,
+      "endMs": 251589
+    },
+    {
+      "referenceLine": 27,
+      "sourceQrcLines": [
+        43,
+        44
+      ],
+      "startMs": 251884,
+      "endMs": 260099
+    },
+    {
+      "referenceLine": 28,
+      "sourceQrcLines": [
+        45,
+        45
+      ],
+      "startMs": 260312,
+      "endMs": 266971
+    },
+    {
+      "referenceLine": 29,
+      "sourceQrcLines": [
+        46,
+        47
+      ],
+      "startMs": 267040,
+      "endMs": 274438
+    },
+    {
+      "referenceLine": 30,
+      "sourceQrcLines": [
+        48,
+        49
+      ],
+      "startMs": 274638,
+      "endMs": 282206
+    }
+  ],
+  "notes": "QRC supplies absolute word timings. Booklet punctuation and spacing preserved in display. Whitespace/punctuation-only QRC tokens omitted. Chinese independently translated."
+}

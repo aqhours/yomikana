@@ -1,0 +1,35 @@
+{
+  "title": "SAKURA-saku KOKORO-saku",
+  "releaseDate": "2024-05-29",
+  "trackNumber": 2,
+  "credits": {
+    "lyricist": "畑亜貴",
+    "composer": "前迫潤哉・中野悟朗・春川仁志",
+    "arranger": "中野悟朗・春川仁志"
+  },
+  "creditsSource": "https://akihata.jp/works/music/54365/",
+  "audioSource": {
+    "source": "user-provided JOOX URL",
+    "filename": "M800ZE2395E76B311D.mp3",
+    "localFile": "public/audio/sakura-saku-kokoro-saku.mp3",
+    "durationSeconds": 289.541225,
+    "actualBitrateKbps": 320,
+    "sampleRateHz": 44100,
+    "channels": 2
+  },
+  "lyricsSource": {
+    "provider": "QQ Music",
+    "songMid": "004RfMe50eiSBV",
+    "lineReference": "imports/sakura-saku-kokoro-saku/line-reference.json",
+    "lineBreaks": "30 lines matching booklet transcription",
+    "translation": "Independently translated from Japanese"
+  },
+  "firstLyricStartMs": 5576,
+  "validation": {
+    "displayLines": 30,
+    "timedTokens": 495,
+    "originalSungWordTimingsPreserved": true,
+    "lastLyricEndMs": 282206,
+    "uiAcceptance": "pending user manual review"
+  }
+}
