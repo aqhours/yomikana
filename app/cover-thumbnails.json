@@ -82,5 +82,9 @@
   "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/98/de/f0/98def0b4-f991-59c6-2046-3bb90ce7e892/4540774245505.png/3000x3000bb.jpg": {
     "256": "/covers/21ecb6b8709755c0-256.webp",
     "640": "/covers/afddaeae8396b430-640.webp"
+  },
+  "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2c/fe/36/2cfe3603-bc65-3146-a4d0-ea114b2bb5e0/4540774145218.png/3000x3000bb.jpg": {
+    "256": "/covers/ddba585948b0c962-256.webp",
+    "640": "/covers/51578058ea0481db-640.webp"
   }
 }

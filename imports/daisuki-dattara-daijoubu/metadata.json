@@ -1,0 +1,34 @@
+{
+  "title": "ダイスキだったらダイジョウブ！",
+  "status": "imported",
+  "audioSource": {
+    "source": "user-provided JOOX URL",
+    "filename": "M800Zfde66a87c46b8.mp3",
+    "durationSeconds": 272.3004,
+    "actualBitrateKbps": 320,
+    "sampleRateHz": 44100,
+    "channels": 2,
+    "localFile": "public/audio/daisuki-dattara-daijoubu.mp3"
+  },
+  "credits": {
+    "lyricist": "畑亜貴",
+    "composer": "高田暁",
+    "arranger": "高田暁"
+  },
+  "creditsSource": "https://akihata.jp/works/video/19547/",
+  "releaseDate": "2016-08-03",
+  "trackNumber": 2,
+  "lyricsSource": {
+    "provider": "User-provided QQ Music QRC",
+    "songMid": "002bif9j0iQ2xy",
+    "lineReference": "User-provided booklet transcription",
+    "translation": "Assistant translation from user-provided Japanese"
+  },
+  "validation": {
+    "displayLines": 44,
+    "timedTokens": 633,
+    "originalSungWordTimingsPreserved": true,
+    "lastLyricEndMs": 255987,
+    "uiAcceptance": "pending user manual review"
+  }
+}

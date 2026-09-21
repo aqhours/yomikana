@@ -1,0 +1,404 @@
+{
+  "source": "User-provided booklet transcription in conversation",
+  "userReferenceUrl": "https://love-live.fandom.com/wiki/Daisuki_dattara_Daijoubu!#Kanji",
+  "lineCount": 44,
+  "lineGrouping": [
+    {
+      "referenceLine": 1,
+      "sourceQrcLines": [
+        1,
+        1
+      ],
+      "startMs": 1199,
+      "endMs": 2179
+    },
+    {
+      "referenceLine": 2,
+      "sourceQrcLines": [
+        2,
+        2
+      ],
+      "startMs": 2256,
+      "endMs": 6466
+    },
+    {
+      "referenceLine": 3,
+      "sourceQrcLines": [
+        3,
+        4
+      ],
+      "startMs": 6630,
+      "endMs": 15848
+    },
+    {
+      "referenceLine": 4,
+      "sourceQrcLines": [
+        5,
+        5
+      ],
+      "startMs": 23537,
+      "endMs": 25236
+    },
+    {
+      "referenceLine": 5,
+      "sourceQrcLines": [
+        6,
+        7
+      ],
+      "startMs": 25416,
+      "endMs": 33289
+    },
+    {
+      "referenceLine": 6,
+      "sourceQrcLines": [
+        8,
+        9
+      ],
+      "startMs": 33690,
+      "endMs": 38336
+    },
+    {
+      "referenceLine": 7,
+      "sourceQrcLines": [
+        10,
+        10
+      ],
+      "startMs": 38472,
+      "endMs": 43319
+    },
+    {
+      "referenceLine": 8,
+      "sourceQrcLines": [
+        11,
+        13
+      ],
+      "startMs": 44071,
+      "endMs": 50700
+    },
+    {
+      "referenceLine": 9,
+      "sourceQrcLines": [
+        14,
+        15
+      ],
+      "startMs": 51067,
+      "endMs": 55197
+    },
+    {
+      "referenceLine": 10,
+      "sourceQrcLines": [
+        16,
+        17
+      ],
+      "startMs": 55402,
+      "endMs": 59700
+    },
+    {
+      "referenceLine": 11,
+      "sourceQrcLines": [
+        18,
+        18
+      ],
+      "startMs": 59951,
+      "endMs": 64578
+    },
+    {
+      "referenceLine": 12,
+      "sourceQrcLines": [
+        19,
+        19
+      ],
+      "startMs": 65129,
+      "endMs": 66014
+    },
+    {
+      "referenceLine": 13,
+      "sourceQrcLines": [
+        20,
+        20
+      ],
+      "startMs": 66126,
+      "endMs": 70426
+    },
+    {
+      "referenceLine": 14,
+      "sourceQrcLines": [
+        21,
+        23
+      ],
+      "startMs": 70608,
+      "endMs": 75792
+    },
+    {
+      "referenceLine": 15,
+      "sourceQrcLines": [
+        24,
+        24
+      ],
+      "startMs": 75876,
+      "endMs": 76637
+    },
+    {
+      "referenceLine": 16,
+      "sourceQrcLines": [
+        25,
+        25
+      ],
+      "startMs": 76758,
+      "endMs": 81172
+    },
+    {
+      "referenceLine": 17,
+      "sourceQrcLines": [
+        26,
+        29
+      ],
+      "startMs": 81331,
+      "endMs": 86898
+    },
+    {
+      "referenceLine": 18,
+      "sourceQrcLines": [
+        30,
+        31
+      ],
+      "startMs": 87143,
+      "endMs": 92957
+    },
+    {
+      "referenceLine": 19,
+      "sourceQrcLines": [
+        32,
+        32
+      ],
+      "startMs": 100869,
+      "endMs": 102393
+    },
+    {
+      "referenceLine": 20,
+      "sourceQrcLines": [
+        33,
+        34
+      ],
+      "startMs": 102723,
+      "endMs": 110527
+    },
+    {
+      "referenceLine": 21,
+      "sourceQrcLines": [
+        35,
+        36
+      ],
+      "startMs": 111215,
+      "endMs": 115744
+    },
+    {
+      "referenceLine": 22,
+      "sourceQrcLines": [
+        37,
+        38
+      ],
+      "startMs": 115948,
+      "endMs": 120709
+    },
+    {
+      "referenceLine": 23,
+      "sourceQrcLines": [
+        39,
+        40
+      ],
+      "startMs": 121509,
+      "endMs": 127940
+    },
+    {
+      "referenceLine": 24,
+      "sourceQrcLines": [
+        41,
+        43
+      ],
+      "startMs": 128075,
+      "endMs": 132711
+    },
+    {
+      "referenceLine": 25,
+      "sourceQrcLines": [
+        44,
+        45
+      ],
+      "startMs": 132871,
+      "endMs": 137092
+    },
+    {
+      "referenceLine": 26,
+      "sourceQrcLines": [
+        46,
+        47
+      ],
+      "startMs": 137296,
+      "endMs": 142017
+    },
+    {
+      "referenceLine": 27,
+      "sourceQrcLines": [
+        48,
+        48
+      ],
+      "startMs": 142542,
+      "endMs": 143313
+    },
+    {
+      "referenceLine": 28,
+      "sourceQrcLines": [
+        49,
+        49
+      ],
+      "startMs": 143406,
+      "endMs": 147752
+    },
+    {
+      "referenceLine": 29,
+      "sourceQrcLines": [
+        50,
+        52
+      ],
+      "startMs": 147955,
+      "endMs": 153044
+    },
+    {
+      "referenceLine": 30,
+      "sourceQrcLines": [
+        53,
+        53
+      ],
+      "startMs": 153137,
+      "endMs": 153946
+    },
+    {
+      "referenceLine": 31,
+      "sourceQrcLines": [
+        54,
+        54
+      ],
+      "startMs": 154094,
+      "endMs": 158546
+    },
+    {
+      "referenceLine": 32,
+      "sourceQrcLines": [
+        55,
+        58
+      ],
+      "startMs": 158769,
+      "endMs": 164048
+    },
+    {
+      "referenceLine": 33,
+      "sourceQrcLines": [
+        59,
+        59
+      ],
+      "startMs": 164340,
+      "endMs": 170163
+    },
+    {
+      "referenceLine": 34,
+      "sourceQrcLines": [
+        60,
+        61
+      ],
+      "startMs": 204366,
+      "endMs": 209101
+    },
+    {
+      "referenceLine": 35,
+      "sourceQrcLines": [
+        62,
+        62
+      ],
+      "startMs": 209745,
+      "endMs": 214439
+    },
+    {
+      "referenceLine": 36,
+      "sourceQrcLines": [
+        63,
+        64
+      ],
+      "startMs": 214729,
+      "endMs": 219864
+    },
+    {
+      "referenceLine": 37,
+      "sourceQrcLines": [
+        65,
+        65
+      ],
+      "startMs": 220113,
+      "endMs": 225236
+    },
+    {
+      "referenceLine": 38,
+      "sourceQrcLines": [
+        66,
+        66
+      ],
+      "startMs": 226203,
+      "endMs": 228725
+    },
+    {
+      "referenceLine": 39,
+      "sourceQrcLines": [
+        67,
+        67
+      ],
+      "startMs": 228903,
+      "endMs": 233110
+    },
+    {
+      "referenceLine": 40,
+      "sourceQrcLines": [
+        68,
+        70
+      ],
+      "startMs": 233254,
+      "endMs": 238321
+    },
+    {
+      "referenceLine": 41,
+      "sourceQrcLines": [
+        71,
+        71
+      ],
+      "startMs": 238490,
+      "endMs": 239231
+    },
+    {
+      "referenceLine": 42,
+      "sourceQrcLines": [
+        72,
+        72
+      ],
+      "startMs": 239365,
+      "endMs": 243815
+    },
+    {
+      "referenceLine": 43,
+      "sourceQrcLines": [
+        73,
+        76
+      ],
+      "startMs": 243970,
+      "endMs": 249195
+    },
+    {
+      "referenceLine": 44,
+      "sourceQrcLines": [
+        77,
+        78
+      ],
+      "startMs": 249386,
+      "endMs": 255987
+    }
+  ],
+  "notes": "User line breaks retained exactly. QRC おおきく corresponds to supplied 大きく; display uses supplied orthography, original QRC token times retained. Chinese translated independently."
+}
