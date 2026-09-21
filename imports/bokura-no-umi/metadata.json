@@ -1,0 +1,36 @@
+{
+  "title": "僕らの海でまた会おう",
+  "releaseDate": "2024-06-30",
+  "trackNumber": 1,
+  "credits": {
+    "lyricist": "畑亜貴",
+    "composer": "RUSH EYE・春川仁志",
+    "arranger": "RUSH EYE"
+  },
+  "creditsSource": "https://akihata.jp/works/music/53502/",
+  "audioSource": {
+    "source": "user-provided JOOX URL",
+    "host": "hk.stream.music.joox.com",
+    "filename": "M800Z9EEAE26CB8022.mp3",
+    "localFile": "public/audio/bokura-no-umi.mp3",
+    "durationSeconds": 280.9208,
+    "actualBitrateKbps": 320,
+    "sampleRateHz": 44100,
+    "channels": 2
+  },
+  "lyricsSource": {
+    "provider": "QQ Music",
+    "songMid": "000dnpSF1zXPMS",
+    "lineReference": "imports/bokura-no-umi/line-reference.json",
+    "lineBreaks": "33 lines matching LLWiki booklet transcription exactly",
+    "translation": "Assistant translation from Japanese; not copied from QQ or LLWiki translation"
+  },
+  "firstLyricStartMs": 21702,
+  "validation": {
+    "displayLines": 33,
+    "timedTokens": 545,
+    "originalSungWordTimingsPreserved": true,
+    "lastLyricEndMs": 269565,
+    "uiAcceptance": "pending user manual review"
+  }
+}

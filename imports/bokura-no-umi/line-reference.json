@@ -1,0 +1,305 @@
+{
+  "url": "https://llwiki.org/zh/僕らの海でまた会おう",
+  "description": "Page explicitly states 以下歌词还原自歌词本; transcription rather than independently inspected scan",
+  "lineCount": 33,
+  "lineGrouping": [
+    {
+      "referenceLine": 1,
+      "sourceQrcLines": [
+        1,
+        2
+      ],
+      "startMs": 21702,
+      "endMs": 29440
+    },
+    {
+      "referenceLine": 2,
+      "sourceQrcLines": [
+        3,
+        4
+      ],
+      "startMs": 29440,
+      "endMs": 37630
+    },
+    {
+      "referenceLine": 3,
+      "sourceQrcLines": [
+        5,
+        6
+      ],
+      "startMs": 37630,
+      "endMs": 47100
+    },
+    {
+      "referenceLine": 4,
+      "sourceQrcLines": [
+        7,
+        8
+      ],
+      "startMs": 47356,
+      "endMs": 56051
+    },
+    {
+      "referenceLine": 5,
+      "sourceQrcLines": [
+        9,
+        10
+      ],
+      "startMs": 56226,
+      "endMs": 64948
+    },
+    {
+      "referenceLine": 6,
+      "sourceQrcLines": [
+        11,
+        12
+      ],
+      "startMs": 65156,
+      "endMs": 73813
+    },
+    {
+      "referenceLine": 7,
+      "sourceQrcLines": [
+        13,
+        14
+      ],
+      "startMs": 73989,
+      "endMs": 82180
+    },
+    {
+      "referenceLine": 8,
+      "sourceQrcLines": [
+        15,
+        15
+      ],
+      "startMs": 82290,
+      "endMs": 83325
+    },
+    {
+      "referenceLine": 9,
+      "sourceQrcLines": [
+        16,
+        18
+      ],
+      "startMs": 83325,
+      "endMs": 91609
+    },
+    {
+      "referenceLine": 10,
+      "sourceQrcLines": [
+        19,
+        20
+      ],
+      "startMs": 91792,
+      "endMs": 100876
+    },
+    {
+      "referenceLine": 11,
+      "sourceQrcLines": [
+        21,
+        22
+      ],
+      "startMs": 101100,
+      "endMs": 107258
+    },
+    {
+      "referenceLine": 12,
+      "sourceQrcLines": [
+        22,
+        22
+      ],
+      "startMs": 107258,
+      "endMs": 109535
+    },
+    {
+      "referenceLine": 13,
+      "sourceQrcLines": [
+        23,
+        24
+      ],
+      "startMs": 117229,
+      "endMs": 125039
+    },
+    {
+      "referenceLine": 14,
+      "sourceQrcLines": [
+        25,
+        27
+      ],
+      "startMs": 125039,
+      "endMs": 134535
+    },
+    {
+      "referenceLine": 15,
+      "sourceQrcLines": [
+        28,
+        29
+      ],
+      "startMs": 135063,
+      "endMs": 142650
+    },
+    {
+      "referenceLine": 16,
+      "sourceQrcLines": [
+        30,
+        31
+      ],
+      "startMs": 142873,
+      "endMs": 151202
+    },
+    {
+      "referenceLine": 17,
+      "sourceQrcLines": [
+        32,
+        33
+      ],
+      "startMs": 151683,
+      "endMs": 160688
+    },
+    {
+      "referenceLine": 18,
+      "sourceQrcLines": [
+        34,
+        34
+      ],
+      "startMs": 160688,
+      "endMs": 169368
+    },
+    {
+      "referenceLine": 19,
+      "sourceQrcLines": [
+        35,
+        36
+      ],
+      "startMs": 169425,
+      "endMs": 177758
+    },
+    {
+      "referenceLine": 20,
+      "sourceQrcLines": [
+        37,
+        37
+      ],
+      "startMs": 177928,
+      "endMs": 178920
+    },
+    {
+      "referenceLine": 21,
+      "sourceQrcLines": [
+        37,
+        38
+      ],
+      "startMs": 178920,
+      "endMs": 187184
+    },
+    {
+      "referenceLine": 22,
+      "sourceQrcLines": [
+        39,
+        40
+      ],
+      "startMs": 187242,
+      "endMs": 196498
+    },
+    {
+      "referenceLine": 23,
+      "sourceQrcLines": [
+        41,
+        41
+      ],
+      "startMs": 196754,
+      "endMs": 201696
+    },
+    {
+      "referenceLine": 24,
+      "sourceQrcLines": [
+        42,
+        42
+      ],
+      "startMs": 201696,
+      "endMs": 205029
+    },
+    {
+      "referenceLine": 25,
+      "sourceQrcLines": [
+        43,
+        44
+      ],
+      "startMs": 205987,
+      "endMs": 214247
+    },
+    {
+      "referenceLine": 26,
+      "sourceQrcLines": [
+        45,
+        46
+      ],
+      "startMs": 214743,
+      "endMs": 223594
+    },
+    {
+      "referenceLine": 27,
+      "sourceQrcLines": [
+        47,
+        47
+      ],
+      "startMs": 223594,
+      "endMs": 232315
+    },
+    {
+      "referenceLine": 28,
+      "sourceQrcLines": [
+        48,
+        49
+      ],
+      "startMs": 233779,
+      "endMs": 242237
+    },
+    {
+      "referenceLine": 29,
+      "sourceQrcLines": [
+        50,
+        50
+      ],
+      "startMs": 242404,
+      "endMs": 243316
+    },
+    {
+      "referenceLine": 30,
+      "sourceQrcLines": [
+        50,
+        52
+      ],
+      "startMs": 243316,
+      "endMs": 251669
+    },
+    {
+      "referenceLine": 31,
+      "sourceQrcLines": [
+        53,
+        54
+      ],
+      "startMs": 251669,
+      "endMs": 261091
+    },
+    {
+      "referenceLine": 32,
+      "sourceQrcLines": [
+        55,
+        56
+      ],
+      "startMs": 261091,
+      "endMs": 267246
+    },
+    {
+      "referenceLine": 33,
+      "sourceQrcLines": [
+        56,
+        56
+      ],
+      "startMs": 267246,
+      "endMs": 269565
+    }
+  ],
+  "notes": "Display follows all 33 reference lines. Printed 時代（とき） represented as 時代 with reading とき. QRC opening spoken いくよ at 17.701s excluded because absent from booklet; retained in source.qrc. QRC whitespace-only and punctuation-only tokens omitted; sung text and timestamps retained. Chinese is independently translated, not copied from reference."
+}

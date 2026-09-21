@@ -1,0 +1,19 @@
+{
+  "title": "僕らの海でまた会おう",
+  "artist": "Aqours",
+  "duration_seconds": 280,
+  "song_mid": "000dnpSF1zXPMS",
+  "song_id": 505881830,
+  "qrc_timestamp": 1725274255,
+  "lrc_timestamp": 0,
+  "translation_timestamp": 1728987484,
+  "romanization_timestamp": 1728972844,
+  "files": {
+    "qrc": "/private/tmp/yomikana-bokura-qq/僕らの海でまた会おう.qrc",
+    "lrc": "/private/tmp/yomikana-bokura-qq/僕らの海でまた会おう.lrc",
+    "translation": "/private/tmp/yomikana-bokura-qq/僕らの海でまた会おう.translation.lrc",
+    "romanization": "/private/tmp/yomikana-bokura-qq/僕らの海でまた会おう.roma.lrc"
+  },
+  "unavailable_tracks": [],
+  "metadata_file": "/private/tmp/yomikana-bokura-qq/僕らの海でまた会おう.json"
+}

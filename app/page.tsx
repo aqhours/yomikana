@@ -4,6 +4,7 @@ import coverThumbnails from "./cover-thumbnails.json";
 const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
 
 const catalog = [
+  {"slug": "bokura-no-umi", "title": "僕らの海でまた会おう", "artist": "Aqours", "releaseDate": "2024-06-30", "trackNumber": 1, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/33/c2/89/33c28965-171b-98a2-86bb-5977727d9a18/4540774246007.png/3000x3000bb.jpg"},
   {"slug": "kiseki-hikaru", "title": "キセキヒカル", "artist": "Aqours", "releaseDate": "2018-06-22", "trackNumber": 9, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/d6/70/2f/d6702f7d-a9f5-b5d4-0ddb-e43f990db542/4540774907809.png/3000x3000bb.jpg"},
   {"slug": "omoi-yo-hitotsu", "title": "想いよひとつになれ", "artist": "Aqours", "releaseDate": "2016-11-09", "trackNumber": 1, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/44/76/09/44760969-1357-8238-9f7b-5bf4043020e5/4540774145232.png/3000x3000bb.jpg"},
   {"slug": "natsu-no-owari", "title": "夏の終わりの雨音が", "artist": "千歌・果南", "releaseDate": "2017-08-02", "trackNumber": 4, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/96/9a/8c/969a8c58-73ef-884b-cb71-cca572b14594/4540774146307.png/3000x3000bb.jpg"},
