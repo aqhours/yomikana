@@ -1,0 +1,29 @@
+{
+  "title": "想いよひとつになれ",
+  "releaseDate": "2016-11-09",
+  "trackNumber": 1,
+  "credits": {
+    "lyricist": "畑亜貴",
+    "composer": "佐伯高志",
+    "arranger": "佐伯高志"
+  },
+  "creditsSource": "https://akihata.jp/works/music/37469/",
+  "audioSource": {
+    "site": "https://music.gdstudio.xyz/",
+    "source": "joox",
+    "songId": "tLUZzh2ifgJct6H9xSaJQA==",
+    "album": "ラブライブ！サンシャイン!! Aqours CHRONICLE (2015～2017)",
+    "durationSeconds": 293.276725,
+    "actualBitrateKbps": 320,
+    "sampleRateHz": 44100,
+    "channels": 2,
+    "localFile": "public/audio/omoi-yo-hitotsu.mp3"
+  },
+  "firstLyricStartMs": 1610,
+  "validation": {
+    "lyricLines": 61,
+    "timedTokens": 500,
+    "lastTokenEndMs": 264552,
+    "uiAcceptance": "pending-user"
+  }
+}

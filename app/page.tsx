@@ -4,6 +4,7 @@ import coverThumbnails from "./cover-thumbnails.json";
 const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
 
 const catalog = [
+  {"slug": "omoi-yo-hitotsu", "title": "想いよひとつになれ", "artist": "Aqours", "releaseDate": "2016-11-09", "trackNumber": 1, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/44/76/09/44760969-1357-8238-9f7b-5bf4043020e5/4540774145232.png/3000x3000bb.jpg"},
   {"slug": "natsu-no-owari", "title": "夏の終わりの雨音が", "artist": "千歌・果南", "releaseDate": "2017-08-02", "trackNumber": 4, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/96/9a/8c/969a8c58-73ef-884b-cb71-cca572b14594/4540774146307.png/3000x3000bb.jpg"},
   {"slug": "yume-de-yozora", "title": "夢で夜空を照らしたい", "artist": "Aqours", "releaseDate": "2016-09-14", "trackNumber": 1, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f7/a8/a1/f7a8a1ee-3210-4ce0-9efa-c835f78d0f62/4540774145225.png/3000x3000bb.jpg"},
   {"slug": "next-sparkling", "title": "Next SPARKLING!!", "artist": "Aqours", "releaseDate": "2019-01-23", "trackNumber": 2, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/57/51/29/57512997-366f-deb2-2bb8-e89d695b93e0/4540774148318.png/3000x3000bb.jpg"},
