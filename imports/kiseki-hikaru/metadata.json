@@ -1,0 +1,434 @@
+{
+  "title": "キセキヒカル",
+  "releaseDate": "2018-06-22",
+  "trackNumber": 9,
+  "credits": {
+    "lyricist": "畑亜貴",
+    "composer": "加藤達也",
+    "arranger": "加藤達也"
+  },
+  "creditsSource": "https://akihata.jp/works/music/44460/",
+  "audioSource": {
+    "source": "user-provided JOOX URL",
+    "host": "hk.stream.music.joox.com",
+    "filename": "M800Zaa117f9c4f64b.mp3",
+    "localFile": "public/audio/kiseki-hikaru.mp3",
+    "durationSeconds": 287.37305,
+    "actualBitrateKbps": 320,
+    "sampleRateHz": 44100,
+    "channels": 2
+  },
+  "lyricsSource": {
+    "provider": "QQ Music",
+    "songMid": "001CkkT93Llt9P",
+    "lineBreaks": "Based on 36 booklet-transcribed lines from LLWiki, cross-checked with Uta-net; 36 display lines matching the reference boundaries exactly; not independently verified against a scan",
+    "translation": "Assistant translation from Japanese; not copied from QQ translation",
+    "lineReference": "imports/kiseki-hikaru/line-reference.json"
+  },
+  "firstLyricStartMs": 13920,
+  "validation": {
+    "lyricLines": 36,
+    "timedTokens": 523,
+    "lastTokenEndMs": 276494,
+    "uiAcceptance": "pending-user",
+    "sourceQrcLines": 57
+  },
+  "lineGrouping": [
+    {
+      "sourceLines": [
+        1,
+        1
+      ],
+      "referenceLines": [
+        1
+      ],
+      "startMs": 13920,
+      "endMs": 17227
+    },
+    {
+      "sourceLines": [
+        2,
+        2
+      ],
+      "referenceLines": [
+        2
+      ],
+      "startMs": 17227,
+      "endMs": 20552
+    },
+    {
+      "sourceLines": [
+        3,
+        3
+      ],
+      "referenceLines": [
+        3
+      ],
+      "startMs": 20552,
+      "endMs": 26816
+    },
+    {
+      "sourceLines": [
+        4,
+        4
+      ],
+      "referenceLines": [
+        4
+      ],
+      "startMs": 26816,
+      "endMs": 30127
+    },
+    {
+      "sourceLines": [
+        5,
+        5
+      ],
+      "referenceLines": [
+        5
+      ],
+      "startMs": 30127,
+      "endMs": 33499
+    },
+    {
+      "sourceLines": [
+        6,
+        6
+      ],
+      "referenceLines": [
+        6
+      ],
+      "startMs": 33499,
+      "endMs": 40861
+    },
+    {
+      "sourceLines": [
+        7,
+        7
+      ],
+      "referenceLines": [
+        7
+      ],
+      "startMs": 40861,
+      "endMs": 51577
+    },
+    {
+      "sourceLines": [
+        8,
+        8
+      ],
+      "referenceLines": [
+        8
+      ],
+      "startMs": 51577,
+      "endMs": 65662
+    },
+    {
+      "sourceLines": [
+        9,
+        10
+      ],
+      "referenceLines": [
+        9
+      ],
+      "startMs": 65662,
+      "endMs": 71857
+    },
+    {
+      "sourceLines": [
+        11,
+        12
+      ],
+      "referenceLines": [
+        10
+      ],
+      "startMs": 71857,
+      "endMs": 78544
+    },
+    {
+      "sourceLines": [
+        13,
+        14
+      ],
+      "referenceLines": [
+        11
+      ],
+      "startMs": 78544,
+      "endMs": 84735
+    },
+    {
+      "sourceLines": [
+        15,
+        16
+      ],
+      "referenceLines": [
+        12
+      ],
+      "startMs": 84735,
+      "endMs": 89828
+    },
+    {
+      "sourceLines": [
+        17,
+        18
+      ],
+      "referenceLines": [
+        13
+      ],
+      "startMs": 89828,
+      "endMs": 107982
+    },
+    {
+      "sourceLines": [
+        19,
+        19
+      ],
+      "referenceLines": [
+        14
+      ],
+      "startMs": 107982,
+      "endMs": 111164
+    },
+    {
+      "sourceLines": [
+        20,
+        20
+      ],
+      "referenceLines": [
+        15
+      ],
+      "startMs": 111164,
+      "endMs": 114591
+    },
+    {
+      "sourceLines": [
+        21,
+        21
+      ],
+      "referenceLines": [
+        16
+      ],
+      "startMs": 114591,
+      "endMs": 120883
+    },
+    {
+      "sourceLines": [
+        22,
+        22
+      ],
+      "referenceLines": [
+        17
+      ],
+      "startMs": 120883,
+      "endMs": 124115
+    },
+    {
+      "sourceLines": [
+        23,
+        23
+      ],
+      "referenceLines": [
+        18
+      ],
+      "startMs": 124115,
+      "endMs": 127604
+    },
+    {
+      "sourceLines": [
+        24,
+        25
+      ],
+      "referenceLines": [
+        19
+      ],
+      "startMs": 127604,
+      "endMs": 134903
+    },
+    {
+      "sourceLines": [
+        26,
+        27
+      ],
+      "referenceLines": [
+        20
+      ],
+      "startMs": 134903,
+      "endMs": 145486
+    },
+    {
+      "sourceLines": [
+        28,
+        29
+      ],
+      "referenceLines": [
+        21
+      ],
+      "startMs": 145486,
+      "endMs": 159561
+    },
+    {
+      "sourceLines": [
+        30,
+        31
+      ],
+      "referenceLines": [
+        22
+      ],
+      "startMs": 159561,
+      "endMs": 165922
+    },
+    {
+      "sourceLines": [
+        32,
+        33
+      ],
+      "referenceLines": [
+        23
+      ],
+      "startMs": 165922,
+      "endMs": 172385
+    },
+    {
+      "sourceLines": [
+        34,
+        35
+      ],
+      "referenceLines": [
+        24
+      ],
+      "startMs": 172385,
+      "endMs": 178851
+    },
+    {
+      "sourceLines": [
+        36,
+        37
+      ],
+      "referenceLines": [
+        25
+      ],
+      "startMs": 178851,
+      "endMs": 183930
+    },
+    {
+      "sourceLines": [
+        38,
+        39
+      ],
+      "referenceLines": [
+        26
+      ],
+      "startMs": 183930,
+      "endMs": 201409
+    },
+    {
+      "sourceLines": [
+        40,
+        41
+      ],
+      "referenceLines": [
+        27
+      ],
+      "startMs": 201409,
+      "endMs": 207315
+    },
+    {
+      "sourceLines": [
+        42,
+        43
+      ],
+      "referenceLines": [
+        28
+      ],
+      "startMs": 207315,
+      "endMs": 214535
+    },
+    {
+      "sourceLines": [
+        44,
+        44
+      ],
+      "referenceLines": [
+        29
+      ],
+      "startMs": 214535,
+      "endMs": 218098
+    },
+    {
+      "sourceLines": [
+        45,
+        46
+      ],
+      "referenceLines": [
+        30
+      ],
+      "startMs": 218098,
+      "endMs": 224314
+    },
+    {
+      "sourceLines": [
+        47,
+        48
+      ],
+      "referenceLines": [
+        31
+      ],
+      "startMs": 224314,
+      "endMs": 230797
+    },
+    {
+      "sourceLines": [
+        49,
+        50
+      ],
+      "referenceLines": [
+        32
+      ],
+      "startMs": 230797,
+      "endMs": 237248
+    },
+    {
+      "sourceLines": [
+        51,
+        52
+      ],
+      "referenceLines": [
+        33
+      ],
+      "startMs": 237248,
+      "endMs": 242349
+    },
+    {
+      "sourceLines": [
+        53,
+        54
+      ],
+      "referenceLines": [
+        34
+      ],
+      "startMs": 242349,
+      "endMs": 260000
+    },
+    {
+      "sourceLines": [
+        55,
+        56
+      ],
+      "referenceLines": [
+        35
+      ],
+      "startMs": 260000,
+      "endMs": 266401
+    },
+    {
+      "sourceLines": [
+        57,
+        57
+      ],
+      "referenceLines": [
+        36
+      ],
+      "startMs": 266401,
+      "endMs": 276494
+    }
+  ]
+}

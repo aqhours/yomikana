@@ -1,0 +1,19 @@
+{
+  "title": "キセキヒカル",
+  "artist": "Aqours",
+  "duration_seconds": 287,
+  "song_mid": "001CkkT93Llt9P",
+  "song_id": 280058041,
+  "qrc_timestamp": 1688142449,
+  "lrc_timestamp": 0,
+  "translation_timestamp": 1688142449,
+  "romanization_timestamp": 1602660581,
+  "files": {
+    "qrc": "/private/tmp/yomikana-kiseki-qq/キセキヒカル.qrc",
+    "lrc": "/private/tmp/yomikana-kiseki-qq/キセキヒカル.lrc",
+    "translation": "/private/tmp/yomikana-kiseki-qq/キセキヒカル.translation.lrc",
+    "romanization": "/private/tmp/yomikana-kiseki-qq/キセキヒカル.roma.lrc"
+  },
+  "unavailable_tracks": [],
+  "metadata_file": "/private/tmp/yomikana-kiseki-qq/キセキヒカル.json"
+}
