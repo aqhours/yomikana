@@ -1,0 +1,25 @@
+{
+  "title": "夏の終わりの雨音が",
+  "artist": "高海千歌・松浦果南",
+  "releaseDate": "2017-08-02",
+  "trackNumber": 4,
+  "credits": {
+    "lyricist": "畑亜貴",
+    "composer": "片桐周太郎",
+    "arranger": "江上浩太郎"
+  },
+  "creditsSource": "https://akihata.jp/works/music/19110/",
+  "audioSource": {
+    "site": "https://music.gdstudio.xyz/",
+    "source": "joox",
+    "songId": "qu8GL_I7DMexsheIQl57+A==",
+    "album": "ラブライブ！サンシャイン!! Aqours CHRONICLE (2015～2017)",
+    "requestedBitrateKbps": 320,
+    "durationSeconds": 320.574675,
+    "actualBitrateKbps": 320,
+    "sampleRateHz": 44100,
+    "channels": 2,
+    "localFile": "public/audio/natsu-no-owari.mp3"
+  },
+  "firstLyricStartMs": 16803
+}
