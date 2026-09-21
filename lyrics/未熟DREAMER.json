@@ -1,0 +1,19 @@
+{
+  "title": "未熟DREAMER",
+  "artist": "Aqours",
+  "duration_seconds": 351,
+  "song_mid": "000QfoAk44xGcK",
+  "song_id": 108345537,
+  "qrc_timestamp": 1700643657,
+  "lrc_timestamp": 0,
+  "translation_timestamp": 1700643657,
+  "romanization_timestamp": 1626238968,
+  "files": {
+    "qrc": "/Users/jiiong/Documents/ComputerScience/web-design-projects/yomikana/lyrics/未熟DREAMER.qrc",
+    "lrc": "/Users/jiiong/Documents/ComputerScience/web-design-projects/yomikana/lyrics/未熟DREAMER.lrc",
+    "translation": "/Users/jiiong/Documents/ComputerScience/web-design-projects/yomikana/lyrics/未熟DREAMER.translation.lrc",
+    "romanization": "/Users/jiiong/Documents/ComputerScience/web-design-projects/yomikana/lyrics/未熟DREAMER.roma.lrc"
+  },
+  "unavailable_tracks": [],
+  "metadata_file": "/Users/jiiong/Documents/ComputerScience/web-design-projects/yomikana/lyrics/未熟DREAMER.json"
+}

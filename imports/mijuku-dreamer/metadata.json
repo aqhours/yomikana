@@ -1,0 +1,29 @@
+{
+  "title": "未熟DREAMER",
+  "status": "imported",
+  "audioSource": {
+    "source": "user-provided JOOX URL",
+    "filename": "M800Z3b85a2deb26e3.mp3",
+    "durationSeconds": 350.641625,
+    "actualBitrateKbps": 320,
+    "sampleRateHz": 44100,
+    "channels": 2,
+    "localFile": "public/audio/mijuku-dreamer.mp3"
+  },
+  "versionNotes": "QRC metadata duration 351 seconds; supplied audio duration 350.642 seconds. Original word times retained without offset; listening alignment pending manual acceptance.",
+  "releaseDate": "2016-09-14",
+  "trackNumber": 2,
+  "lyricsSource": {
+    "provider": "User-provided local QQ Music QRC",
+    "songMid": "000QfoAk44xGcK",
+    "lineReference": "User-provided transcription",
+    "translation": "Assistant translation from user-provided Japanese"
+  },
+  "validation": {
+    "displayLines": 43,
+    "timedTokens": 569,
+    "originalSungWordTimingsPreserved": true,
+    "lastLyricEndMs": 321661,
+    "uiAcceptance": "pending user manual review"
+  }
+}

@@ -1,0 +1,394 @@
+{
+  "source": "User-provided booklet transcription in conversation",
+  "lineCount": 43,
+  "lineGrouping": [
+    {
+      "referenceLine": 1,
+      "sourceQrcLines": [
+        1,
+        1
+      ],
+      "startMs": 17133,
+      "endMs": 19659
+    },
+    {
+      "referenceLine": 2,
+      "sourceQrcLines": [
+        2,
+        3
+      ],
+      "startMs": 19668,
+      "endMs": 27036
+    },
+    {
+      "referenceLine": 3,
+      "sourceQrcLines": [
+        4,
+        5
+      ],
+      "startMs": 27348,
+      "endMs": 32013
+    },
+    {
+      "referenceLine": 4,
+      "sourceQrcLines": [
+        6,
+        7
+      ],
+      "startMs": 32020,
+      "endMs": 36726
+    },
+    {
+      "referenceLine": 5,
+      "sourceQrcLines": [
+        8,
+        8
+      ],
+      "startMs": 36732,
+      "endMs": 39221
+    },
+    {
+      "referenceLine": 6,
+      "sourceQrcLines": [
+        9,
+        10
+      ],
+      "startMs": 39231,
+      "endMs": 46338
+    },
+    {
+      "referenceLine": 7,
+      "sourceQrcLines": [
+        11,
+        12
+      ],
+      "startMs": 46799,
+      "endMs": 51408
+    },
+    {
+      "referenceLine": 8,
+      "sourceQrcLines": [
+        13,
+        14
+      ],
+      "startMs": 51415,
+      "endMs": 58689
+    },
+    {
+      "referenceLine": 9,
+      "sourceQrcLines": [
+        15,
+        15
+      ],
+      "startMs": 69718,
+      "endMs": 72022
+    },
+    {
+      "referenceLine": 10,
+      "sourceQrcLines": [
+        16,
+        17
+      ],
+      "startMs": 72223,
+      "endMs": 79278
+    },
+    {
+      "referenceLine": 11,
+      "sourceQrcLines": [
+        18,
+        19
+      ],
+      "startMs": 79782,
+      "endMs": 84385
+    },
+    {
+      "referenceLine": 12,
+      "sourceQrcLines": [
+        20,
+        21
+      ],
+      "startMs": 84393,
+      "endMs": 91337
+    },
+    {
+      "referenceLine": 13,
+      "sourceQrcLines": [
+        22,
+        23
+      ],
+      "startMs": 91774,
+      "endMs": 99658
+    },
+    {
+      "referenceLine": 14,
+      "sourceQrcLines": [
+        24,
+        24
+      ],
+      "startMs": 99669,
+      "endMs": 102512
+    },
+    {
+      "referenceLine": 15,
+      "sourceQrcLines": [
+        25,
+        26
+      ],
+      "startMs": 105669,
+      "endMs": 111229
+    },
+    {
+      "referenceLine": 16,
+      "sourceQrcLines": [
+        27,
+        27
+      ],
+      "startMs": 111237,
+      "endMs": 116216
+    },
+    {
+      "referenceLine": 17,
+      "sourceQrcLines": [
+        28,
+        29
+      ],
+      "startMs": 116491,
+      "endMs": 122613
+    },
+    {
+      "referenceLine": 18,
+      "sourceQrcLines": [
+        30,
+        31
+      ],
+      "startMs": 122876,
+      "endMs": 129536
+    },
+    {
+      "referenceLine": 19,
+      "sourceQrcLines": [
+        32,
+        33
+      ],
+      "startMs": 129545,
+      "endMs": 135184
+    },
+    {
+      "referenceLine": 20,
+      "sourceQrcLines": [
+        34,
+        34
+      ],
+      "startMs": 135192,
+      "endMs": 140204
+    },
+    {
+      "referenceLine": 21,
+      "sourceQrcLines": [
+        35,
+        35
+      ],
+      "startMs": 140457,
+      "endMs": 146587
+    },
+    {
+      "referenceLine": 22,
+      "sourceQrcLines": [
+        36,
+        37
+      ],
+      "startMs": 146848,
+      "endMs": 153854
+    },
+    {
+      "referenceLine": 23,
+      "sourceQrcLines": [
+        38,
+        39
+      ],
+      "startMs": 154373,
+      "endMs": 159272
+    },
+    {
+      "referenceLine": 24,
+      "sourceQrcLines": [
+        40,
+        40
+      ],
+      "startMs": 160473,
+      "endMs": 164571
+    },
+    {
+      "referenceLine": 25,
+      "sourceQrcLines": [
+        41,
+        41
+      ],
+      "startMs": 164866,
+      "endMs": 173430
+    },
+    {
+      "referenceLine": 26,
+      "sourceQrcLines": [
+        42,
+        43
+      ],
+      "startMs": 208813,
+      "endMs": 216617
+    },
+    {
+      "referenceLine": 27,
+      "sourceQrcLines": [
+        44,
+        44
+      ],
+      "startMs": 216628,
+      "endMs": 219042
+    },
+    {
+      "referenceLine": 28,
+      "sourceQrcLines": [
+        45,
+        45
+      ],
+      "startMs": 219591,
+      "endMs": 225218
+    },
+    {
+      "referenceLine": 29,
+      "sourceQrcLines": [
+        46,
+        46
+      ],
+      "startMs": 225231,
+      "endMs": 230278
+    },
+    {
+      "referenceLine": 30,
+      "sourceQrcLines": [
+        47,
+        47
+      ],
+      "startMs": 230538,
+      "endMs": 236590
+    },
+    {
+      "referenceLine": 31,
+      "sourceQrcLines": [
+        48,
+        48
+      ],
+      "startMs": 236866,
+      "endMs": 243611
+    },
+    {
+      "referenceLine": 32,
+      "sourceQrcLines": [
+        49,
+        49
+      ],
+      "startMs": 243626,
+      "endMs": 249237
+    },
+    {
+      "referenceLine": 33,
+      "sourceQrcLines": [
+        50,
+        50
+      ],
+      "startMs": 249250,
+      "endMs": 254262
+    },
+    {
+      "referenceLine": 34,
+      "sourceQrcLines": [
+        51,
+        51
+      ],
+      "startMs": 254516,
+      "endMs": 260592
+    },
+    {
+      "referenceLine": 35,
+      "sourceQrcLines": [
+        52,
+        53
+      ],
+      "startMs": 260854,
+      "endMs": 268433
+    },
+    {
+      "referenceLine": 36,
+      "sourceQrcLines": [
+        54,
+        55
+      ],
+      "startMs": 270840,
+      "endMs": 276178
+    },
+    {
+      "referenceLine": 37,
+      "sourceQrcLines": [
+        56,
+        56
+      ],
+      "startMs": 276186,
+      "endMs": 281218
+    },
+    {
+      "referenceLine": 38,
+      "sourceQrcLines": [
+        57,
+        57
+      ],
+      "startMs": 281469,
+      "endMs": 287552
+    },
+    {
+      "referenceLine": 39,
+      "sourceQrcLines": [
+        58,
+        59
+      ],
+      "startMs": 287839,
+      "endMs": 294557
+    },
+    {
+      "referenceLine": 40,
+      "sourceQrcLines": [
+        60,
+        61
+      ],
+      "startMs": 294566,
+      "endMs": 300171
+    },
+    {
+      "referenceLine": 41,
+      "sourceQrcLines": [
+        62,
+        62
+      ],
+      "startMs": 300179,
+      "endMs": 305255
+    },
+    {
+      "referenceLine": 42,
+      "sourceQrcLines": [
+        63,
+        63
+      ],
+      "startMs": 305475,
+      "endMs": 311632
+    },
+    {
+      "referenceLine": 43,
+      "sourceQrcLines": [
+        64,
+        65
+      ],
+      "startMs": 311885,
+      "endMs": 321661
+    }
+  ],
+  "notes": "User line breaks retained; QRC 今 and dreamer use supplied いま and DREAMER in display; original timings retained. Chinese independently translated."
+}

@@ -4,6 +4,7 @@ import coverThumbnails from "./cover-thumbnails.json";
 const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
 
 const catalog = [
+  {"slug": "mijuku-dreamer", "title": "未熟DREAMER", "artist": "Aqours", "releaseDate": "2016-09-14", "trackNumber": 2, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/f7/a8/a1/f7a8a1ee-3210-4ce0-9efa-c835f78d0f62/4540774145225.png/3000x3000bb.jpg"},
   {"slug": "daisuki-dattara-daijoubu", "title": "ダイスキだったらダイジョウブ！", "artist": "高海千歌・桜内梨子・渡辺曜", "releaseDate": "2016-08-03", "trackNumber": 2, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/2c/fe/36/2cfe3603-bc65-3146-a4d0-ea114b2bb5e0/4540774145218.png/3000x3000bb.jpg"},
   {"slug": "sakura-saku-kokoro-saku", "title": "SAKURA-saku KOKORO-saku", "artist": "Aqours", "releaseDate": "2024-05-29", "trackNumber": 2, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/98/de/f0/98def0b4-f991-59c6-2046-3bb90ce7e892/4540774245505.png/3000x3000bb.jpg"},
   {"slug": "bokura-no-umi", "title": "僕らの海でまた会おう", "artist": "Aqours", "releaseDate": "2024-06-30", "trackNumber": 1, "cover": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/33/c2/89/33c28965-171b-98a2-86bb-5977727d9a18/4540774246007.png/3000x3000bb.jpg"},
