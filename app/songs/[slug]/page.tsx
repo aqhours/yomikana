@@ -1,7 +1,7 @@
-import SongReader from "../../song-reader";
+import WebPlayback from "../../web-playback";
 import { songs } from "../../song-data";
-import coverPalettes from "../../cover-palettes.json";
-import coverThumbnails from "../../cover-thumbnails.json";
+import { catalog } from "../../song-catalog";
+import { getWebTrack } from "../../web-track";
 
 const songSlugs = Object.keys(songs);
 
@@ -11,9 +11,6 @@ export function generateStaticParams() {
 
 export default async function SongPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const song = songs[slug] ?? songs["kimi-no-kokoro"];
-  const coverColors = (coverPalettes as Record<string, string[]>)[song.cover] ?? [];
-  const thumbnails = coverThumbnails as Record<string, Record<string, string>>;
-  const songWithThumbnail = { ...song, cover: thumbnails[song.cover]?.[256] ?? song.cover };
-  return <SongReader key={song.slug} song={songWithThumbnail} coverColors={coverColors} originalCover={song.cover} />;
+  const track = getWebTrack(slug) ?? getWebTrack("kimi-no-kokoro")!;
+  return <WebPlayback key={track.song.slug} initialTrack={track} queue={catalog.map((song) => song.slug)} />;
 }

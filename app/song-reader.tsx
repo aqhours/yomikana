@@ -2,7 +2,7 @@
 
 import { memo, useEffect, useEffectEvent, useMemo, useRef, useState } from "react";
 import { listen } from "@tauri-apps/api/event";
-import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, Moon, Pause, Play, Languages, Sun, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ListRestart, Maximize, Minimize, MoreHorizontal, Moon, Pause, Play, Blend, SkipBack, SkipForward, Languages, Sun, X } from "lucide-react";
 import ReaderBackground from "./reader-background";
 import { useAmllLowFreqVolume } from "./use-amll-low-freq-volume";
 import { loadAudio } from "./audio-cache";
@@ -164,7 +164,10 @@ const WordBlock = memo(function WordBlock({ word, lineIndex, wordIndex, currentM
   );
 });
 
-export default function SongReader({ song, coverColors, originalCover, desktopPlayback }: { song: Song; coverColors: string[]; originalCover?: string; desktopPlayback?: DesktopPlayback }) {
+type WebPlaybackControls = DesktopPlayback & { canNext: boolean; status: string };
+
+export default function SongReader({ song, coverColors, originalCover, desktopPlayback, webPlayback }: { song: Song; coverColors: string[]; originalCover?: string; desktopPlayback?: DesktopPlayback; webPlayback?: WebPlaybackControls }) {
+  const playback = desktopPlayback ?? webPlayback;
   const lyrics = song.lyrics;
   const fullscreenRef = useRef<HTMLDivElement>(null);
   const fullscreen = useReaderFullscreen(fullscreenRef);
@@ -205,7 +208,6 @@ export default function SongReader({ song, coverColors, originalCover, desktopPl
   }, [readerOpen, coverColors]);
   const readerRef = useRef<HTMLOListElement>(null);
   const { manual: manualScroll, resumePlayback } = useManualLyricScroll(readerRef, readerOpen);
-  useLyricEdgeSoftness(readerRef, readerOpen);
   const lineRefs = useRef<(HTMLLIElement | null)[]>([]);
   const animationRef = useRef<number | null>(null);
   const lastClockUpdateRef = useRef(0);
@@ -219,6 +221,39 @@ export default function SongReader({ song, coverColors, originalCover, desktopPl
   const [isPlaying, setIsPlaying] = useState(false);
   const [autoScroll, setAutoScroll] = useState(true);
   const [showAnnotations, setShowAnnotations] = useState(true);
+  const [blurLyrics, setBlurLyrics] = useState(true);
+  const [toolsOpen, setToolsOpen] = useState(false);
+  const toolsRef = useRef<HTMLDivElement>(null);
+  const toolsToggleRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!toolsOpen) return;
+    const dismissOutside = (event: PointerEvent) => {
+      if (event.target instanceof Node && !toolsRef.current?.contains(event.target) && !toolsToggleRef.current?.contains(event.target)) setToolsOpen(false);
+    };
+    const dismissEscape = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      event.stopPropagation();
+      setToolsOpen(false);
+      toolsToggleRef.current?.focus();
+    };
+    const desktop = matchMedia("(min-width:1024px)");
+    const dismissOnDesktop = () => { if (desktop.matches) setToolsOpen(false); };
+    document.addEventListener("pointerdown", dismissOutside);
+    document.addEventListener("keydown", dismissEscape, true);
+    desktop.addEventListener("change", dismissOnDesktop);
+    return () => {
+      document.removeEventListener("pointerdown", dismissOutside);
+      document.removeEventListener("keydown", dismissEscape, true);
+      desktop.removeEventListener("change", dismissOnDesktop);
+    };
+  }, [toolsOpen]);
+  const closeToolsMenu = () => {
+    if (!toolsOpen) return;
+    setToolsOpen(false);
+    toolsToggleRef.current?.focus();
+  };
+  useLyricEdgeSoftness(readerRef, readerOpen, blurLyrics, song.slug);
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [playbackError, setPlaybackError] = useState("");
   const [loadedSong, setLoadedSong] = useState(song.slug);
@@ -282,7 +317,7 @@ export default function SongReader({ song, coverColors, originalCover, desktopPl
     };
   }, [song.audio, audioRequested]);
   useEffect(() => {
-    // The desktop reader survives track changes, retaining the audio element and its gesture permission.
+    // Keep the audio element mounted across track changes, retaining its gesture permission.
     const audio = audioRef.current;
     if (!audio) return;
     audio.pause();
@@ -397,7 +432,8 @@ export default function SongReader({ song, coverColors, originalCover, desktopPl
     ], { duration: 280, easing: "cubic-bezier(.23,1,.32,1)" }) : null;
     readerMotionRef.current = lift ? [fade, lift] : [fade];
   };
-  const startDesktopTrack = useEffectEvent(() => {
+  const startQueuedTrack = useEffectEvent(() => {
+    if (webPlayback && (!readerOpen || readerClosingRef.current)) return;
     openReader();
     setAutoScroll(true);
     const audio = audioRef.current;
@@ -409,15 +445,15 @@ export default function SongReader({ song, coverColors, originalCover, desktopPl
   });
   useEffect(() => {
     const audio = audioRef.current;
-    if (!desktopPlayback?.autoPlay || !audioSrc || !audio) return;
+    if (!playback?.autoPlay || !audioSrc || !audio) return;
     // The source-loading effect above schedules this media event after effects finish.
-    const ready = () => { if (!readerClosingRef.current) startDesktopTrack(); };
+    const ready = () => { if (!readerClosingRef.current) startQueuedTrack(); };
     const cancel = () => audio.removeEventListener("canplay", ready);
     const dialog = dialogRef.current;
     audio.addEventListener("canplay", ready, { once: true });
     dialog?.addEventListener("close", cancel);
     return () => { cancel(); dialog?.removeEventListener("close", cancel); };
-  }, [desktopPlayback?.autoPlay, audioSrc]);
+  }, [playback?.autoPlay, audioSrc]);
   const handleDesktopAction = useEffectEvent((action: PlaybackAction) => {
     if (!desktopPlayback) return;
     if (action === "next") desktopPlayback.onNext();
@@ -466,6 +502,7 @@ export default function SongReader({ song, coverColors, originalCover, desktopPl
     fullscreen.exit();
     audioRef.current?.pause();
     setReaderOpen(false);
+    setToolsOpen(false);
     startRef.current?.focus({ preventScroll: true });
   };
   const toggleTheme = () => {
@@ -502,33 +539,42 @@ export default function SongReader({ song, coverColors, originalCover, desktopPl
       <dialog ref={dialogRef} id="lyrics-dialog" className="reader-dialog" style={coverPalette} aria-label={`${song.title}${song.titleAccent} · 歌词阅读`} onClose={onReaderClosed} onCancel={(event) => { event.preventDefault(); if (document.fullscreenElement) { void document.exitFullscreen().catch(() => {}); } else { closeReader(); } }}>
       <div ref={fullscreenRef} className="reader-surface">
       {readerOpen && <ReaderBackground album={song.cover} playing={isPlaying} lowFreqVolumeRef={lowFreqVolumeRef} />}
-      <section className="reader" data-lyric-font="sans" data-annotations={showAnnotations} id="lyrics" aria-label="歌词正文">
-        <div className="player-bar">
+      <section className="reader" data-lyric-font="sans" data-annotations={showAnnotations} data-lyric-blur={blurLyrics} id="lyrics" aria-label="歌词正文">
+        <div className={`player-bar${webPlayback ? " web-player-bar" : ""}`}>
           {/* The synchronized, translated lyric transcript is rendered directly below the audio control. */}
           {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-          <audio ref={audioRef} className="audio-player" preload={desktopPlayback?.autoPlay ? "auto" : "metadata"} loop={!desktopPlayback} src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={() => { stopClock(); desktopPlayback?.onNext(); }} onSeeked={updateClock} onEmptied={() => { lastClockUpdateRef.current = 0; setCurrentMs(0); setDurationMs(0); setIsPlaying(false); setPlaybackError(""); }} onError={() => { if (audioSrc) setPlaybackError("音频加载失败，请重试或切换下一首"); }}>你的浏览器不支持音频播放。</audio>
+          <audio ref={audioRef} className="audio-player" preload={playback?.autoPlay ? "auto" : "metadata"} loop={!playback} src={audioSrc ?? undefined} data-source={song.audio} onPlay={beginClock} onPause={stopClock} onEnded={() => { stopClock(); playback?.onNext(); }} onSeeked={updateClock} onEmptied={() => { lastClockUpdateRef.current = 0; setCurrentMs(0); setDurationMs(0); setIsPlaying(false); setPlaybackError(""); }} onError={() => { if (audioSrc) setPlaybackError("音频加载失败，请重试或切换下一首"); }}>你的浏览器不支持音频播放。</audio>
           <picture className="mini-cover" data-playing={isPlaying}>
             <source media="(min-width:1024px)" srcSet={originalCover ?? song.cover} />
             <img src={song.cover} width="256" height="256" decoding="async" loading="lazy" alt="" />
           </picture>
+          <div className="transport-controls" role="group" aria-label="播放控制">
+            {webPlayback && <button className="track-toggle" type="button" disabled={!webPlayback.canPrevious} onClick={webPlayback.onPrevious} aria-label="上一首" title="上一首" data-umami-event="audio-previous" data-umami-event-song={song.slug}><SkipBack aria-hidden="true" /></button>}
           <button className="play-toggle" type="button" disabled={!audioSrc} onClick={togglePlayback} aria-label={isPlaying ? "暂停" : "播放"} data-umami-event={isPlaying ? "audio-pause" : "audio-play"} data-umami-event-song={song.slug}>
             {isPlaying ? <Pause aria-hidden="true" /> : <Play className="play-icon" aria-hidden="true" />}
           </button>
+            {webPlayback && <button className="track-toggle" type="button" disabled={!webPlayback.canNext} onClick={webPlayback.onNext} aria-label="下一首" title="下一首" data-umami-event="audio-next" data-umami-event-song={song.slug}><SkipForward aria-hidden="true" /></button>}
+          </div>
           <div className="timeline">
             <span className="song-meta"><strong>{song.slug === "mirai-ticket" ? "MIRAI TICKET" : `${song.title}${song.titleAccent}`}</strong><span>{song.artist}</span>{!audioSrc && <span className="song-loading-status" role="status">歌曲加载中...</span>}</span>
             <input className="progress-slider" type="range" min="0" max={durationMs ? durationMs / 1000 : 0} step="0.01" value={currentMs / 1000} disabled={!durationMs} onInput={(event) => seekToTime(Number(event.currentTarget.value))} onPointerDown={(event) => { event.currentTarget.setPointerCapture(event.pointerId); seekFromPointer(event); }} onPointerMove={(event) => { if (event.currentTarget.hasPointerCapture(event.pointerId)) seekFromPointer(event); }} onPointerUp={(event) => event.currentTarget.releasePointerCapture(event.pointerId)} aria-label="播放进度" style={{ "--progress": `${durationMs ? Math.min(100, currentMs / durationMs * 100) : 0}%` } as React.CSSProperties} />
             <span className="time-display"><span>{formatTime(currentMs)}</span><span>{formatTime(durationMs)}</span></span>
           </div>
-          <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => setAutoScroll((value) => !value)} data-umami-event={autoScroll ? "auto-follow-disable" : "auto-follow-enable"} data-umami-event-song={song.slug}><ListRestart aria-hidden="true" /><span className="sr-only">自动跟随</span></button>
-          <button className={`annotations-toggle${showAnnotations ? " is-on" : ""}`} type="button" aria-label={showAnnotations ? "隐藏罗马音和分词翻译" : "显示罗马音和分词翻译"} title={showAnnotations ? "隐藏罗马音和分词翻译" : "显示罗马音和分词翻译"} aria-pressed={showAnnotations} onClick={() => setShowAnnotations((value) => !value)}>
-            <Languages aria-hidden="true" />
+          {webPlayback && <button ref={toolsToggleRef} className="reader-tools-toggle" type="button" aria-label="更多歌词功能" aria-expanded={toolsOpen} aria-controls="reader-tools" onClick={() => setToolsOpen((value) => !value)}><MoreHorizontal aria-hidden="true" /></button>}
+          <div ref={toolsRef} id="reader-tools" className="reader-tools" data-open={toolsOpen} role="group" aria-label="歌词功能">
+          <button className={`scroll-toggle${autoScroll ? " is-on" : ""}`} type="button" aria-label={autoScroll ? "关闭自动跟随" : "开启自动跟随"} title={autoScroll ? "自动跟随已开启" : "自动跟随已关闭"} aria-pressed={autoScroll} onClick={() => { closeToolsMenu(); setAutoScroll((value) => !value); }} data-umami-event={autoScroll ? "auto-follow-disable" : "auto-follow-enable"} data-umami-event-song={song.slug}><ListRestart aria-hidden="true" /><span className="reader-tool-label">自动跟随<span className="reader-tool-state">{autoScroll ? "开启" : "关闭"}</span></span></button>
+          <button className={`annotations-toggle${showAnnotations ? " is-on" : ""}`} type="button" aria-label={showAnnotations ? "隐藏罗马音和分词翻译" : "显示罗马音和分词翻译"} title={showAnnotations ? "隐藏罗马音和分词翻译" : "显示罗马音和分词翻译"} aria-pressed={showAnnotations} onClick={() => { closeToolsMenu(); setShowAnnotations((value) => !value); }}>
+            <Languages aria-hidden="true" /><span className="reader-tool-label">罗马音与释义<span className="reader-tool-state">{showAnnotations ? "显示" : "隐藏"}</span></span>
           </button>
-          <button className="fullscreen-toggle" type="button" onClick={fullscreen.toggle} disabled={!fullscreen.supported || fullscreen.pending} aria-label={fullscreen.isFullscreen ? "退出全屏" : "进入全屏"} aria-pressed={fullscreen.isFullscreen} title={!fullscreen.supported ? "当前浏览器不支持网页全屏" : fullscreen.isFullscreen ? "退出全屏（Esc）" : "进入全屏"}>
-            {fullscreen.isFullscreen ? <Minimize aria-hidden="true" /> : <Maximize aria-hidden="true" />}
+          {webPlayback && <button className={`blur-toggle${blurLyrics ? " is-on" : ""}`} type="button" aria-label={blurLyrics ? "关闭歌词模糊" : "开启歌词模糊"} title={blurLyrics ? "歌词模糊已开启" : "歌词模糊已关闭"} aria-pressed={blurLyrics} onClick={() => { closeToolsMenu(); setBlurLyrics((value) => !value); }}><Blend aria-hidden="true" /><span className="reader-tool-label">歌词模糊<span className="reader-tool-state">{blurLyrics ? "开启" : "关闭"}</span></span></button>}
+          <button className="fullscreen-toggle" type="button" onClick={() => { closeToolsMenu(); fullscreen.toggle(); }} disabled={!fullscreen.supported || fullscreen.pending} aria-label={fullscreen.isFullscreen ? "退出全屏" : "进入全屏"} aria-pressed={fullscreen.isFullscreen} title={!fullscreen.supported ? "当前浏览器不支持网页全屏" : fullscreen.isFullscreen ? "退出全屏（Esc）" : "进入全屏"}>
+            {fullscreen.isFullscreen ? <Minimize aria-hidden="true" /> : <Maximize aria-hidden="true" />}<span className="reader-tool-label">{fullscreen.isFullscreen ? "退出全屏" : "进入全屏"}</span>
           </button>
+          <button className="reader-close" type="button" onClick={() => { closeToolsMenu(); closeReader(); }} aria-label="关闭歌词界面" title="关闭歌词界面（Esc）"><X aria-hidden="true" /><span className="reader-tool-label">关闭歌词界面</span></button>
+          </div>
           {fullscreen.error && <span className="fullscreen-status" role="status">{fullscreen.error}</span>}
+          {webPlayback?.status && <span className="fullscreen-status" role="status">{webPlayback.status}</span>}
           {playbackError && <span className="fullscreen-status" role="status">{playbackError}</span>}
-          <button className="reader-close" type="button" onClick={closeReader} aria-label="关闭歌词界面" title="关闭歌词界面（Esc）"><X aria-hidden="true" /></button>
         </div>
         <div className="lyrics-viewport">
         <ol className="lyrics-list" ref={readerRef} data-manual-scroll={manualScroll}>

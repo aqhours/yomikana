@@ -3,7 +3,7 @@
 import { useEffect, type RefObject } from "react";
 
 // Apply the effect to the text itself, never to the background behind the player.
-export function useLyricEdgeSoftness(ref: RefObject<HTMLOListElement | null>, open: boolean) {
+export function useLyricEdgeSoftness(ref: RefObject<HTMLOListElement | null>, open: boolean, enabled = true, contentKey?: string) {
   useEffect(() => {
     const viewport = ref.current;
     if (!open || !viewport) return;
@@ -23,7 +23,7 @@ export function useLyricEdgeSoftness(ref: RefObject<HTMLOListElement | null>, op
         return { element, softness };
       });
       for (const { element, softness } of values) {
-        element.style.filter = softness && !reduced.matches ? `blur(${(softness * 4).toFixed(2)}px)` : "";
+        element.style.filter = softness && enabled && !reduced.matches ? `blur(${(softness * 4).toFixed(2)}px)` : "";
         element.style.opacity = softness ? String(1 - softness) : "";
       }
     };
@@ -54,5 +54,5 @@ export function useLyricEdgeSoftness(ref: RefObject<HTMLOListElement | null>, op
       reduced.removeEventListener("change", schedule);
       targets.forEach((element) => { element.style.filter = ""; element.style.opacity = ""; });
     };
-  }, [ref, open]);
+  }, [ref, open, enabled, contentKey]);
 }
